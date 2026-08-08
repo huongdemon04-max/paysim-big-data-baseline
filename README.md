@@ -41,6 +41,8 @@ Dataset được tải và kiểm SHA-256 tự động nếu `data/paysim.csv` c
 
 ## Vận hành
 
+macOS/Linux:
+
 ```bash
 ./stop.sh
 ./start.sh
@@ -48,6 +50,20 @@ Dataset được tải và kiểm SHA-256 tự động nếu `data/paysim.csv` c
 docker compose ps
 docker compose logs -f spark replayer streamlit
 ```
+
+Windows:
+
+```bat
+stop.bat
+start.bat
+reset.bat
+docker compose ps
+docker compose logs -f spark replayer streamlit
+```
+
+`reset.sh` và `reset.bat` xóa các volume Kafka, HDFS và MongoDB của riêng
+baseline, nhưng không xóa `data/paysim.csv`. Dùng lệnh reset khi HDFS báo
+`SafeModeException` hoặc corrupt blocks sau một lần dừng không sạch.
 
 Mặc định hệ thống phát liên tục 50 events/s, xử lý theo micro-batch 10 giây và
 lặp lại dataset sau 6.362.620 giao dịch. Copy `.env.example` thành `.env` để đổi

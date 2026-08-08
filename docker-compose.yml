@@ -76,7 +76,11 @@ services:
       - ./hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
       - ./hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
     healthcheck:
-      test: ["CMD-SHELL", "hdfs dfs -ls / >/dev/null 2>&1"]
+      test:
+        [
+          "CMD-SHELL",
+          "hdfs dfsadmin -safemode get 2>/dev/null | grep -q 'Safe mode is OFF'",
+        ]
       interval: 5s
       timeout: 5s
       retries: 40
@@ -92,7 +96,7 @@ services:
     command: ["hdfs", "datanode"]
     depends_on:
       namenode:
-        condition: service_healthy
+        condition: service_started
     ports:
       - "9864:9864"
     volumes:
@@ -143,6 +147,8 @@ services:
       MAX_OFFSETS_PER_TRIGGER: ${MAX_OFFSETS_PER_TRIGGER:-1000}
       TRIGGER_SECONDS: ${TRIGGER_SECONDS:-10}
       MODEL_THRESHOLD: ${MODEL_THRESHOLD:-0.50}
+      HDFS_STARTUP_TIMEOUT_SECONDS: ${HDFS_STARTUP_TIMEOUT_SECONDS:-300}
+      HDFS_RETRY_INTERVAL_SECONDS: ${HDFS_RETRY_INTERVAL_SECONDS:-5}
       PYSPARK_PYTHON: python3
       HADOOP_CONF_DIR: /opt/hadoop-conf
     command:

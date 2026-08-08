@@ -14,6 +14,14 @@ echo Khởi động hệ thống PaySim Big Data...
 docker compose up -d --build
 if errorlevel 1 (
   echo Khởi động Docker Compose thất bại.
+  echo.
+  echo Trạng thái dịch vụ:
+  docker compose ps -a
+  echo.
+  echo Nhật ký NameNode, DataNode và Spark:
+  docker compose logs --no-color --tail=200 namenode datanode spark
+  echo.
+  echo Nếu nhật ký báo SafeModeException hoặc corrupt blocks, chạy reset.bat.
   pause
   exit /b 1
 )

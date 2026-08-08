@@ -6,7 +6,7 @@ import time
 from datetime import datetime, timezone
 
 UTC = timezone.utc
-from typing import Iterable
+from typing import Callable, Iterable
 
 from pymongo import ASCENDING, DESCENDING, InsertOne, MongoClient, UpdateOne
 from pyspark.ml import Pipeline, PipelineModel
@@ -14,6 +14,7 @@ from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 from pyspark.ml.functions import vector_to_array
 from pyspark.sql import DataFrame, SparkSession, functions as F, types as T
+from pyspark.sql.streaming import StreamingQuery
 
 
 def env_int(name: str, default: int) -> int:
@@ -36,6 +37,8 @@ TRAIN_MAX_ROWS = env_int("TRAIN_MAX_ROWS", 300_000)
 MAX_OFFSETS_PER_TRIGGER = env_int("MAX_OFFSETS_PER_TRIGGER", 10_000)
 TRIGGER_SECONDS = env_int("TRIGGER_SECONDS", 3)
 MODEL_THRESHOLD = env_float("MODEL_THRESHOLD", 0.50)
+HDFS_STARTUP_TIMEOUT_SECONDS = env_int("HDFS_STARTUP_TIMEOUT_SECONDS", 300)
+HDFS_RETRY_INTERVAL_SECONDS = env_int("HDFS_RETRY_INTERVAL_SECONDS", 5)
 
 TRANSACTION_TYPES = ["CASH_IN", "CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"]
 CANDIDATE_TYPES = ["CASH_OUT", "TRANSFER"]
@@ -95,6 +98,38 @@ def hdfs_content_summary(spark: SparkSession, path: str) -> dict:
         return {"bytes": 0, "files": 0}
     summary = filesystem.getContentSummary(hadoop_path)
     return {"bytes": int(summary.getLength()), "files": int(summary.getFileCount())}
+
+
+def start_stream_with_hdfs_retry(
+    start_query: Callable[[], StreamingQuery],
+) -> StreamingQuery:
+    deadline = time.monotonic() + HDFS_STARTUP_TIMEOUT_SECONDS
+    attempt = 0
+
+    while True:
+        attempt += 1
+        try:
+            return start_query()
+        except Exception as error:
+            if "SafeModeException" not in str(error):
+                raise
+
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise TimeoutError(
+                    "HDFS remained in Safe Mode for "
+                    f"{HDFS_STARTUP_TIMEOUT_SECONDS} seconds while starting "
+                    "the Spark stream. Reset the baseline volumes if HDFS "
+                    "reports corrupt blocks."
+                ) from error
+
+            wait_seconds = min(HDFS_RETRY_INTERVAL_SECONDS, remaining)
+            print(
+                "HDFS is still in Safe Mode; retrying Spark stream startup "
+                f"in {wait_seconds:.0f}s (attempt {attempt}).",
+                flush=True,
+            )
+            time.sleep(wait_seconds)
 
 
 def add_features(dataframe: DataFrame) -> DataFrame:
@@ -665,11 +700,13 @@ def main() -> None:
     )
 
     processor = build_batch_processor(spark, model, mongo_client)
-    query = (
-        parsed.writeStream.foreachBatch(processor)
-        .option("checkpointLocation", CHECKPOINT_PATH)
-        .trigger(processingTime=f"{TRIGGER_SECONDS} seconds")
-        .start()
+    query = start_stream_with_hdfs_retry(
+        lambda: (
+            parsed.writeStream.foreachBatch(processor)
+            .option("checkpointLocation", CHECKPOINT_PATH)
+            .trigger(processingTime=f"{TRIGGER_SECONDS} seconds")
+            .start()
+        )
     )
 
     with open("/tmp/pipeline-ready", "w", encoding="utf-8") as ready_file:
