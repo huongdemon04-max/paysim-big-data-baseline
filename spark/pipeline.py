@@ -345,15 +345,37 @@ def build_batch_processor(spark: SparkSession, model: PipelineModel, mongo_clien
 
     def process_batch(batch: DataFrame, batch_id: int) -> None:
         batch_started = time.perf_counter()
-        if batch.rdd.isEmpty():
-            return
 
+        # ĐIỂM TỐI ƯU 1A: gom các action đầu batch vào một aggregation.
+        # Muốn đổi phiên bản: chỉ để MỘT block cùng mã 1A được thực thi.
+        # BEFORE Start — 1A
+        # if batch.rdd.isEmpty():
+        #     return
+        # batch = batch.persist()
+        # total_rows = batch.count()
+        # raw_bytes = int(
+        #     batch.select(F.sum(F.length("raw_json")).alias("bytes"))
+        #     .first()["bytes"]
+        #     or 0
+        # )
+        # BEFORE END — 1A
+
+        # Tối ưu: giảm số action và số lần Spark phải khởi tạo job cho một batch.
+        # Tham chiếu: dashboard → Micro-batch duration, Processing throughput,
+        # Processing latency p95; kiến thức → Action và lazy evaluation.
+        # AFTER Start — 1A
         batch = batch.persist()
-        total_rows = batch.count()
-        raw_bytes = int(
-            batch.select(F.sum(F.length("raw_json")).alias("bytes")).first()["bytes"]
-            or 0
-        )
+        batch_stats = batch.agg(
+            F.count("*").alias("rows"),
+            F.sum(F.length("raw_json")).alias("bytes"),
+        ).first()
+        total_rows = int(batch_stats["rows"])
+        raw_bytes = int(batch_stats["bytes"] or 0)
+        if total_rows == 0:
+            batch.unpersist()
+            return
+        # AFTER END — 1A
+
         run_ids = [row["run_id"] for row in batch.select("run_id").distinct().collect()]
 
         bronze_started = time.perf_counter()
@@ -376,17 +398,53 @@ def build_batch_processor(spark: SparkSession, model: PipelineModel, mongo_clien
             .withColumn("processed_at", F.current_timestamp())
         )
         valid = add_features(valid).persist()
-        valid_rows = valid.count()
+
+        # ĐIỂM TỐI ƯU 1B: gom hai action trên DataFrame valid.
+        # Muốn đổi phiên bản: chỉ để MỘT block cùng mã 1B được thực thi.
+        # BEFORE Start — 1B
+        # valid_rows = valid.count()
+        # late_event_rows = valid.filter(
+        #     F.col("event_time")
+        #     < F.col("ingested_at") - F.expr("INTERVAL 1 MINUTE")
+        # ).count()
+        # BEFORE END — 1B
+
+        # Tham chiếu: dashboard → Event completeness và Late event rate.
+        # AFTER Start — 1B
+        valid_stats = valid.agg(
+            F.count("*").alias("rows"),
+            F.sum(
+                F.when(
+                    F.col("event_time")
+                    < F.col("ingested_at") - F.expr("INTERVAL 1 MINUTE"),
+                    1,
+                ).otherwise(0)
+            ).alias("late_rows"),
+        ).first()
+        valid_rows = int(valid_stats["rows"])
+        late_event_rows = int(valid_stats["late_rows"] or 0)
+        # AFTER END — 1B
         invalid_rows = total_rows - well_formed_rows
         duplicate_removed = well_formed_rows - valid_rows
-        late_event_rows = valid.filter(
-            F.col("event_time") < F.col("ingested_at") - F.expr("INTERVAL 1 MINUTE")
-        ).count()
 
         silver_started = time.perf_counter()
-        valid.write.mode("append").partitionBy("run_id", "type").parquet(
-            f"{HDFS_BASE}/silver"
-        )
+
+        # ĐIỂM TỐI ƯU 3: repartition trước khi ghi Silver để giảm file nhỏ.
+        # Muốn đổi phiên bản: chỉ để MỘT block cùng mã 3 được thực thi.
+        # BEFORE Start — 3
+        # valid.write.mode("append").partitionBy("run_id", "type").parquet(
+        #     f"{HDFS_BASE}/silver"
+        # )
+        # BEFORE END — 3
+
+        # Tối ưu: giảm Small files và Write duration trên dashboard.
+        # Tham chiếu: dashboard → Storage → Small files / Write duration;
+        # kiến thức → partition dữ liệu và shuffle.
+        # AFTER Start — 3
+        valid.repartition("run_id", "type").write.mode("append").partitionBy(
+            "run_id", "type"
+        ).parquet(f"{HDFS_BASE}/silver")
+        # AFTER END — 3
         silver_write_seconds = time.perf_counter() - silver_started
 
         scoring_started = time.perf_counter()
@@ -564,12 +622,25 @@ def build_batch_processor(spark: SparkSession, model: PipelineModel, mongo_clien
             update_evaluation(database, run_id, evaluation)
         mongo_write_seconds = time.perf_counter() - mongo_write_started
 
-        latency_values = scored.approxQuantile(
-            "end_to_end_latency_ms", [0.5, 0.95], 0.05
+        # ĐIỂM TỐI ƯU 1C.1: gom hai lần tính quantile vào một lời gọi.
+        # Muốn đổi phiên bản: đổi cả hai cặp block 1C.1 và 1C.2.
+        # BEFORE Start — 1C.1
+        # latency_values = scored.approxQuantile(
+        #     "end_to_end_latency_ms", [0.5, 0.95], 0.05
+        # )
+        # ingest_latency_values = scored.approxQuantile(
+        #     "ingest_latency_ms", [0.95], 0.05
+        # )
+        # BEFORE END — 1C.1
+
+        # Tham chiếu: dashboard → Ingest latency p95 và End-to-end latency p95.
+        # AFTER Start — 1C.1
+        latency_values, ingest_latency_values = scored.approxQuantile(
+            ["end_to_end_latency_ms", "ingest_latency_ms"],
+            [0.5, 0.95],
+            0.05,
         )
-        ingest_latency_values = scored.approxQuantile(
-            "ingest_latency_ms", [0.95], 0.05
-        )
+        # AFTER END — 1C.1
         duration = max(time.perf_counter() - batch_started, 0.001)
         alert_count = len(alerts)
         bronze_summary = hdfs_content_summary(spark, f"{HDFS_BASE}/bronze")
@@ -604,7 +675,22 @@ def build_batch_processor(spark: SparkSession, model: PipelineModel, mongo_clien
                 "consumer_lag": consumer_lag,
                 "emitted_snapshot": emitted_snapshot,
                 "processed_total": processed_total,
-                "ingest_latency_p95_ms": float(ingest_latency_values[0]) if ingest_latency_values else 0.0,
+                # ĐIỂM TỐI ƯU 1C.2: chọn đúng p95 theo shape của kết quả 1C.1.
+                # Khi đổi 1C.1, bắt buộc đổi cặp block 1C.2 này cùng lúc.
+                # BEFORE Start — 1C.2
+                # "ingest_latency_p95_ms": (
+                #     float(ingest_latency_values[0])
+                #     if ingest_latency_values
+                #     else 0.0
+                # ),
+                # BEFORE END — 1C.2
+                # AFTER Start — 1C.2
+                "ingest_latency_p95_ms": (
+                    float(ingest_latency_values[-1])
+                    if ingest_latency_values
+                    else 0.0
+                ),
+                # AFTER END — 1C.2
                 "latency_p50_ms": float(latency_values[0]) if latency_values else 0.0,
                 "latency_p95_ms": float(latency_values[-1]) if latency_values else 0.0,
                 "bronze_write_seconds": bronze_write_seconds,
@@ -650,6 +736,22 @@ def main() -> None:
     spark = (
         SparkSession.builder.appName("PaySim-Big-Data-Baseline")
         .config("spark.sql.streaming.forceDeleteTempCheckpointLocation", "true")
+
+        # ĐIỂM TỐI ƯU 2: khớp số shuffle partition với local[2].
+        # Muốn đổi phiên bản: chỉ để MỘT block cùng mã 2 được thực thi.
+        # BEFORE dưới đây tương đương cấu hình 4 từ spark-submit trước tối ưu.
+        # BEFORE Start — 2
+        # .config("spark.sql.shuffle.partitions", "4")
+        # BEFORE END — 2
+
+        # Tối ưu: giảm chi phí shuffle trong dropDuplicates, groupBy và write.
+        # Tham chiếu: dashboard → Query duration, Micro-batch duration,
+        # Processing throughput, Write duration và Small files.
+        # Lưu ý: 2 là kết quả benchmark cho cấu hình lớp học, không phải giá trị
+        # mặc định cho mọi cluster Spark.
+        # AFTER Start — 2
+        .config("spark.sql.shuffle.partitions", "2")
+        # AFTER END — 2
         .getOrCreate()
     )
     spark.sparkContext.setLogLevel("WARN")
