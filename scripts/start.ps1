@@ -20,15 +20,21 @@ try {
         default { throw "Kiến trúc Docker chưa được hỗ trợ: $DockerArch" }
     }
     $DockerMemory = docker info --format '{{.MemTotal}}'
-    if ([long]$DockerMemory -lt 5500000000) {
-        throw "Docker chưa đủ RAM. Cấp ít nhất 6 GB cho Docker Desktop/WSL, rồi chạy lại."
+    $ComposeArgs = @('compose', '-f', 'docker-compose.yml')
+    $DockerMemoryMiB = [math]::Floor([long]$DockerMemory / 1MB)
+    if ([long]$DockerMemory -lt 3500000000) {
+        throw "Docker chỉ có $DockerMemoryMiB MiB RAM. Cấp 4 GB cho Docker Desktop/WSL, rồi chạy lại."
+    } elseif ([long]$DockerMemory -lt 5500000000) {
+        $ComposeArgs += @('-f', 'docker-compose.low-memory.yml')
+        $env:COMPOSE_PARALLEL_LIMIT = '1'
+        Write-Host "Docker có $DockerMemoryMiB MiB RAM: dùng chế độ nhẹ cho máy 8 GB (10 events/s, Spark local[1])."
     }
 
     powershell -NoProfile -ExecutionPolicy Bypass -File "$PSScriptRoot\prepare-data.ps1"
     if ($LASTEXITCODE -ne 0) { throw "Không thể chuẩn bị bộ dữ liệu PaySim." }
 
     Write-Host "Khởi động PaySim trên $env:DOCKER_DEFAULT_PLATFORM. Lần đầu có thể mất nhiều phút..."
-    docker compose up -d --build --wait --wait-timeout 1200
+    docker @ComposeArgs up -d --build --wait --wait-timeout 1200
     if ($LASTEXITCODE -ne 0) {
         # Native commands can write to stderr; retain that output in the report.
         $ErrorActionPreference = 'Continue'
@@ -38,12 +44,13 @@ try {
             docker version
             docker info --format 'architecture={{.Architecture}} cpus={{.NCPU}} memory={{.MemTotal}}'
             "Selected platform: $env:DOCKER_DEFAULT_PLATFORM"
-            docker compose ps -a
-            $ContainerIds = docker compose ps -aq namenode datanode
+            "Compose files: $ComposeArgs"
+            docker @ComposeArgs ps -a
+            $ContainerIds = docker @ComposeArgs ps -aq
             foreach ($ContainerId in $ContainerIds) {
-                docker inspect --format '{{.Name}} restart={{.RestartCount}} state={{json .State}} healthcheck={{json .Config.Healthcheck}}' $ContainerId
+                docker inspect --format '{{.Name}} restart={{.RestartCount}} memory_limit={{.HostConfig.Memory}} state={{json .State}} healthcheck={{json .Config.Healthcheck}}' $ContainerId
             }
-            docker compose logs --no-color --tail=150 hdfs-init namenode datanode kafka spark
+            docker @ComposeArgs logs --no-color --tail=150
         } *> startup-diagnostics.txt
         Get-Content startup-diagnostics.txt
         Write-Host 'Khởi động chưa thành công. Gửi tệp startup-diagnostics.txt cho giảng viên.'

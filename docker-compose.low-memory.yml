@@ -1,0 +1,48 @@
+# Selected automatically by start.sh/start.bat when Docker has 4–6 GB RAM.
+# Keep the same services, volumes and 300,000-row training dataset.
+services:
+  kafka:
+    environment:
+      KAFKA_HEAP_OPTS: -Xms128m -Xmx256m
+    mem_limit: 512m
+  kafka-init:
+    environment:
+      KAFKA_HEAP_OPTS: -Xms64m -Xmx128m
+    mem_limit: 256m
+  hdfs-init:
+    mem_limit: 128m
+  namenode:
+    environment:
+      HADOOP_HEAPSIZE_MAX: "192"
+    mem_limit: 384m
+  datanode:
+    environment:
+      HADOOP_HEAPSIZE_MAX: "192"
+    mem_limit: 384m
+  mongodb:
+    mem_limit: 512m
+  spark:
+    environment:
+      MAX_OFFSETS_PER_TRIGGER: "250"
+    command:
+      - /opt/spark/bin/spark-submit
+      - --master
+      - local[1]
+      - --driver-memory
+      - 768m
+      - --conf
+      - spark.sql.shuffle.partitions=4
+      - --conf
+      - spark.ui.requestHeaderSize=64k
+      - --conf
+      - spark.jars.ivy=/opt/spark/.ivy2
+      - --packages
+      - org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0
+      - /opt/app/pipeline.py
+    mem_limit: 1536m
+  replayer:
+    environment:
+      EVENTS_PER_SECOND: "10"
+    mem_limit: 128m
+  streamlit:
+    mem_limit: 256m

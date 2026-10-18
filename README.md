@@ -7,8 +7,10 @@ Big Data baseline end-to-end:
 ## Yêu cầu
 
 - Docker Desktop bản có Docker Compose hỗ trợ `--wait-timeout`, chạy Linux containers.
-- Cấp ít nhất **6 GB RAM cho Docker**, khuyến nghị 8 GB; đây là RAM của Docker VM,
-  không phải tổng RAM của máy. Trên Mac: Settings → Resources → Memory.
+- Máy có **8 GB RAM**: cấp **4 GB cho Docker** ở Settings → Resources → Memory.
+  Script tự chọn chế độ nhẹ khi Docker được cấp khoảng 4–6 GB. Máy dư RAM có thể
+  cấp từ 6 GB cho Docker để chạy cấu hình tiêu chuẩn. Đây là RAM của Docker VM,
+  không phải tổng RAM của máy.
 - Ít nhất 10 GB dung lượng trống cho image, dataset và dữ liệu thực hành.
 - Mac Intel và Mac Apple Silicon dùng cùng một lệnh khởi động; không cần bật Rosetta
   hoặc ép `platform: linux/amd64`. Script tự chọn kiến trúc của Docker.
@@ -37,6 +39,26 @@ start.bat
 Dataset được tải và kiểm SHA-256 tự động nếu `data/paysim.csv` chưa có.
 Script chỉ báo thành công khi các dịch vụ đã sẵn sàng, gồm HDFS thoát safe mode,
 có DataNode hoạt động và Spark/dashboard healthy. Lần đầu có thể mất nhiều phút.
+
+### Máy 8 GB RAM
+
+Chạy `start.sh`/`start.bat` như bình thường. Chế độ nhẹ tự ghép cấu hình
+`docker-compose.low-memory.yml`: Spark dùng heap 768 MiB, chạy một tác vụ tại một
+thời điểm; Hadoop/Kafka dùng heap nhỏ hơn; mỗi batch tối đa 250 events và replayer
+phát 10 events/s. Vẫn giữ đủ Kafka, Spark, HDFS, MongoDB, dashboard và cùng bộ dữ
+liệu huấn luyện. Không xóa hay huấn luyện lại model đã lưu chỉ vì đổi chế độ RAM.
+
+Chế độ này chậm hơn cấu hình tiêu chuẩn; nên đóng ứng dụng nặng và các stack
+Docker khác khi thực hành. Các giá trị 10 events/s và 250 events/batch của chế độ
+nhẹ ghi đè `EVENTS_PER_SECOND`/`MAX_OFFSETS_PER_TRIGGER` trong `.env`.
+Nếu Docker có ít hơn khoảng 4 GB, script hiện dung lượng thực Docker nhìn thấy
+và hướng dẫn tăng lên 4 GB, không yêu cầu cấp 6 GB trên máy 8 GB.
+
+Khi khởi động thủ công bằng Compose để dùng chế độ nhẹ:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.low-memory.yml up -d --build --wait
+```
 
 ### Cập nhật bản sửa khởi động trên Mac
 

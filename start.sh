@@ -21,9 +21,14 @@ case "$DOCKER_ARCH" in
 esac
 # Prefer the Docker daemon's native CPU even if the user's shell forces AMD64.
 DOCKER_MEMORY="$(docker info --format '{{.MemTotal}}')"
-if (( DOCKER_MEMORY < 5500000000 )); then
-  echo "Docker chưa đủ RAM. Cấp ít nhất 6 GB cho Docker Desktop (Resources > Memory), rồi chạy lại."
+COMPOSE=(docker compose -f docker-compose.yml)
+if (( DOCKER_MEMORY < 3500000000 )); then
+  echo "Docker chỉ có $(( DOCKER_MEMORY / 1024 / 1024 )) MiB RAM. Cấp 4 GB cho Docker Desktop (Resources > Memory), rồi chạy lại."
   exit 1
+elif (( DOCKER_MEMORY < 5500000000 )); then
+  COMPOSE+=(-f docker-compose.low-memory.yml)
+  export COMPOSE_PARALLEL_LIMIT=1
+  echo "Docker có $(( DOCKER_MEMORY / 1024 / 1024 )) MiB RAM: dùng chế độ nhẹ cho máy 8 GB (10 events/s, Spark local[1])."
 fi
 
 bash ./scripts/prepare-data.sh
@@ -35,20 +40,21 @@ collect_diagnostics() {
     docker version
     docker info --format 'architecture={{.Architecture}} cpus={{.NCPU}} memory={{.MemTotal}}'
     echo "Selected platform: $DOCKER_DEFAULT_PLATFORM"
-    docker compose ps -a
+    echo "Compose files: ${COMPOSE[*]}"
+    "${COMPOSE[@]}" ps -a
     local container_id
     while IFS= read -r container_id; do
       [[ -z "$container_id" ]] && continue
-      docker inspect --format '{{.Name}} restart={{.RestartCount}} state={{json .State}} healthcheck={{json .Config.Healthcheck}}' "$container_id"
-    done < <(docker compose ps -aq namenode datanode)
-    docker compose logs --no-color --tail=150 hdfs-init namenode datanode kafka spark
+      docker inspect --format '{{.Name}} restart={{.RestartCount}} memory_limit={{.HostConfig.Memory}} state={{json .State}} healthcheck={{json .Config.Healthcheck}}' "$container_id"
+    done < <("${COMPOSE[@]}" ps -aq)
+    "${COMPOSE[@]}" logs --no-color --tail=150
   } > startup-diagnostics.txt 2>&1
   cat startup-diagnostics.txt
   echo "Khởi động chưa thành công. Gửi tệp startup-diagnostics.txt cho giảng viên."
 }
 
 echo "Khởi động PaySim trên $DOCKER_DEFAULT_PLATFORM. Lần đầu có thể mất nhiều phút..."
-if ! docker compose up -d --build --wait --wait-timeout 1200; then
+if ! "${COMPOSE[@]}" up -d --build --wait --wait-timeout 1200; then
   collect_diagnostics || true
   exit 1
 fi

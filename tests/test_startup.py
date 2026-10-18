@@ -44,7 +44,11 @@ class LauncherTests(unittest.TestCase):
 import json, os, sys
 args = sys.argv[1:]
 with open('calls.jsonl', 'a') as f:
-    f.write(json.dumps([args, os.environ.get('DOCKER_DEFAULT_PLATFORM')]) + '\\n')
+    f.write(json.dumps([args, os.environ.get('DOCKER_DEFAULT_PLATFORM'), os.environ.get('COMPOSE_PARALLEL_LIMIT')]) + '\\n')
+if args and args[0] == 'compose':
+    while '-f' in args:
+        index = args.index('-f')
+        del args[index:index + 2]
 if args == ['info']:
     sys.exit(int(os.environ.get('DAEMON_EXIT', '0')))
 elif args[:2] == ['info', '--format']:
@@ -76,10 +80,31 @@ elif args[0] == 'inspect': print('restart=3 OOMKilled=false')
             with self.subTest(arch=arch):
                 result = self.run_launcher(ARCH=arch, DOCKER_DEFAULT_PLATFORM="linux/386")
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-                up = [c for c in self.calls() if c[0][:3] == ["compose", "up", "-d"]][-1]
+                up = [c for c in self.calls() if "up" in c[0] and "-d" in c[0]][-1]
                 self.assertEqual(up[1], platform)
                 self.assertIn("--wait", up[0])
                 self.assertIn("--wait-timeout", up[0])
+
+    def test_four_gb_uses_light_mode_and_six_gb_uses_standard(self):
+        for memory, light in (("3500000000", True), ("4000000000", True),
+                              ("5499999999", True), ("5500000000", False),
+                              ("8000000000", False)):
+            with self.subTest(memory=memory):
+                result = self.run_launcher(MEMORY=memory)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                up = [c for c in self.calls() if "up" in c[0] and "-d" in c[0]][-1]
+                self.assertEqual("docker-compose.low-memory.yml" in up[0], light)
+                if light:
+                    self.assertEqual(up[2], "1")
+                    self.assertIn("chế độ nhẹ", result.stdout)
+
+    def test_light_mode_failure_uses_same_configuration_for_diagnostics(self):
+        result = self.run_launcher(MEMORY="4000000000", UP_EXIT="1")
+        self.assertEqual(result.returncode, 1)
+        for call in self.calls():
+            if "ps" in call[0] or "logs" in call[0]:
+                self.assertIn("docker-compose.low-memory.yml", call[0])
+        self.assertIn("NameNode failure details", (self.root / "startup-diagnostics.txt").read_text())
 
     def test_failure_keeps_exit_status_and_collects_evidence(self):
         result = self.run_launcher(UP_EXIT="1")
@@ -91,12 +116,12 @@ elif args[0] == 'inspect': print('restart=3 OOMKilled=false')
         self.assertFalse(any("down" in c[0] for c in self.calls()))
 
     def test_preflight_stops_before_downloading_or_starting(self):
-        for env in ({"MEMORY": "4000000000"}, {"DAEMON_EXIT": "1"}, {"OLD_COMPOSE": "1"}):
+        for env in ({"MEMORY": "3499999999"}, {"DAEMON_EXIT": "1"}, {"OLD_COMPOSE": "1"}):
             with self.subTest(env=env):
                 result = self.run_launcher(**env)
                 self.assertEqual(result.returncode, 1)
                 self.assertFalse((self.root / "data-prepared").exists())
-                self.assertFalse(any(c[0][:3] == ["compose", "up", "-d"] for c in self.calls()))
+                self.assertFalse(any("up" in c[0] and "-d" in c[0] for c in self.calls()))
 
 
 if __name__ == "__main__":
