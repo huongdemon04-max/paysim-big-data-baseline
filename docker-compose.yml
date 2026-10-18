@@ -1,5 +1,10 @@
 name: paysim-big-data-baseline
 
+x-hadoop-runtime: &hadoop-runtime
+  build:
+    context: ./hadoop
+  init: true
+
 services:
   kafka:
     image: apache/kafka:4.0.0
@@ -21,16 +26,17 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_LOG_DIRS: /var/lib/kafka/data
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+      KAFKA_HEAP_OPTS: -Xms256m -Xmx512m
     ports:
       - "29092:29092"
     volumes:
       - kafka_data:/var/lib/kafka/data
     healthcheck:
       test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 20s
       retries: 30
-      start_period: 20s
+      start_period: 60s
     restart: unless-stopped
 
   kafka-init:
@@ -50,7 +56,7 @@ services:
     restart: "no"
 
   hdfs-init:
-    image: apache/hadoop:3.4.1
+    <<: *hadoop-runtime
     user: root
     entrypoint: ["/bin/sh", "-c"]
     command: ["chown -R 1000:100 /data/name /data/data"]
@@ -60,10 +66,8 @@ services:
     restart: "no"
 
   namenode:
-    image: apache/hadoop:3.4.1
+    <<: *hadoop-runtime
     hostname: namenode
-    environment:
-      ENSURE_NAMENODE_DIR: /data/name/current
     depends_on:
       hdfs-init:
         condition: service_completed_successfully
@@ -76,23 +80,17 @@ services:
       - ./hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
       - ./hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "hdfs dfsadmin -safemode get 2>/dev/null | grep -q 'Safe mode is OFF'",
-        ]
-      interval: 5s
-      timeout: 5s
-      retries: 40
-      start_period: 20s
+      test: ["CMD", "python3", "/usr/local/bin/hdfs-healthcheck"]
+      interval: 10s
+      timeout: 30s
+      retries: 60
+      start_period: 60s
+    mem_limit: 1g
     restart: unless-stopped
 
   datanode:
-    image: apache/hadoop:3.4.1
+    <<: *hadoop-runtime
     hostname: datanode
-    environment:
-      WAITFOR: namenode:9000
-      WAITFOR_TIMEOUT: 180
     command: ["hdfs", "datanode"]
     depends_on:
       namenode:
@@ -103,6 +101,7 @@ services:
       - hdfs_datanode:/data/data
       - ./hadoop/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
       - ./hadoop/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml:ro
+    mem_limit: 1g
     restart: unless-stopped
 
   mongodb:
@@ -174,10 +173,10 @@ services:
       - ./hadoop/hdfs-site.xml:/opt/hadoop-conf/hdfs-site.xml:ro
     healthcheck:
       test: ["CMD-SHELL", "test -f /tmp/pipeline-ready"]
-      interval: 5s
+      interval: 10s
       timeout: 3s
-      retries: 60
-      start_period: 30s
+      retries: 90
+      start_period: 60s
     mem_limit: 3g
     restart: unless-stopped
 
