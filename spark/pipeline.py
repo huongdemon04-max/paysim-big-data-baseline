@@ -10,7 +10,12 @@ from typing import Callable, Iterable
 
 from pymongo import ASCENDING, DESCENDING, InsertOne, MongoClient, UpdateOne
 from pyspark.ml import Pipeline, PipelineModel
-from pyspark.ml.classification import LogisticRegression
+from pyspark.ml.classification import (
+    DecisionTreeClassifier,
+    GBTClassifier,
+    LogisticRegression,
+    RandomForestClassifier,
+)
 from pyspark.ml.feature import OneHotEncoder, StringIndexer, VectorAssembler
 from pyspark.ml.functions import vector_to_array
 from pyspark.sql import DataFrame, SparkSession, functions as F, types as T
@@ -150,9 +155,86 @@ def add_features(dataframe: DataFrame) -> DataFrame:
 
 
 def train_or_load_model(spark: SparkSession) -> PipelineModel:
-    if hdfs_path_exists(spark, MODEL_PATH):
-        print(f"Loading Spark MLlib model from {MODEL_PATH}", flush=True)
-        return PipelineModel.load(MODEL_PATH)
+    # CHAPTER 7: so sánh classifier trên CÙNG dữ liệu và feature.
+    # Muốn đổi phiên bản: chỉ để MỘT block 7 (BEFORE hoặc AFTER A/B/C) chạy.
+    # Comment cả block đang bật, bỏ comment cả block muốn thử; không đổi
+    # TRAIN_MAX_ROWS, feature, class_weight hoặc MODEL_THRESHOLD giữa các lượt.
+    # Mỗi block có model_path riêng để không vô tình load classifier của lượt cũ.
+    # Nếu sửa feature/preset, đổi suffix đường dẫn để train lại; giữ model cũ.
+    #
+    # Quan sát dashboard: PR-AUC, Recall@K, Precision@K, F1, Alert rate,
+    # Scoring latency. PR-AUC/Top-K là batch gần nhất, F1 là cộng dồn theo run;
+    # so cùng phạm vi, ghi nhiều batch, không kết luận từ một batch cuối.
+    # Decision Tree được chọn theo AP validation trong benchmark; Random Forest
+    # có F1 tốt hơn ở ngưỡng 0.50. Không có model tốt nhất ở mọi metric.
+    #
+    # Thực hành: dùng cùng START_ROW, MAX_EVENTS, RANDOM_SEED và tốc độ phát.
+    # Kết thúc lượt phát cũ, chờ Spark xử lý hết rồi mới đổi model.
+    # pipeline.py được COPY vào image: phải build/recreate Spark, restart chưa đủ
+    # (docker compose up -d --build --force-recreate spark; giữ cấu hình RAM cũ).
+    # Sau khi Spark sẵn sàng, tạo lượt replayer với RUN_ID mới; dashboard tự
+    # hiển thị run mới nhất. Không gộp prediction của hai model vào cùng RUN_ID.
+    # Không reset volume hoặc xóa model/checkpoint để chuyển classifier.
+
+    # BEFORE Start — 7: Logistic Regression, mốc so sánh tuyến tính.
+    # model_path = MODEL_PATH
+    # classifier = LogisticRegression(
+    #     featuresCol="features",
+    #     labelCol="label",
+    #     weightCol="class_weight",
+    #     maxIter=20,
+    #     regParam=0.01,
+    #     elasticNetParam=0.0,
+    # )
+    # BEFORE END — 7
+
+    # AFTER Start — 7A: Decision Tree học các điều kiện phân nhánh.
+    # Giới hạn độ sâu/mẫu lá để hạn chế quá khớp; cảnh báo sai vẫn có thể tăng.
+    model_path = MODEL_PATH.rstrip("/") + "-decision-tree-v1"
+    classifier = DecisionTreeClassifier(
+        featuresCol="features",
+        labelCol="label",
+        weightCol="class_weight",
+        maxDepth=5,
+        maxBins=32,
+        minInstancesPerNode=20,
+        seed=2026,
+    )
+    # AFTER END — 7A
+
+    # AFTER Start — 7B: Random Forest kết hợp nhiều cây để so chất lượng/chi phí.
+    # model_path = MODEL_PATH.rstrip("/") + "-random-forest-v1"
+    # classifier = RandomForestClassifier(
+    #     featuresCol="features",
+    #     labelCol="label",
+    #     weightCol="class_weight",
+    #     maxDepth=5,
+    #     maxBins=32,
+    #     minInstancesPerNode=20,
+    #     numTrees=40,
+    #     featureSubsetStrategy="auto",
+    #     seed=2026,
+    # )
+    # AFTER END — 7B
+
+    # AFTER Start — 7C: GBT học nối tiếp các cây để giảm lỗi của tập hợp trước.
+    # model_path = MODEL_PATH.rstrip("/") + "-gbt-v1"
+    # classifier = GBTClassifier(
+    #     featuresCol="features",
+    #     labelCol="label",
+    #     weightCol="class_weight",
+    #     maxDepth=5,
+    #     maxBins=32,
+    #     minInstancesPerNode=20,
+    #     maxIter=20,
+    #     stepSize=0.1,
+    #     seed=2026,
+    # )
+    # AFTER END — 7C
+
+    if hdfs_path_exists(spark, model_path):
+        print(f"Loading Spark MLlib model from {model_path}", flush=True)
+        return PipelineModel.load(model_path)
 
     print(
         f"Training baseline Spark MLlib model from first {TRAIN_MAX_ROWS:,} rows...",
@@ -190,18 +272,10 @@ def train_or_load_model(spark: SparkSession) -> PipelineModel:
         outputCol="features",
         handleInvalid="keep",
     )
-    classifier = LogisticRegression(
-        featuresCol="features",
-        labelCol="label",
-        weightCol="class_weight",
-        maxIter=20,
-        regParam=0.01,
-        elasticNetParam=0.0,
-    )
     model = Pipeline(stages=[type_indexer, type_encoder, assembler, classifier]).fit(
         training
     )
-    model.write().overwrite().save(MODEL_PATH)
+    model.write().overwrite().save(model_path)
     print(
         f"Model trained: positives={positives}, negatives={negatives}, "
         f"positive_weight={positive_weight:.1f}",
