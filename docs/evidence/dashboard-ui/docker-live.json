@@ -1,0 +1,14 @@
+{
+  "url": "http://127.0.0.1:8501/",
+  "heading": "Trung tâm vận hành",
+  "metrics": [
+    "Spark đã xử lý 44,300  400 đang chờ ",
+    "Ingest hiện tại 50.0 ev/s ",
+    "Processing throughput 159.9 ev/s ",
+    "Fraud alerts 3,924  8.86% ",
+    "End-to-end latency p95 11,867 ms ",
+    "Nguồn đã phát 44,700 "
+  ],
+  "exception_count": 0,
+  "browser_errors": []
+}

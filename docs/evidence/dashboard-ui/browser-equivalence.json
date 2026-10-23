@@ -1,0 +1,74 @@
+[
+  {
+    "view": "operations",
+    "page": "📡 Live Control Room",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "operations",
+    "page": "🎯 Metrics theo 10 tracks",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "operations",
+    "page": "🛡️ Fraud & Business",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "operations",
+    "page": "🔎 Dòng dữ liệu mới",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "report",
+    "page": "📡 Live Control Room",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "report",
+    "page": "🎯 Metrics theo 10 tracks",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "report",
+    "page": "🛡️ Fraud & Business",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "report",
+    "page": "🔎 Dòng dữ liệu mới",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "studio",
+    "page": "📡 Live Control Room",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "studio",
+    "page": "🎯 Metrics theo 10 tracks",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "studio",
+    "page": "🛡️ Fraud & Business",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  },
+  {
+    "view": "studio",
+    "page": "🔎 Dòng dữ liệu mới",
+    "matching_common_metrics": 6,
+    "result": "PASS"
+  }
+]

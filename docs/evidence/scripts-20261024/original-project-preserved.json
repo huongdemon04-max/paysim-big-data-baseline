@@ -1,0 +1,10 @@
+{
+  "container_count": 9,
+  "volumes": [
+    "paysim-big-data-baseline_hdfs_datanode",
+    "paysim-big-data-baseline_hdfs_namenode",
+    "paysim-big-data-baseline_kafka_data",
+    "paysim-big-data-baseline_mongo_data"
+  ],
+  "original_csv_present": true
+}

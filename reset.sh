@@ -9,5 +9,5 @@ if [[ "$CONFIRMATION" != "RESET" ]]; then
   exit 0
 fi
 
-docker compose down -v --remove-orphans
+docker compose -f docker-compose.yml down -v --remove-orphans
 echo "Hệ thống đã được đặt lại. Tệp paysim.csv gốc không bị thay đổi."

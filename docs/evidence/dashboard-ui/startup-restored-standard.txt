@@ -1,0 +1,336 @@
+Khởi động PaySim trên linux/amd64. Lần đầu có thể mất nhiều phút...
+#1 [internal] load local bake definitions
+#1 reading from stdin 3.86kB done
+#1 DONE 0.0s
+
+#2 [replayer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 253B done
+#2 DONE 0.1s
+
+#3 [datanode internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.72kB 0.0s done
+#3 DONE 0.1s
+
+#4 [streamlit internal] load build definition from Dockerfile
+#4 transferring dockerfile: 425B done
+#4 DONE 0.1s
+
+#5 [spark internal] load build definition from Dockerfile
+#5 transferring dockerfile: 813B done
+#5 DONE 0.1s
+
+#6 [datanode internal] load metadata for docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#6 ...
+
+#7 [datanode internal] load metadata for docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#7 DONE 0.1s
+
+#8 [streamlit internal] load metadata for docker.io/library/python:3.11-slim
+#8 DONE 1.3s
+
+#6 [hdfs-init internal] load metadata for docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#6 DONE 1.3s
+
+#9 [datanode internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [replayer internal] load .dockerignore
+#10 transferring context: 60B done
+#10 DONE 0.0s
+
+#11 [streamlit internal] load .dockerignore
+#11 transferring context: 60B done
+#11 DONE 0.1s
+
+#12 [datanode internal] load build context
+#12 DONE 0.0s
+
+#13 [streamlit internal] load build context
+#13 DONE 0.0s
+
+#14 [replayer internal] load build context
+#14 transferring context: 63B done
+#14 DONE 0.0s
+
+#15 [datanode distribution 1/1] FROM docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#15 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e 0.1s done
+#15 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e 0.1s done
+#15 DONE 0.1s
+
+#16 [datanode stage-1 1/7] FROM docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#16 resolve docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d 0.1s done
+#16 DONE 0.1s
+
+#17 [replayer 1/5] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#17 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.1s done
+#17 DONE 0.1s
+
+#18 [replayer 2/5] WORKDIR /opt/app
+#18 CACHED
+
+#19 [replayer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#19 CACHED
+
+#20 [replayer 3/5] COPY requirements.txt .
+#20 CACHED
+
+#21 [replayer 5/5] COPY app.py .
+#21 CACHED
+
+#13 [streamlit internal] load build context
+#13 transferring context: 207B done
+#13 DONE 0.0s
+
+#12 [datanode internal] load build context
+#12 transferring context: 69B done
+#12 DONE 0.1s
+
+#22 [replayer] exporting to image
+#22 exporting layers done
+#22 exporting manifest sha256:37ca6b2321f5bfd31d2154230a574d1c74a4fc129b757d8a006c005c060056fa done
+#22 exporting config sha256:62483e890cffeb0cea187114f8b6c00c09a8e14a48eff856f035a87030015af6 done
+#22 ...
+
+#23 [streamlit 5/6] COPY *.py ./
+#23 CACHED
+
+#18 [streamlit 2/5] WORKDIR /opt/app
+#18 CACHED
+
+#24 [streamlit 3/6] COPY requirements.txt .
+#24 CACHED
+
+#25 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#25 CACHED
+
+#26 [streamlit 6/6] RUN python -m compileall -q /opt/app
+#26 CACHED
+
+#27 [datanode stage-1 6/7] COPY healthcheck.py /usr/local/bin/hdfs-healthcheck
+#27 CACHED
+
+#28 [datanode stage-1 3/7] COPY --from=distribution --chown=1000:100 /opt/hadoop/ /opt/hadoop/
+#28 CACHED
+
+#29 [datanode stage-1 4/7] RUN rm -rf /opt/hadoop/lib/native
+#29 CACHED
+
+#30 [datanode stage-1 5/7] COPY entrypoint.sh /usr/local/bin/hdfs-entrypoint
+#30 CACHED
+
+#31 [datanode stage-1 2/7] RUN apt-get update     && apt-get install -y --no-install-recommends python3 procps     && rm -rf /var/lib/apt/lists/*     && if getent passwd 1000 >/dev/null; then          usermod --login hadoop --home /opt/hadoop --gid 100 "$(getent passwd 1000 | cut -d: -f1)";        else          useradd --uid 1000 --gid 100 --home-dir /opt/hadoop --no-create-home hadoop;        fi     && mkdir -p /data/name /data/data /tmp/hadoop-logs     && chown -R 1000:100 /data /tmp/hadoop-logs
+#31 CACHED
+
+#32 [namenode stage-1 7/7] RUN sed -i 's/\r$//' /usr/local/bin/hdfs-entrypoint     && chmod 755 /usr/local/bin/hdfs-entrypoint /usr/local/bin/hdfs-healthcheck
+#32 CACHED
+
+#22 [replayer] exporting to image
+#22 exporting attestation manifest sha256:272038e50c2d569e0cc3a448456a19096263b6a1b0046dcaed1806c3ba1526f5
+#22 ...
+
+#33 [spark internal] load metadata for docker.io/apache/spark:4.0.0
+#33 DONE 1.6s
+
+#34 [spark internal] load .dockerignore
+#34 transferring context: 60B done
+#34 DONE 0.0s
+
+#35 [spark internal] load build context
+#35 DONE 0.0s
+
+#22 [replayer] exporting to image
+#22 exporting attestation manifest sha256:272038e50c2d569e0cc3a448456a19096263b6a1b0046dcaed1806c3ba1526f5 0.2s done
+#22 exporting manifest list sha256:60ab32ea40d933c32c70265f72bf02f68aa934931a49ca1924e5b74bf2be8195
+#22 exporting manifest list sha256:60ab32ea40d933c32c70265f72bf02f68aa934931a49ca1924e5b74bf2be8195 0.2s done
+#22 naming to docker.io/library/paysim-big-data-baseline-replayer:latest
+#22 naming to docker.io/library/paysim-big-data-baseline-replayer:latest 0.1s done
+#22 unpacking to docker.io/library/paysim-big-data-baseline-replayer:latest 0.1s done
+#22 DONE 0.7s
+
+#36 [datanode] exporting to image
+#36 exporting layers done
+#36 exporting manifest sha256:eda789f82c6cb4950a32d85e36e49bed82e82adb8b75e9b2e9b5be095a5e31c0 0.0s done
+#36 exporting config sha256:5c6186a1a9d9df2ba6bf6feeac2fc7fc716588dbb603c6766fa80302fe69ebd0 0.0s done
+#36 exporting attestation manifest sha256:bbc0940b901c33e985520aaca2c86f38db99895d58b2e265d5925c16632c1544 0.3s done
+#36 exporting manifest list sha256:3495b2cf4abe72ca2544362e0bcf85c1b375e307ef2f031ba9eda4aa9fc8c320 0.2s done
+#36 naming to docker.io/library/paysim-big-data-baseline-datanode:latest
+#36 ...
+
+#37 [spark 1/6] FROM docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00
+#37 resolve docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00 0.5s done
+#37 DONE 0.6s
+
+#35 [spark internal] load build context
+#35 transferring context: 104B done
+#35 DONE 0.0s
+
+#36 [datanode] exporting to image
+#36 naming to docker.io/library/paysim-big-data-baseline-datanode:latest 0.2s done
+#36 unpacking to docker.io/library/paysim-big-data-baseline-datanode:latest
+#36 ...
+
+#38 [spark 5/6] RUN python3 -m compileall -q /opt/app
+#38 CACHED
+
+#39 [spark 2/6] RUN mkdir -p /opt/app /opt/spark/.ivy2 /opt/spark/home     && chown -R spark:spark /opt/app /opt/spark/.ivy2 /opt/spark/home     && pip3 install --no-cache-dir numpy==1.26.4 pymongo==4.10.1
+#39 CACHED
+
+#40 [spark 3/6] COPY --chown=spark:spark package_warmup.py pipeline.py /opt/app/
+#40 CACHED
+
+#41 [spark 4/6] COPY --chown=spark:spark --chmod=755 entrypoint.sh /opt/app/entrypoint.sh
+#41 CACHED
+
+#42 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#42 CACHED
+
+#36 [datanode] exporting to image
+#36 unpacking to docker.io/library/paysim-big-data-baseline-datanode:latest 0.1s done
+#36 DONE 1.1s
+
+#43 [namenode] exporting to image
+#43 exporting layers 0.0s done
+#43 exporting manifest sha256:c550cfd4bbde8d0e5db2d16154e8c8c8f9f90502fe14a875a850f28a358dc32b 0.0s done
+#43 exporting config sha256:4a6d59b02f24ac91cc5fe3d5b9409459940fa72f4bec7e00566b50668c578984 0.0s done
+#43 exporting attestation manifest sha256:3519f4641fca2faadf7068703ce15ff8f584505d93d6ce13022fd8cabef44ef0 0.3s done
+#43 exporting manifest list sha256:28225b8ea82f9ef04309e5a826965f68095424a27252118dbba46e37aca54ddc 0.2s done
+#43 naming to docker.io/library/paysim-big-data-baseline-namenode:latest 0.1s done
+#43 unpacking to docker.io/library/paysim-big-data-baseline-namenode:latest 0.1s done
+#43 DONE 1.1s
+
+#44 [spark] exporting to image
+#44 exporting layers 0.0s done
+#44 exporting manifest sha256:28a9da80b738b3e4e00c5e6330101e4b3fb2f5b89795cacd24d9495f0c15ab8b 0.0s done
+#44 exporting config sha256:bdde60d4392605f407e4e1588032becce6c65853b4dbe2dae1f997f2b69d2965 0.0s done
+#44 ...
+
+#45 [hdfs-init] exporting to image
+#45 exporting layers done
+#45 exporting manifest sha256:bf4a2f314c661e0a218b681d85258186f3c3ecf311a4baf6aba13aae2a13f693 0.0s done
+#45 exporting config sha256:df406d383df232a3b935bd1e0ef9ddbbb8ae6a99d3a1d08e8ad62add943b6181 0.0s done
+#45 exporting attestation manifest sha256:1611149c8dbe7256222d5c3f7c90975c81fb5d9072f57cc62e74703fee1ad994 0.3s done
+#45 exporting manifest list sha256:4d503f79da90dc3178b340f471faa936ec8fce3d15b237ff434dac79730e539f 0.2s done
+#45 naming to docker.io/library/paysim-big-data-baseline-hdfs-init:latest 0.2s done
+#45 unpacking to docker.io/library/paysim-big-data-baseline-hdfs-init:latest 0.1s done
+#45 DONE 1.1s
+
+#46 [streamlit] exporting to image
+#46 exporting layers done
+#46 exporting manifest sha256:17ed657c368c68622ab27d77c018ad8a56b75cb4ed46124e95f30b0214da406d 0.1s done
+#46 exporting config sha256:d1eb6e1193f0b94c9106c78cf668b470abad80603aa91c0483a39d4707e9b58a 0.1s done
+#46 exporting attestation manifest sha256:947550e3aaf586e490b8be9bd586648943f553ffa87513a3f95240d919401c81 0.4s done
+#46 exporting manifest list sha256:de53278a5ea7b35693ed99bc8caf86305a14e677a4771c33218a58d97eff934c 0.2s done
+#46 naming to docker.io/library/paysim-big-data-baseline-streamlit:latest 0.0s done
+#46 unpacking to docker.io/library/paysim-big-data-baseline-streamlit:latest 0.0s done
+#46 DONE 1.1s
+
+#44 [spark] exporting to image
+#44 exporting attestation manifest sha256:0d7f748bd6bc7d8d94ac76a552d1464f7b1112e2dc33cb8d51cbc2feb34d6ba7
+#44 exporting attestation manifest sha256:0d7f748bd6bc7d8d94ac76a552d1464f7b1112e2dc33cb8d51cbc2feb34d6ba7 0.6s done
+#44 exporting manifest list sha256:e76b24f57f533afb88d4dec86b3fffa198a9c99d92675a107532172a003db73f
+#44 exporting manifest list sha256:e76b24f57f533afb88d4dec86b3fffa198a9c99d92675a107532172a003db73f 0.2s done
+#44 naming to docker.io/library/paysim-big-data-baseline-spark:latest
+#44 naming to docker.io/library/paysim-big-data-baseline-spark:latest 0.0s done
+#44 unpacking to docker.io/library/paysim-big-data-baseline-spark:latest 0.1s done
+#44 DONE 1.2s
+
+#47 [replayer] resolving provenance for metadata file
+#47 DONE 0.9s
+
+#48 [streamlit] resolving provenance for metadata file
+#48 DONE 0.1s
+
+#49 [namenode] resolving provenance for metadata file
+#49 DONE 0.8s
+
+#50 [datanode] resolving provenance for metadata file
+#50 DONE 0.5s
+
+#51 [hdfs-init] resolving provenance for metadata file
+#51 DONE 0.4s
+
+#52 [spark] resolving provenance for metadata file
+#52 DONE 0.0s
+ paysim-big-data-baseline-spark  Built
+ paysim-big-data-baseline-streamlit  Built
+ paysim-big-data-baseline-replayer  Built
+ paysim-big-data-baseline-hdfs-init  Built
+ paysim-big-data-baseline-namenode  Built
+ paysim-big-data-baseline-datanode  Built
+ Container paysim-big-data-baseline-mongodb-1  Recreate
+ Container paysim-big-data-baseline-kafka-1  Recreate
+ Container paysim-big-data-baseline-hdfs-init-1  Recreate
+ Container paysim-big-data-baseline-hdfs-init-1  Recreated
+ Container paysim-big-data-baseline-namenode-1  Recreate
+ Container paysim-big-data-baseline-mongodb-1  Recreated
+ Container paysim-big-data-baseline-namenode-1  Recreated
+ Container paysim-big-data-baseline-datanode-1  Recreate
+ Container paysim-big-data-baseline-kafka-1  Recreated
+ Container paysim-big-data-baseline-kafka-init-1  Recreate
+ Container paysim-big-data-baseline-kafka-init-1  Recreated
+ Container paysim-big-data-baseline-datanode-1  Recreated
+ Container paysim-big-data-baseline-spark-1  Recreate
+ Container paysim-big-data-baseline-spark-1  Recreated
+ Container paysim-big-data-baseline-replayer-1  Recreate
+ Container paysim-big-data-baseline-streamlit-1  Recreate
+ Container paysim-big-data-baseline-streamlit-1  Recreated
+ Container paysim-big-data-baseline-replayer-1  Recreated
+ Container paysim-big-data-baseline-kafka-1  Starting
+ Container paysim-big-data-baseline-mongodb-1  Starting
+ Container paysim-big-data-baseline-hdfs-init-1  Starting
+ Container paysim-big-data-baseline-hdfs-init-1  Started
+ Container paysim-big-data-baseline-hdfs-init-1  Waiting
+ Container paysim-big-data-baseline-kafka-1  Started
+ Container paysim-big-data-baseline-kafka-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Started
+ Container paysim-big-data-baseline-hdfs-init-1  Exited
+ Container paysim-big-data-baseline-namenode-1  Starting
+ Container paysim-big-data-baseline-namenode-1  Started
+ Container paysim-big-data-baseline-datanode-1  Starting
+ Container paysim-big-data-baseline-datanode-1  Started
+ Container paysim-big-data-baseline-kafka-1  Healthy
+ Container paysim-big-data-baseline-kafka-init-1  Starting
+ Container paysim-big-data-baseline-kafka-init-1  Started
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-kafka-init-1  Waiting
+ Container paysim-big-data-baseline-namenode-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-kafka-init-1  Exited
+ Container paysim-big-data-baseline-namenode-1  Healthy
+ Container paysim-big-data-baseline-spark-1  Starting
+ Container paysim-big-data-baseline-spark-1  Started
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-spark-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-spark-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-spark-1  Healthy
+ Container paysim-big-data-baseline-streamlit-1  Starting
+ Container paysim-big-data-baseline-spark-1  Healthy
+ Container paysim-big-data-baseline-replayer-1  Starting
+ Container paysim-big-data-baseline-replayer-1  Started
+ Container paysim-big-data-baseline-streamlit-1  Started
+ Container paysim-big-data-baseline-hdfs-init-1  Waiting
+ Container paysim-big-data-baseline-spark-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-datanode-1  Waiting
+ Container paysim-big-data-baseline-replayer-1  Waiting
+ Container paysim-big-data-baseline-namenode-1  Waiting
+ Container paysim-big-data-baseline-kafka-1  Waiting
+ Container paysim-big-data-baseline-streamlit-1  Waiting
+ Container paysim-big-data-baseline-kafka-init-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-kafka-init-1  Exited
+ Container paysim-big-data-baseline-spark-1  Healthy
+ Container paysim-big-data-baseline-hdfs-init-1  Exited
+ Container paysim-big-data-baseline-datanode-1  Healthy
+ Container paysim-big-data-baseline-namenode-1  Healthy
+ Container paysim-big-data-baseline-replayer-1  Healthy
+ Container paysim-big-data-baseline-kafka-1  Healthy
+ Container paysim-big-data-baseline-streamlit-1  Healthy
+Hệ thống đã sẵn sàng.
+Bảng điều khiển: http://127.0.0.1:8501
+Giao diện HDFS:  http://127.0.0.1:9870
+Giao diện Spark: http://127.0.0.1:4040

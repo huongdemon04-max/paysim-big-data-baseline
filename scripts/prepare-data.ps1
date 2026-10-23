@@ -16,7 +16,22 @@ if (Test-Path $DataFile) {
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $DataFile) | Out-Null
 $TempFile = "$DataFile.download"
 Write-Host "Đang tải bộ dữ liệu PaySim..."
-Invoke-WebRequest -Uri $DataUrl -OutFile $TempFile
+# Windows PowerShell 5.1: avoid the Internet Explorer parser/security prompt.
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+try {
+    for ($Attempt = 1; $Attempt -le 3; $Attempt++) {
+        try {
+            Invoke-WebRequest -UseBasicParsing -Uri $DataUrl -OutFile $TempFile -TimeoutSec 600
+            break
+        } catch {
+            if ($Attempt -eq 3) { throw }
+            Start-Sleep -Seconds 2
+        }
+    }
+} catch {
+    Remove-Item $TempFile -Force -ErrorAction SilentlyContinue
+    throw
+}
 $ActualSha = (Get-FileHash $TempFile -Algorithm SHA256).Hash.ToLower()
 if ($ActualSha -ne $ExpectedSha) {
     Remove-Item $TempFile -Force

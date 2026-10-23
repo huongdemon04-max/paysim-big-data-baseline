@@ -1,0 +1,45 @@
+spark-1  | 26/10/23 16:06:49 INFO Executor: Fetching spark://spark:41517/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:49 INFO Utils: Fetching spark://spark:41517/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp12210717430721988602.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp12210717430721988602.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Executor: Fetching spark://spark:41517/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:50 INFO Utils: Fetching spark://spark:41517/jars/org.lz4_lz4-java-1.8.0.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp10413653683429973191.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp10413653683429973191.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.lz4_lz4-java-1.8.0.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.lz4_lz4-java-1.8.0.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Executor: Fetching spark://spark:41517/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:50 INFO Utils: Fetching spark://spark:41517/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp15991551110625337876.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp15991551110625337876.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.apache.hadoop_hadoop-client-api-3.4.1.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Executor: Fetching spark://spark:41517/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:50 INFO Utils: Fetching spark://spark:41517/jars/org.apache.commons_commons-pool2-2.12.0.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp3247043451805883129.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp3247043451805883129.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.apache.commons_commons-pool2-2.12.0.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.apache.commons_commons-pool2-2.12.0.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Executor: Fetching spark://spark:41517/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:50 INFO Utils: Fetching spark://spark:41517/jars/com.google.code.findbugs_jsr305-3.0.0.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp11258620496775563747.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp11258620496775563747.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/com.google.code.findbugs_jsr305-3.0.0.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/com.google.code.findbugs_jsr305-3.0.0.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Executor: Fetching spark://spark:41517/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:50 INFO Utils: Fetching spark://spark:41517/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp14841504872203410232.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp14841504872203410232.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Executor: Fetching spark://spark:41517/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792771607842
+spark-1  | 26/10/23 16:06:50 INFO Utils: Fetching spark://spark:41517/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp7712741065883446526.tmp
+spark-1  | 26/10/23 16:06:50 INFO Utils: /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/fetchFileTemp7712741065883446526.tmp has been previously copied to /tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.xerial.snappy_snappy-java-1.1.10.7.jar
+spark-1  | 26/10/23 16:06:50 INFO Executor: Adding file:/tmp/spark-1669ccc8-3103-4505-8a79-a446ed9bec23/userFiles-daa08f06-341c-4aff-83a6-a1bd25a77179/org.xerial.snappy_snappy-java-1.1.10.7.jar to class loader default
+spark-1  | 26/10/23 16:06:50 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 41373.
+spark-1  | 26/10/23 16:06:50 INFO NettyBlockTransferService: Server created on spark:41373
+spark-1  | 26/10/23 16:06:50 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+spark-1  | 26/10/23 16:06:50 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark, 41373, None)
+spark-1  | 26/10/23 16:06:50 INFO BlockManagerMasterEndpoint: Registering block manager spark:41373 with 265.5 MiB RAM, BlockManagerId(driver, spark, 41373, None)
+spark-1  | 26/10/23 16:06:50 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark, 41373, None)
+spark-1  | 26/10/23 16:06:50 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark, 41373, None)
+spark-1  | Training baseline Spark MLlib model from first 300,000 rows...
+spark-1  | 26/10/23 16:07:11 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+spark-1  | Model trained: positives=181, negatives=130125, positive_weight=718.9
+spark-1  | 26/10/23 16:07:30 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+spark-1  | PaySim streaming pipeline is ready.
+spark-1  | 26/10/23 16:07:31 WARN OffsetSeqMetadata: Updating the value of conf 'spark.sql.shuffle.partitions' in current session from '2' to '4'.
+spark-1  | batch=542 input=604 valid=604 alerts=98 duration=14.86s
+spark-1  | 26/10/23 16:07:47 WARN ProcessingTimeExecutor: Current batch is falling behind. The trigger interval is 10000} milliseconds, but spent 15823 milliseconds
+spark-1  | batch=543 input=200 valid=200 alerts=97 duration=8.99s
+spark-1  | batch=544 input=100 valid=100 alerts=40 duration=6.73s

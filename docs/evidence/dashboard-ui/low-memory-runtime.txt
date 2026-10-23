@@ -1,0 +1,1 @@
+Memory limit=1610612736 OOMKilled=false RestartCount=0 Health=healthy Command=["/opt/spark/bin/spark-submit","--master","local[1]","--driver-memory","768m","--conf","spark.sql.shuffle.partitions=4","--conf","spark.ui.requestHeaderSize=64k","--conf","spark.jars.ivy=/opt/spark/.ivy2","--packages","org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0","/opt/app/pipeline.py"]

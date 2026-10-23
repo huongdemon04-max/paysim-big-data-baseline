@@ -26,7 +26,8 @@ fi
 mkdir -p "$ROOT_DIR/data"
 TEMP_FILE="$DATA_FILE.download"
 echo "Đang tải bộ dữ liệu PaySim..."
-curl -fL --retry 3 --progress-bar "$DATA_URL" -o "$TEMP_FILE"
+trap 'rm -f "$TEMP_FILE"' EXIT
+curl -fL --retry 3 --connect-timeout 30 --max-time 1800 --progress-bar "$DATA_URL" -o "$TEMP_FILE"
 ACTUAL_SHA="$(hash_file "$TEMP_FILE")"
 if [[ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]]; then
   rm -f "$TEMP_FILE"

@@ -1,0 +1,2 @@
+Lệnh này xóa dữ liệu Docker của riêng baseline PaySim: Kafka, HDFS và MongoDB.
+Đã hủy.

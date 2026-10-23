@@ -1,0 +1,6 @@
+{
+  "case": "Original start.sh with multiline Compose help",
+  "exit_code": 1,
+  "stdout": "Hãy cập nhật Docker Desktop: cần Docker Compose hỗ trợ --wait-timeout.\n",
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpcafojvjl/bin/docker\", line 17, in <module>\n    print(('--wait-timeout\\n' + 'help\\n' * 100000) if os.environ.get('LARGE_HELP') == '1' else ('--wait-timeout' if os.environ.get('OLD_COMPOSE') != '1' else '--detach'))\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nBrokenPipeError: [Errno 32] Broken pipe\n"
+}

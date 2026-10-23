@@ -1,0 +1,583 @@
+Khởi động PaySim trên linux/amd64. Lần đầu có thể mất nhiều phút...
+#1 [internal] load local bake definitions
+#1 reading from stdin 3.86kB done
+#1 DONE 0.0s
+
+#2 [replayer internal] load build definition from Dockerfile
+#2 transferring dockerfile: 253B done
+#2 DONE 0.1s
+
+#3 [spark internal] load build definition from Dockerfile
+#3 transferring dockerfile: 813B done
+#3 DONE 0.1s
+
+#4 [datanode internal] load build definition from Dockerfile
+#4 transferring dockerfile: 1.72kB done
+#4 DONE 0.1s
+
+#5 [streamlit internal] load build definition from Dockerfile
+#5 transferring dockerfile: 425B done
+#5 DONE 0.1s
+
+#6 [hdfs-init internal] load metadata for docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#6 DONE 0.0s
+
+#7 [datanode internal] load metadata for docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#7 ...
+
+#8 [replayer internal] load metadata for docker.io/library/python:3.11-slim
+#8 DONE 1.4s
+
+#9 [spark internal] load metadata for docker.io/apache/spark:4.0.0
+#9 DONE 1.4s
+
+#10 [replayer internal] load .dockerignore
+#10 transferring context: 60B 0.0s done
+#10 DONE 0.1s
+
+#11 [streamlit internal] load .dockerignore
+#11 transferring context: 60B 0.0s done
+#11 DONE 0.1s
+
+#12 [spark internal] load .dockerignore
+#12 transferring context: 60B 0.0s done
+#12 DONE 0.1s
+
+#13 [streamlit internal] load build context
+#13 DONE 0.0s
+
+#14 [spark internal] load build context
+#14 DONE 0.0s
+
+#15 [replayer internal] load build context
+#15 transferring context: 63B done
+#15 DONE 0.1s
+
+#16 [replayer 1/5] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#16 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.1s done
+#16 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.1s done
+#16 DONE 0.1s
+
+#17 [replayer 2/5] WORKDIR /opt/app
+#17 CACHED
+
+#18 [replayer 3/5] COPY requirements.txt .
+#18 CACHED
+
+#19 [replayer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#19 CACHED
+
+#20 [replayer 5/5] COPY app.py .
+#20 CACHED
+
+#21 [spark 1/6] FROM docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00
+#21 resolve docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00 0.1s done
+#21 DONE 0.1s
+
+#7 [namenode internal] load metadata for docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#7 DONE 1.7s
+
+#13 [streamlit internal] load build context
+#13 transferring context: 5.10kB 0.0s done
+#13 DONE 0.1s
+
+#22 [namenode internal] load .dockerignore
+#22 transferring context: 2B 0.0s done
+#22 transferring context: 2B 0.0s done
+#22 DONE 0.1s
+
+#14 [spark internal] load build context
+#14 transferring context: 272B 0.0s done
+#14 DONE 0.1s
+
+#17 [streamlit 2/5] WORKDIR /opt/app
+#17 CACHED
+
+#23 [streamlit 3/6] COPY requirements.txt .
+#23 CACHED
+
+#24 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#24 CACHED
+
+#25 [spark 2/6] RUN mkdir -p /opt/app /opt/spark/.ivy2 /opt/spark/home     && chown -R spark:spark /opt/app /opt/spark/.ivy2 /opt/spark/home     && pip3 install --no-cache-dir numpy==1.26.4 pymongo==4.10.1
+#25 CACHED
+
+#26 [spark 3/6] COPY --chown=spark:spark package_warmup.py pipeline.py /opt/app/
+#26 CACHED
+
+#27 [datanode internal] load build context
+#27 DONE 0.0s
+
+#28 [datanode distribution 1/1] FROM docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#28 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#28 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e 0.2s done
+#28 DONE 0.2s
+
+#29 [streamlit 5/6] COPY *.py ./
+#29 DONE 0.2s
+
+#30 [spark 4/6] COPY --chown=spark:spark --chmod=755 entrypoint.sh /opt/app/entrypoint.sh
+#30 DONE 0.2s
+
+#31 [datanode stage-1 1/7] FROM docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#31 resolve docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d 0.2s done
+#31 DONE 0.2s
+
+#27 [datanode internal] load build context
+#27 transferring context: 69B done
+#27 DONE 0.0s
+
+#32 [replayer] exporting to image
+#32 exporting layers done
+#32 exporting manifest sha256:37ca6b2321f5bfd31d2154230a574d1c74a4fc129b757d8a006c005c060056fa done
+#32 exporting config sha256:62483e890cffeb0cea187114f8b6c00c09a8e14a48eff856f035a87030015af6 done
+#32 exporting attestation manifest sha256:e2daaea73afa76259e2d750c3bb1fb9fed57a3329450cd4d97702ce0e5e75a46 0.1s done
+#32 exporting manifest list sha256:eaafa548dba35cb924d86be874cc009c8cf9c4827251d7dcc0b11b746697c9cb 0.1s done
+#32 naming to docker.io/library/paysim-big-data-baseline-replayer:latest 0.0s done
+#32 unpacking to docker.io/library/paysim-big-data-baseline-replayer:latest 0.0s done
+#32 DONE 0.4s
+
+#33 [namenode stage-1 2/7] RUN apt-get update     && apt-get install -y --no-install-recommends python3 procps     && rm -rf /var/lib/apt/lists/*     && if getent passwd 1000 >/dev/null; then          usermod --login hadoop --home /opt/hadoop --gid 100 "$(getent passwd 1000 | cut -d: -f1)";        else          useradd --uid 1000 --gid 100 --home-dir /opt/hadoop --no-create-home hadoop;        fi     && mkdir -p /data/name /data/data /tmp/hadoop-logs     && chown -R 1000:100 /data /tmp/hadoop-logs
+#33 CACHED
+
+#34 [namenode stage-1 3/7] COPY --from=distribution --chown=1000:100 /opt/hadoop/ /opt/hadoop/
+#34 CACHED
+
+#35 [namenode stage-1 4/7] RUN rm -rf /opt/hadoop/lib/native
+#35 CACHED
+
+#36 [namenode stage-1 5/7] COPY entrypoint.sh /usr/local/bin/hdfs-entrypoint
+#36 CACHED
+
+#37 [namenode stage-1 6/7] COPY healthcheck.py /usr/local/bin/hdfs-healthcheck
+#37 CACHED
+
+#38 [namenode stage-1 7/7] RUN sed -i 's/\r$//' /usr/local/bin/hdfs-entrypoint     && chmod 755 /usr/local/bin/hdfs-entrypoint /usr/local/bin/hdfs-healthcheck
+#38 CACHED
+
+#35 [datanode stage-1 4/7] RUN rm -rf /opt/hadoop/lib/native
+#35 CACHED
+
+#36 [datanode stage-1 5/7] COPY entrypoint.sh /usr/local/bin/hdfs-entrypoint
+#36 CACHED
+
+#37 [datanode stage-1 6/7] COPY healthcheck.py /usr/local/bin/hdfs-healthcheck
+#37 CACHED
+
+#33 [datanode stage-1 2/7] RUN apt-get update     && apt-get install -y --no-install-recommends python3 procps     && rm -rf /var/lib/apt/lists/*     && if getent passwd 1000 >/dev/null; then          usermod --login hadoop --home /opt/hadoop --gid 100 "$(getent passwd 1000 | cut -d: -f1)";        else          useradd --uid 1000 --gid 100 --home-dir /opt/hadoop --no-create-home hadoop;        fi     && mkdir -p /data/name /data/data /tmp/hadoop-logs     && chown -R 1000:100 /data /tmp/hadoop-logs
+#33 CACHED
+
+#34 [datanode stage-1 3/7] COPY --from=distribution --chown=1000:100 /opt/hadoop/ /opt/hadoop/
+#34 CACHED
+
+#39 [namenode] exporting to image
+#39 exporting layers done
+#39 exporting manifest sha256:c550cfd4bbde8d0e5db2d16154e8c8c8f9f90502fe14a875a850f28a358dc32b done
+#39 exporting config sha256:4a6d59b02f24ac91cc5fe3d5b9409459940fa72f4bec7e00566b50668c578984 0.0s done
+#39 exporting attestation manifest sha256:56dc51f80f23e46341e342403d0ef6a98057e02a27814eeb3f2efeb21afe1f1f
+#39 exporting attestation manifest sha256:56dc51f80f23e46341e342403d0ef6a98057e02a27814eeb3f2efeb21afe1f1f 0.3s done
+#39 exporting manifest list sha256:4542c2bd1e43b2a79017379db3738fd87cab2b3ded1c6ded8c1b2b20cd87e756
+#39 exporting manifest list sha256:4542c2bd1e43b2a79017379db3738fd87cab2b3ded1c6ded8c1b2b20cd87e756 0.1s done
+#39 naming to docker.io/library/paysim-big-data-baseline-namenode:latest
+#39 naming to docker.io/library/paysim-big-data-baseline-namenode:latest 0.0s done
+#39 unpacking to docker.io/library/paysim-big-data-baseline-namenode:latest
+#39 unpacking to docker.io/library/paysim-big-data-baseline-namenode:latest 0.1s done
+#39 DONE 0.9s
+
+#40 [replayer] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [datanode] exporting to image
+#41 exporting layers done
+#41 exporting manifest sha256:eda789f82c6cb4950a32d85e36e49bed82e82adb8b75e9b2e9b5be095a5e31c0 0.0s done
+#41 exporting config sha256:5c6186a1a9d9df2ba6bf6feeac2fc7fc716588dbb603c6766fa80302fe69ebd0 0.1s done
+#41 exporting attestation manifest sha256:cdb153b3051b8d3db83a054bd7953bdcf45b73bc1e08723ec4f779c92b7075bb 0.3s done
+#41 exporting manifest list sha256:113de5149d4f0593a653aadd99bfb0cdca31382a122d1d5087c9e885362884c7 0.1s done
+#41 naming to docker.io/library/paysim-big-data-baseline-datanode:latest 0.1s done
+#41 unpacking to docker.io/library/paysim-big-data-baseline-datanode:latest 0.1s done
+#41 DONE 1.0s
+
+#42 [hdfs-init] exporting to image
+#42 exporting layers 0.0s done
+#42 exporting manifest sha256:bf4a2f314c661e0a218b681d85258186f3c3ecf311a4baf6aba13aae2a13f693 0.1s done
+#42 exporting config sha256:df406d383df232a3b935bd1e0ef9ddbbb8ae6a99d3a1d08e8ad62add943b6181 0.1s done
+#42 exporting attestation manifest sha256:9aec6e5b67c6702af9cb45e8406dfc6a90058d4f7da855efbe011dfdd72a71eb 0.2s done
+#42 exporting manifest list sha256:672df5c21983605c79cf69ae2b6033dab5689fb2e54c86df510bfc2ae7b7d911 0.1s done
+#42 naming to docker.io/library/paysim-big-data-baseline-hdfs-init:latest 0.0s done
+#42 unpacking to docker.io/library/paysim-big-data-baseline-hdfs-init:latest 0.1s done
+#42 DONE 1.0s
+
+#43 [spark 5/6] RUN python3 -m compileall -q /opt/app
+#43 DONE 1.4s
+
+#44 [streamlit 6/6] RUN python -m compileall -q /opt/app
+#44 DONE 1.7s
+
+#45 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#45 ...
+
+#46 [datanode] resolving provenance for metadata file
+#46 DONE 0.5s
+
+#47 [namenode] resolving provenance for metadata file
+#47 DONE 0.2s
+
+#48 [hdfs-init] resolving provenance for metadata file
+#48 DONE 0.0s
+
+#49 [streamlit] exporting to image
+#49 exporting layers 0.4s done
+#49 exporting manifest sha256:78d2489a2e200f78c6632d6f65ccb5ff5a28bbd75e91157deff320d01b3b75f2 0.1s done
+#49 exporting config sha256:223400f58c9084e63c10cca932b444d084bb7de81e2ffb8d6f45327545ca71f2 0.0s done
+#49 exporting attestation manifest sha256:261d7d00ffa72e6e576886550cbcf6f9a29c4f114369b338b106d14f4fcd11f8 0.1s done
+#49 exporting manifest list sha256:0577d578f43410fa840ac496c2ffd5f36af04eeb57e93e488a3bca88b3a3c75a 0.0s done
+#49 naming to docker.io/library/paysim-big-data-baseline-streamlit:latest 0.0s done
+#49 unpacking to docker.io/library/paysim-big-data-baseline-streamlit:latest 0.2s done
+#49 DONE 0.9s
+
+#45 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#45 1.267 WARNING: Using incubator modules: jdk.incubator.vector
+#45 ...
+
+#50 [streamlit] resolving provenance for metadata file
+#50 DONE 0.0s
+
+#45 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#45 4.228 Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+#45 4.275 26/10/23 16:01:52 WARN Utils: Your hostname, buildkitsandbox, resolves to a loopback address: 127.0.0.1; using 172.17.0.2 instead (on interface eth0)
+#45 4.282 26/10/23 16:01:52 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+#45 4.876 :: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.3.jar!/org/apache/ivy/core/settings/ivysettings.xml
+#45 5.114 Ivy Default Cache set to: /opt/spark/.ivy2/cache
+#45 5.114 The jars for the packages stored in: /opt/spark/.ivy2/jars
+#45 5.125 org.apache.spark#spark-sql-kafka-0-10_2.13 added as a dependency
+#45 5.130 :: resolving dependencies :: org.apache.spark#spark-submit-parent-c5fb5185-ff38-4c04-8dff-8981e8379224;1.0
+#45 5.130 	confs: [default]
+#45 7.978 	found org.apache.spark#spark-sql-kafka-0-10_2.13;4.0.0 in central
+#45 8.529 	found org.apache.spark#spark-token-provider-kafka-0-10_2.13;4.0.0 in central
+#45 8.850 	found org.apache.kafka#kafka-clients;3.9.0 in central
+#45 9.288 	found org.lz4#lz4-java;1.8.0 in central
+#45 9.655 	found org.xerial.snappy#snappy-java;1.1.10.7 in central
+#45 11.55 	found org.slf4j#slf4j-api;2.0.16 in central
+#45 13.45 	found org.apache.hadoop#hadoop-client-runtime;3.4.1 in central
+#45 13.63 	found org.apache.hadoop#hadoop-client-api;3.4.1 in central
+#45 13.84 	found com.google.code.findbugs#jsr305;3.0.0 in central
+#45 14.06 	found org.scala-lang.modules#scala-parallel-collections_2.13;1.2.0 in central
+#45 15.73 	found org.apache.commons#commons-pool2;2.12.0 in central
+#45 15.81 downloading https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.13/4.0.0/spark-sql-kafka-0-10_2.13-4.0.0.jar ...
+#45 15.97 	[SUCCESSFUL ] org.apache.spark#spark-sql-kafka-0-10_2.13;4.0.0!spark-sql-kafka-0-10_2.13.jar (215ms)
+#45 16.05 downloading https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.13/4.0.0/spark-token-provider-kafka-0-10_2.13-4.0.0.jar ...
+#45 16.19 	[SUCCESSFUL ] org.apache.spark#spark-token-provider-kafka-0-10_2.13;4.0.0!spark-token-provider-kafka-0-10_2.13.jar (216ms)
+#45 16.91 downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/1.2.0/scala-parallel-collections_2.13-1.2.0.jar ...
+#45 17.13 	[SUCCESSFUL ] org.scala-lang.modules#scala-parallel-collections_2.13;1.2.0!scala-parallel-collections_2.13.jar (929ms)
+#45 17.19 downloading https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.9.0/kafka-clients-3.9.0.jar ...
+#45 18.19 	[SUCCESSFUL ] org.apache.kafka#kafka-clients;3.9.0!kafka-clients.jar (1055ms)
+#45 18.24 downloading https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.0/jsr305-3.0.0.jar ...
+#45 18.30 	[SUCCESSFUL ] com.google.code.findbugs#jsr305;3.0.0!jsr305.jar (105ms)
+#45 18.35 downloading https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.12.0/commons-pool2-2.12.0.jar ...
+#45 18.41 	[SUCCESSFUL ] org.apache.commons#commons-pool2;2.12.0!commons-pool2.jar (118ms)
+#45 18.47 downloading https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/3.4.1/hadoop-client-runtime-3.4.1.jar ...
+#45 21.86 	[SUCCESSFUL ] org.apache.hadoop#hadoop-client-runtime;3.4.1!hadoop-client-runtime.jar (3446ms)
+#45 21.91 downloading https://repo1.maven.org/maven2/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar ...
+#45 22.17 	[SUCCESSFUL ] org.lz4#lz4-java;1.8.0!lz4-java.jar (309ms)
+#45 22.23 downloading https://repo1.maven.org/maven2/org/xerial/snappy/snappy-java/1.1.10.7/snappy-java-1.1.10.7.jar ...
+#45 22.90 	[SUCCESSFUL ] org.xerial.snappy#snappy-java;1.1.10.7!snappy-java.jar(bundle) (725ms)
+#45 22.95 downloading https://repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar ...
+#45 23.02 	[SUCCESSFUL ] org.slf4j#slf4j-api;2.0.16!slf4j-api.jar (119ms)
+#45 23.08 downloading https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-api/3.4.1/hadoop-client-api-3.4.1.jar ...
+#45 24.75 	[SUCCESSFUL ] org.apache.hadoop#hadoop-client-api;3.4.1!hadoop-client-api.jar (1729ms)
+#45 24.75 :: resolution report :: resolve 10626ms :: artifacts dl 8993ms
+#45 24.75 	:: modules in use:
+#45 24.75 	com.google.code.findbugs#jsr305;3.0.0 from central in [default]
+#45 24.75 	org.apache.commons#commons-pool2;2.12.0 from central in [default]
+#45 24.75 	org.apache.hadoop#hadoop-client-api;3.4.1 from central in [default]
+#45 24.75 	org.apache.hadoop#hadoop-client-runtime;3.4.1 from central in [default]
+#45 24.75 	org.apache.kafka#kafka-clients;3.9.0 from central in [default]
+#45 24.75 	org.apache.spark#spark-sql-kafka-0-10_2.13;4.0.0 from central in [default]
+#45 24.75 	org.apache.spark#spark-token-provider-kafka-0-10_2.13;4.0.0 from central in [default]
+#45 24.75 	org.lz4#lz4-java;1.8.0 from central in [default]
+#45 24.75 	org.scala-lang.modules#scala-parallel-collections_2.13;1.2.0 from central in [default]
+#45 24.75 	org.slf4j#slf4j-api;2.0.16 from central in [default]
+#45 24.75 	org.xerial.snappy#snappy-java;1.1.10.7 from central in [default]
+#45 24.75 	---------------------------------------------------------------------
+#45 24.75 	|                  |            modules            ||   artifacts   |
+#45 24.75 	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+#45 24.75 	---------------------------------------------------------------------
+#45 24.75 	|      default     |   11  |   11  |   11  |   0   ||   11  |   11  |
+#45 24.75 	---------------------------------------------------------------------
+#45 24.77 :: retrieving :: org.apache.spark#spark-submit-parent-c5fb5185-ff38-4c04-8dff-8981e8379224
+#45 24.77 	confs: [default]
+#45 24.96 	11 artifacts copied, 0 already retrieved (62673kB/186ms)
+#45 25.70 26/10/23 16:02:14 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+#45 27.84 Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+#45 27.85 26/10/23 16:02:16 INFO SparkContext: Running Spark version 4.0.0
+#45 27.86 26/10/23 16:02:16 INFO SparkContext: OS info Linux, 6.6.87.2-microsoft-standard-WSL2, amd64
+#45 27.86 26/10/23 16:02:16 INFO SparkContext: Java version 17.0.15
+#45 27.92 26/10/23 16:02:16 INFO ResourceUtils: ==============================================================
+#45 27.92 26/10/23 16:02:16 INFO ResourceUtils: No custom resources configured for spark.driver.
+#45 27.92 26/10/23 16:02:16 INFO ResourceUtils: ==============================================================
+#45 27.92 26/10/23 16:02:16 INFO SparkContext: Submitted application: package-warmup
+#45 27.99 26/10/23 16:02:16 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+#45 28.00 26/10/23 16:02:16 INFO ResourceProfile: Limiting resource is cpu
+#45 28.00 26/10/23 16:02:16 INFO ResourceProfileManager: Added ResourceProfile id: 0
+#45 28.10 26/10/23 16:02:16 INFO SecurityManager: Changing view acls to: spark
+#45 28.10 26/10/23 16:02:16 INFO SecurityManager: Changing modify acls to: spark
+#45 28.10 26/10/23 16:02:16 INFO SecurityManager: Changing view acls groups to: spark
+#45 28.10 26/10/23 16:02:16 INFO SecurityManager: Changing modify acls groups to: spark
+#45 28.11 26/10/23 16:02:16 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY; RPC SSL disabled
+#45 28.75 26/10/23 16:02:17 INFO Utils: Successfully started service 'sparkDriver' on port 43093.
+#45 28.84 26/10/23 16:02:17 INFO SparkEnv: Registering MapOutputTracker
+#45 28.88 26/10/23 16:02:17 INFO SparkEnv: Registering BlockManagerMaster
+#45 28.93 26/10/23 16:02:17 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+#45 28.93 26/10/23 16:02:17 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+#45 28.94 26/10/23 16:02:17 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+#45 29.00 26/10/23 16:02:17 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-54054589-7f4e-4b66-acf9-7f03b9c9ebf6
+#45 29.05 26/10/23 16:02:17 INFO SparkEnv: Registering OutputCommitCoordinator
+#45 29.43 26/10/23 16:02:17 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+#45 29.63 26/10/23 16:02:18 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar at spark://172.17.0.2:43093/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar at spark://172.17.0.2:43093/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar at spark://172.17.0.2:43093/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792771336380
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar at spark://172.17.0.2:43093/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792771336380
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar at spark://172.17.0.2:43093/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792771336380
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar at spark://172.17.0.2:43093/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792771336380
+#45 29.73 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar at spark://172.17.0.2:43093/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792771336380
+#45 29.74 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar at spark://172.17.0.2:43093/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792771336380
+#45 29.74 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar at spark://172.17.0.2:43093/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792771336380
+#45 29.74 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar at spark://172.17.0.2:43093/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792771336380
+#45 29.74 26/10/23 16:02:18 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar at spark://172.17.0.2:43093/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792771336380
+#45 29.75 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar at file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 29.76 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar
+#45 29.79 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar at file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 29.79 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar
+#45 29.79 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar at file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792771336380
+#45 29.79 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+#45 29.80 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar at file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792771336380
+#45 29.81 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.kafka_kafka-clients-3.9.0.jar
+#45 29.83 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar at file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792771336380
+#45 29.83 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/com.google.code.findbugs_jsr305-3.0.0.jar
+#45 29.84 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar at file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792771336380
+#45 29.84 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.commons_commons-pool2-2.12.0.jar
+#45 29.85 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar at file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792771336380
+#45 29.85 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+#45 29.90 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar at file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792771336380
+#45 29.90 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.lz4_lz4-java-1.8.0.jar
+#45 29.91 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar at file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792771336380
+#45 29.91 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.xerial.snappy_snappy-java-1.1.10.7.jar
+#45 29.92 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar at file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792771336380
+#45 29.92 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.slf4j_slf4j-api-2.0.16.jar
+#45 29.93 26/10/23 16:02:18 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar at file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792771336380
+#45 29.93 26/10/23 16:02:18 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+#45 30.01 26/10/23 16:02:18 INFO SecurityManager: Changing view acls to: spark
+#45 30.01 26/10/23 16:02:18 INFO SecurityManager: Changing modify acls to: spark
+#45 30.01 26/10/23 16:02:18 INFO SecurityManager: Changing view acls groups to: spark
+#45 30.01 26/10/23 16:02:18 INFO SecurityManager: Changing modify acls groups to: spark
+#45 30.01 26/10/23 16:02:18 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY; RPC SSL disabled
+#45 30.33 26/10/23 16:02:18 INFO Executor: Starting executor ID driver on host 172.17.0.2
+#45 30.33 26/10/23 16:02:18 INFO Executor: OS info Linux, 6.6.87.2-microsoft-standard-WSL2, amd64
+#45 30.33 26/10/23 16:02:18 INFO Executor: Java version 17.0.15
+#45 30.36 26/10/23 16:02:18 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+#45 30.37 26/10/23 16:02:18 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@d38edf4 for default.
+#45 30.41 26/10/23 16:02:18 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792771336380
+#45 30.47 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.kafka_kafka-clients-3.9.0.jar
+#45 30.48 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792771336380
+#45 30.51 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+#45 30.52 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792771336380
+#45 30.52 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.lz4_lz4-java-1.8.0.jar
+#45 30.53 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792771336380
+#45 30.53 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/com.google.code.findbugs_jsr305-3.0.0.jar
+#45 30.54 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792771336380
+#45 30.54 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.commons_commons-pool2-2.12.0.jar
+#45 30.57 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 30.58 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar
+#45 30.59 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792771336380
+#45 30.59 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.slf4j_slf4j-api-2.0.16.jar
+#45 30.60 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792771336380
+#45 30.61 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+#45 30.62 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792771336380
+#45 30.63 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.xerial.snappy_snappy-java-1.1.10.7.jar
+#45 30.64 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 30.64 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar
+#45 30.65 26/10/23 16:02:19 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792771336380
+#45 30.68 26/10/23 16:02:19 INFO Utils: /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+#45 30.70 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792771336380
+#45 30.81 26/10/23 16:02:19 INFO TransportClientFactory: Successfully created connection to /172.17.0.2:43093 after 71 ms (0 ms spent in bootstraps)
+#45 30.82 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.apache.commons_commons-pool2-2.12.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp17535093489447833067.tmp
+#45 30.86 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp17535093489447833067.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.commons_commons-pool2-2.12.0.jar
+#45 30.88 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.commons_commons-pool2-2.12.0.jar to class loader default
+#45 30.88 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792771336380
+#45 30.88 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.lz4_lz4-java-1.8.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp7931304695575005618.tmp
+#45 30.89 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp7931304695575005618.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.lz4_lz4-java-1.8.0.jar
+#45 30.90 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.lz4_lz4-java-1.8.0.jar to class loader default
+#45 30.91 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792771336380
+#45 30.91 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp7139319365228569274.tmp
+#45 30.95 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp7139319365228569274.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.xerial.snappy_snappy-java-1.1.10.7.jar
+#45 30.96 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.xerial.snappy_snappy-java-1.1.10.7.jar to class loader default
+#45 30.96 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 30.96 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp11955571119267296795.tmp
+#45 30.97 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp11955571119267296795.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar
+#45 30.98 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar to class loader default
+#45 30.98 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792771336380
+#45 30.98 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/com.google.code.findbugs_jsr305-3.0.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp5844866908498268073.tmp
+#45 30.99 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp5844866908498268073.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/com.google.code.findbugs_jsr305-3.0.0.jar
+#45 31.00 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/com.google.code.findbugs_jsr305-3.0.0.jar to class loader default
+#45 31.00 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792771336380
+#45 31.00 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.apache.kafka_kafka-clients-3.9.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp12707962125423560077.tmp
+#45 31.13 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp12707962125423560077.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.kafka_kafka-clients-3.9.0.jar
+#45 31.15 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.kafka_kafka-clients-3.9.0.jar to class loader default
+#45 31.15 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792771336380
+#45 31.15 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp12613004039418451171.tmp
+#45 31.17 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp12613004039418451171.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+#45 31.18 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to class loader default
+#45 31.18 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792771336380
+#45 31.18 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.slf4j_slf4j-api-2.0.16.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp18163245450701695110.tmp
+#45 31.18 26/10/23 16:02:19 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp18163245450701695110.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.slf4j_slf4j-api-2.0.16.jar
+#45 31.20 26/10/23 16:02:19 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.slf4j_slf4j-api-2.0.16.jar to class loader default
+#45 31.20 26/10/23 16:02:19 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792771336380
+#45 31.20 26/10/23 16:02:19 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp248912176213030087.tmp
+#45 31.57 26/10/23 16:02:20 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp248912176213030087.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+#45 31.60 26/10/23 16:02:20 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to class loader default
+#45 31.61 26/10/23 16:02:20 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792771336380
+#45 31.61 26/10/23 16:02:20 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp7380356797649628065.tmp
+#45 31.62 26/10/23 16:02:20 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp7380356797649628065.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar
+#45 31.63 26/10/23 16:02:20 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar to class loader default
+#45 31.63 26/10/23 16:02:20 INFO Executor: Fetching spark://172.17.0.2:43093/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792771336380
+#45 31.63 26/10/23 16:02:20 INFO Utils: Fetching spark://172.17.0.2:43093/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp8878042610090995381.tmp
+#45 31.83 26/10/23 16:02:20 INFO Utils: /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/fetchFileTemp8878042610090995381.tmp has been previously copied to /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+#45 31.84 26/10/23 16:02:20 INFO Executor: Adding file:/tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/userFiles-99cb7c47-84cb-497a-a8e9-d9b63b8d0d33/org.apache.hadoop_hadoop-client-api-3.4.1.jar to class loader default
+#45 31.89 26/10/23 16:02:20 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 43899.
+#45 31.89 26/10/23 16:02:20 INFO NettyBlockTransferService: Server created on 172.17.0.2:43899
+#45 31.90 26/10/23 16:02:20 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+#45 31.96 26/10/23 16:02:20 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 172.17.0.2, 43899, None)
+#45 31.97 26/10/23 16:02:20 INFO BlockManagerMasterEndpoint: Registering block manager 172.17.0.2:43899 with 434.4 MiB RAM, BlockManagerId(driver, 172.17.0.2, 43899, None)
+#45 31.98 26/10/23 16:02:20 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 172.17.0.2, 43899, None)
+#45 31.99 26/10/23 16:02:20 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 172.17.0.2, 43899, None)
+#45 39.24 26/10/23 16:02:27 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+#45 39.24 26/10/23 16:02:27 INFO SharedState: Warehouse path is 'file:/opt/spark/work-dir/spark-warehouse'.
+#45 43.59 26/10/23 16:02:32 INFO CodeGenerator: Code generated in 343.925204 ms
+#45 43.79 26/10/23 16:02:32 INFO SparkContext: Starting job: $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768
+#45 43.82 26/10/23 16:02:32 INFO DAGScheduler: Got job 0 ($anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768) with 1 output partitions
+#45 43.82 26/10/23 16:02:32 INFO DAGScheduler: Final stage: ResultStage 0 ($anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768)
+#45 43.82 26/10/23 16:02:32 INFO DAGScheduler: Parents of final stage: List()
+#45 43.83 26/10/23 16:02:32 INFO DAGScheduler: Missing parents: List()
+#45 43.83 26/10/23 16:02:32 INFO DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[3] at $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768), which has no missing parents
+#45 43.88 26/10/23 16:02:32 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+#45 43.92 26/10/23 16:02:32 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 14.2 KiB, free 434.4 MiB)
+#45 43.97 26/10/23 16:02:32 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 6.2 KiB, free 434.4 MiB)
+#45 44.00 26/10/23 16:02:32 INFO SparkContext: Created broadcast 0 from broadcast at DAGScheduler.scala:1676
+#45 44.03 26/10/23 16:02:32 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[3] at $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768) (first 15 tasks are for partitions Vector(0))
+#45 44.04 26/10/23 16:02:32 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks resource profile 0
+#45 44.10 26/10/23 16:02:32 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0) (172.17.0.2,executor driver, partition 0, PROCESS_LOCAL, 12272 bytes) 
+#45 44.13 26/10/23 16:02:32 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+#45 44.28 26/10/23 16:02:32 INFO CodeGenerator: Code generated in 44.345363 ms
+#45 44.33 26/10/23 16:02:32 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 1888 bytes result sent to driver
+#45 44.34 26/10/23 16:02:32 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 265 ms on 172.17.0.2 (executor driver) (1/1)
+#45 44.34 26/10/23 16:02:32 INFO TaskSchedulerImpl: Removed TaskSet 0.0 whose tasks have all completed, from pool 
+#45 44.35 26/10/23 16:02:32 INFO DAGScheduler: ResultStage 0 ($anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768) finished in 505 ms
+#45 44.36 26/10/23 16:02:32 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
+#45 44.36 26/10/23 16:02:32 INFO TaskSchedulerImpl: Canceling stage 0
+#45 44.36 26/10/23 16:02:32 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
+#45 44.37 26/10/23 16:02:32 INFO DAGScheduler: Job 0 finished: $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768, took 580.384693 ms
+#45 44.40 26/10/23 16:02:32 INFO SparkContext: SparkContext is stopping with exitCode 0 from stop at NativeMethodAccessorImpl.java:0.
+#45 44.43 26/10/23 16:02:32 INFO SparkUI: Stopped Spark web UI at http://172.17.0.2:4040
+#45 44.46 26/10/23 16:02:33 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+#45 44.48 26/10/23 16:02:33 INFO MemoryStore: MemoryStore cleared
+#45 44.48 26/10/23 16:02:33 INFO BlockManager: BlockManager stopped
+#45 44.49 26/10/23 16:02:33 INFO BlockManagerMaster: BlockManagerMaster stopped
+#45 44.50 26/10/23 16:02:33 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+#45 44.52 26/10/23 16:02:33 INFO SparkContext: Successfully stopped SparkContext
+#45 44.87 26/10/23 16:02:33 INFO ShutdownHookManager: Shutdown hook called
+#45 44.88 26/10/23 16:02:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741
+#45 44.88 26/10/23 16:02:33 INFO ShutdownHookManager: Deleting directory /opt/spark/work-dir/artifacts/spark-28b285d7-27de-4723-896c-32f8d2165e8a
+#45 44.88 26/10/23 16:02:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-44b40d98-8f07-462a-8d57-0f06a596a419
+#45 44.89 26/10/23 16:02:33 INFO ShutdownHookManager: Deleting directory /tmp/spark-0832adb4-8531-4ac8-9943-8138ce8d2741/pyspark-c01d842d-b1aa-4423-a2e9-af41493c8ac5
+#45 DONE 45.0s
+
+#51 [spark] exporting to image
+#51 exporting layers
+#51 exporting layers 7.8s done
+#51 exporting manifest sha256:28a9da80b738b3e4e00c5e6330101e4b3fb2f5b89795cacd24d9495f0c15ab8b 0.0s done
+#51 exporting config sha256:bdde60d4392605f407e4e1588032becce6c65853b4dbe2dae1f997f2b69d2965 0.0s done
+#51 exporting attestation manifest sha256:c6f0d476a52f13d967555b6e3acbbdc138e3a2029e19f417a16d1682c957e8ad 0.1s done
+#51 exporting manifest list sha256:ee638553cef44be5ec0258f83e297869a389f4334a3db9efe00125afa93a0a08
+#51 exporting manifest list sha256:ee638553cef44be5ec0258f83e297869a389f4334a3db9efe00125afa93a0a08 0.0s done
+#51 naming to docker.io/library/paysim-big-data-baseline-spark:latest done
+#51 unpacking to docker.io/library/paysim-big-data-baseline-spark:latest
+#51 unpacking to docker.io/library/paysim-big-data-baseline-spark:latest 1.3s done
+#51 DONE 9.4s
+
+#52 [spark] resolving provenance for metadata file
+#52 DONE 0.0s
+ paysim-big-data-baseline-hdfs-init  Built
+ paysim-big-data-baseline-namenode  Built
+ paysim-big-data-baseline-datanode  Built
+ paysim-big-data-baseline-spark  Built
+ paysim-big-data-baseline-streamlit  Built
+ paysim-big-data-baseline-replayer  Built
+ Container paysim-big-data-baseline-kafka-1  Running
+ Container paysim-big-data-baseline-hdfs-init-1  Recreate
+ Container paysim-big-data-baseline-mongodb-1  Running
+ Container paysim-big-data-baseline-hdfs-init-1  Recreated
+ Container paysim-big-data-baseline-namenode-1  Recreate
+ Container paysim-big-data-baseline-namenode-1  Recreated
+ Container paysim-big-data-baseline-datanode-1  Recreate
+ Container paysim-big-data-baseline-datanode-1  Recreated
+ Container paysim-big-data-baseline-spark-1  Recreate
+ Container paysim-big-data-baseline-spark-1  Recreated
+ Container paysim-big-data-baseline-streamlit-1  Recreate
+ Container paysim-big-data-baseline-replayer-1  Recreate
+ Container paysim-big-data-baseline-streamlit-1  Recreated
+ Container paysim-big-data-baseline-replayer-1  Recreated
+ Container paysim-big-data-baseline-hdfs-init-1  Starting
+ Container paysim-big-data-baseline-kafka-1  Waiting
+ Container paysim-big-data-baseline-hdfs-init-1  Started
+ Container paysim-big-data-baseline-hdfs-init-1  Waiting
+ Container paysim-big-data-baseline-kafka-1  Healthy
+ Container paysim-big-data-baseline-kafka-init-1  Starting
+ Container paysim-big-data-baseline-hdfs-init-1  Exited
+ Container paysim-big-data-baseline-namenode-1  Starting
+ Container paysim-big-data-baseline-kafka-init-1  Started
+ Container paysim-big-data-baseline-namenode-1  Started
+ Container paysim-big-data-baseline-datanode-1  Starting
+ Container paysim-big-data-baseline-datanode-1  Started
+ Container paysim-big-data-baseline-kafka-init-1  Waiting
+ Container paysim-big-data-baseline-namenode-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-kafka-init-1  Exited
+ Container paysim-big-data-baseline-namenode-1  Healthy
+ Container paysim-big-data-baseline-spark-1  Starting
+ Container paysim-big-data-baseline-spark-1  Started
+ Container paysim-big-data-baseline-spark-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-spark-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-spark-1  Healthy
+ Container paysim-big-data-baseline-replayer-1  Starting
+ Container paysim-big-data-baseline-spark-1  Healthy
+ Container paysim-big-data-baseline-streamlit-1  Starting
+ Container paysim-big-data-baseline-replayer-1  Started
+ Container paysim-big-data-baseline-streamlit-1  Started
+ Container paysim-big-data-baseline-mongodb-1  Waiting
+ Container paysim-big-data-baseline-spark-1  Waiting
+ Container paysim-big-data-baseline-replayer-1  Waiting
+ Container paysim-big-data-baseline-kafka-1  Waiting
+ Container paysim-big-data-baseline-datanode-1  Waiting
+ Container paysim-big-data-baseline-namenode-1  Waiting
+ Container paysim-big-data-baseline-hdfs-init-1  Waiting
+ Container paysim-big-data-baseline-streamlit-1  Waiting
+ Container paysim-big-data-baseline-kafka-init-1  Waiting
+ Container paysim-big-data-baseline-namenode-1  Healthy
+ Container paysim-big-data-baseline-mongodb-1  Healthy
+ Container paysim-big-data-baseline-datanode-1  Healthy
+ Container paysim-big-data-baseline-spark-1  Healthy
+ Container paysim-big-data-baseline-kafka-1  Healthy
+ Container paysim-big-data-baseline-kafka-init-1  Exited
+ Container paysim-big-data-baseline-replayer-1  Healthy
+ Container paysim-big-data-baseline-hdfs-init-1  Exited
+ Container paysim-big-data-baseline-streamlit-1  Healthy
+Hệ thống đã sẵn sàng.
+Bảng điều khiển: http://127.0.0.1:8501
+Giao diện HDFS:  http://127.0.0.1:9870
+Giao diện Spark: http://127.0.0.1:4040

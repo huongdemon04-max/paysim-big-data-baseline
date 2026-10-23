@@ -1,0 +1,31 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_stop_failure_reset_cancel_and_reset_failure _______________
+
+    @pytest.mark.skipif(not shutil.which('powershell.exe') or not shutil.which('cmd.exe'), reason='Windows interop unavailable')
+    def test_stop_failure_reset_cancel_and_reset_failure():
+        root=Path(__file__).resolve().parents[1]
+        wtmp=subprocess.check_output(['powershell.exe','-NoProfile','-Command','[IO.Path]::GetTempPath()'],text=True).strip()
+        ltmp=wtmp if os.name == 'nt' else subprocess.check_output(['wslpath','-u',wtmp],text=True).strip()
+        results=[]
+        with tempfile.TemporaryDirectory(prefix='paysim batch ',dir=ltmp) as td:
+         p=Path(td)
+         for file in ['start.bat','stop.bat','reset.bat']:shutil.copy(root/file,p/file)
+    
+         win=td if os.name == 'nt' else subprocess.check_output(['wslpath','-w',td],text=True).strip()
+         source='public class Stub { public static int Main(string[] args) { return 7; } }'
+         subprocess.run(['powershell.exe','-NoProfile','-Command',f"Add-Type -TypeDefinition '{source}' -OutputAssembly '{win}\\docker.exe' -OutputType ConsoleApplication"],check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+         shutil.copy(p/'docker.exe', p/'powershell.exe')
+         for script,inputs,expected in [('start.bat','\n',7),('stop.bat','\n',1),('reset.bat','NO\n\n',0),('reset.bat','\n\n',0),('reset.bat','RESET\n\n',1)]:
+          (p/'runner.cmd').write_bytes((f'@echo off\r\nset "CONFIRMATION=RESET"\r\nset "PATH={win};%PATH%"\r\ncall "{win}\\{script}"\r\nexit /b %ERRORLEVEL%\r\n').encode())
+          r=subprocess.run(['cmd.exe','/d','/c',win+'\\runner.cmd'],input=inputs.encode(),stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=20)
+          results.append(dict(script=script,input=inputs.strip(),exit_code=r.returncode,expected=expected,output=r.stdout.decode('utf-8',errors='replace')))
+>         assert r.returncode==expected,results[-1]
+E         AssertionError: {'script': 'reset.bat', 'input': 'NO', 'exit_code': 49, 'expected': 0, ...}
+E         assert 49 == 0
+E          +  where 49 = CompletedProcess(args=['cmd.exe', '/d', '/c', 'C:\\Users\\Admin\\AppData\\Local\\Temp\\paysim batch q9xgtkd7\\runner.c...gnized as an internal or external command,\r\noperable program or batch file.\r\nPress any key to continue . . . \r\n").returncode
+
+/tmp/paysim-reset-before-l387iui9/tests/test_windows_batch.py:25: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../../../../../../tmp/paysim-reset-before-l387iui9/tests/test_windows_batch.py::test_stop_failure_reset_cancel_and_reset_failure
+1 failed in 2.18s

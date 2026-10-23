@@ -1,0 +1,10 @@
+{
+  "run_id": "run-20261023-160733",
+  "emitted": 300,
+  "processed": 300,
+  "instant_emission_rate": 9.999700946943928,
+  "batch_id": 544,
+  "processing_throughput": 14.856125087782203,
+  "aggregate_correctness": true,
+  "transformation_correctness": true
+}

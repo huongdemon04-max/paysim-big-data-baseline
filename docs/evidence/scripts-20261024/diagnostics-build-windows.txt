@@ -1,0 +1,89 @@
+PaySim startup diagnostics
+Compose startup exit code: 1
+Build/start output:
+#1 [internal] load local bake definitions
+#1 reading from stdin 708B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.failure
+#2 transferring dockerfile: 108B 0.0s done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.1s
+
+#5 [1/2] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#5 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.0s done
+#5 DONE 0.0s
+
+#5 [1/2] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#5 CACHED
+
+#6 [2/2] RUN echo TEST_BUILD_FAILURE >&2; exit 42
+#6 0.247 TEST_BUILD_FAILURE
+#6 ERROR: process "/bin/sh -c echo TEST_BUILD_FAILURE >&2; exit 42" did not complete successfully: exit code: 42
+------
+ > [2/2] RUN echo TEST_BUILD_FAILURE >&2; exit 42:
+0.247 TEST_BUILD_FAILURE
+------
+docker : Dockerfile.failure:2
+At C:\Users\Admin\AppData\Local\Temp\paysim script check 20261024\scripts\start.ps1:42 char:5
++     docker @ComposeArgs up -d --build --wait --wait-timeout 1200 2>&1 ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Dockerfile.failure:2:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+--------------------
+
+   1 |     FROM python:3.11-slim
+
+   2 | >>> RUN echo TEST_BUILD_FAILURE >&2; exit 42
+
+   3 |     
+
+--------------------
+
+failed to solve: process "/bin/sh -c echo TEST_BUILD_FAILURE >&2; exit 42" did not complete successfully: exit code: 42
+
+
+
+View build details: docker-desktop://dashboard/build/default/default/auws4jl5aab5wtihlzitoi32z
+
+2026-10-24T13:33:36.1432127+07:00
+Client:
+ Version:           28.4.0
+ API version:       1.51
+ Go version:        go1.24.7
+ Git commit:        d8eb465
+ Built:             Wed Sep  3 20:59:40 2025
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
+
+Server: Docker Desktop 4.47.0 (206054)
+ Engine:
+  Version:          28.4.0
+  API version:      1.51 (minimum version 1.24)
+  Go version:       go1.24.7
+  Git commit:       249d679
+  Built:            Wed Sep  3 20:57:37 2025
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.27
+  GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+ runc:
+  Version:          1.2.5
+  GitCommit:        v1.2.5-0-g59923ef
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+architecture=x86_64 cpus=8 memory=8328015872
+Selected platform: linux/amd64
+Compose files: compose -f docker-compose.yml
+CONTAINER           REPOSITORY          TAG                 PLATFORM            IMAGE ID            SIZE                CREATED
+NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS

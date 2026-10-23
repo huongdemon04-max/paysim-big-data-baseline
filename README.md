@@ -74,6 +74,9 @@ cả hai kiến trúc. Healthcheck đọc HTTP/JMX, không khởi động thêm 
 
 ## Giao diện
 
+- [Bài thực hành: ba phiên bản giao diện BEFORE/AFTER](docs/05_Huong_Dan_Cai_Tien_Dashboard.md)
+- [Biên bản kiểm thử và ảnh evidence gốc](docs/06_Kiem_Thu_Dashboard_Va_Khoi_Dong.md)
+
 - Dashboard: <http://127.0.0.1:8501>
 - HDFS: <http://127.0.0.1:9870>
 - Spark: <http://127.0.0.1:4040>
@@ -105,8 +108,9 @@ docker compose logs -f spark replayer streamlit
 `reset.sh` và `reset.bat` xóa các volume Kafka, HDFS và MongoDB của riêng
 baseline, nhưng không xóa `data/paysim.csv`. Chỉ reset khi chủ động muốn bỏ toàn bộ
 kết quả thực hành. Safe mode trong lúc khởi động không phải lý do để xóa dữ liệu.
-Nếu khởi động thất bại, script in lỗi và lưu `startup-diagnostics.txt` để gửi giảng
-viên; không cần chạy thêm lệnh thu thập log. Nếu metadata HDFS không đầy đủ, bản mới
+Nếu bước build/khởi động dịch vụ thất bại, script lưu `startup-output.log` và
+`startup-diagnostics.txt` để tra nguyên nhân. Đây là tệp chẩn đoán, không phải tên lỗi.
+Xem [hướng dẫn phân loại lỗi và kết quả kiểm thử script](docs/07_Kiem_Thu_Script_Va_Chan_Doan_Khoi_Dong.md). Nếu metadata HDFS không đầy đủ, bản mới
 dừng và báo lỗi thay vì tự format đè lên dữ liệu có thể khôi phục.
 
 Mặc định hệ thống phát liên tục 50 events/s, xử lý theo micro-batch 10 giây và

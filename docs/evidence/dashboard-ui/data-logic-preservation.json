@@ -1,0 +1,5 @@
+{
+  "result": "PASS",
+  "check": "All snapshot query and calculation assignments match the previous dashboard AST",
+  "assignment_count": 23
+}

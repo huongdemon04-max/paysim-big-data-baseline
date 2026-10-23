@@ -1,0 +1,804 @@
+Khởi động PaySim trên linux/amd64. Lần đầu có thể mất nhiều phút...
+#1 [internal] load local bake definitions
+#1 reading from stdin 3.84kB done
+#1 DONE 0.0s
+
+#2 [datanode internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 1.72kB done
+#2 DONE 0.2s
+
+#3 [replayer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 253B 0.0s done
+#3 DONE 0.2s
+
+#4 [streamlit internal] load build definition from Dockerfile
+#4 transferring dockerfile: 425B done
+#4 DONE 0.2s
+
+#5 [namenode internal] load metadata for docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#5 DONE 0.1s
+
+#6 [spark internal] load build definition from Dockerfile
+#6 transferring dockerfile: 813B done
+#6 DONE 0.2s
+
+#7 [hdfs-init internal] load metadata for docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#7 DONE 0.1s
+
+#8 [datanode internal] load .dockerignore
+#8 transferring context:
+#8 transferring context: 2B done
+#8 DONE 0.1s
+
+#9 [datanode distribution 1/1] FROM docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#9 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e 0.0s done
+#9 DONE 0.0s
+
+#10 [hdfs-init stage-1 1/7] FROM docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#10 resolve docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d 0.1s done
+#10 DONE 0.1s
+
+#11 [hdfs-init internal] load build context
+#11 transferring context: 1.60kB done
+#11 DONE 0.0s
+
+#12 [hdfs-init stage-1 3/7] COPY --from=distribution --chown=1000:100 /opt/hadoop/ /opt/hadoop/
+#12 CACHED
+
+#13 [hdfs-init stage-1 4/7] RUN rm -rf /opt/hadoop/lib/native
+#13 CACHED
+
+#14 [hdfs-init stage-1 2/7] RUN apt-get update     && apt-get install -y --no-install-recommends python3 procps     && rm -rf /var/lib/apt/lists/*     && if getent passwd 1000 >/dev/null; then          usermod --login hadoop --home /opt/hadoop --gid 100 "$(getent passwd 1000 | cut -d: -f1)";        else          useradd --uid 1000 --gid 100 --home-dir /opt/hadoop --no-create-home hadoop;        fi     && mkdir -p /data/name /data/data /tmp/hadoop-logs     && chown -R 1000:100 /data /tmp/hadoop-logs
+#14 CACHED
+
+#15 [hdfs-init stage-1 5/7] COPY entrypoint.sh /usr/local/bin/hdfs-entrypoint
+#15 CACHED
+
+#16 [datanode stage-1 6/7] COPY healthcheck.py /usr/local/bin/hdfs-healthcheck
+#16 DONE 0.0s
+
+#17 [datanode stage-1 7/7] RUN sed -i 's/\r$//' /usr/local/bin/hdfs-entrypoint     && chmod 755 /usr/local/bin/hdfs-entrypoint /usr/local/bin/hdfs-healthcheck
+#17 DONE 0.2s
+
+#18 [streamlit internal] load metadata for docker.io/library/python:3.11-slim
+#18 ...
+
+#17 [namenode stage-1 7/7] RUN sed -i 's/\r$//' /usr/local/bin/hdfs-entrypoint     && chmod 755 /usr/local/bin/hdfs-entrypoint /usr/local/bin/hdfs-healthcheck
+#17 DONE 0.2s
+
+#19 [datanode] exporting to image
+#19 exporting layers 0.2s done
+#19 exporting manifest sha256:e937ca49db692a091ea108cef5542584003843e3a68afa563f46dc71891834ee 0.1s done
+#19 exporting config sha256:2ee8146f02c148b6f4fb53a3ba401b1a4231cf74e49f50792068ac97a0bc5564 0.1s done
+#19 exporting attestation manifest sha256:222b5393890a357ed283fcafab353b29a2744f93bc95cba1e2705f63443b742e
+#19 ...
+
+#20 [spark internal] load metadata for docker.io/apache/spark:4.0.0
+#20 DONE 1.0s
+
+#19 [datanode] exporting to image
+#19 exporting attestation manifest sha256:222b5393890a357ed283fcafab353b29a2744f93bc95cba1e2705f63443b742e 0.2s done
+#19 exporting manifest list sha256:2002163daa2822f26b3ebd4d2a8bd1c1653e2f50fd0971de5a8d8fcec3882b65
+#19 ...
+
+#21 [spark internal] load .dockerignore
+#21 transferring context: 60B done
+#21 DONE 0.2s
+
+#22 [spark internal] load build context
+#22 DONE 0.0s
+
+#19 [datanode] exporting to image
+#19 exporting manifest list sha256:2002163daa2822f26b3ebd4d2a8bd1c1653e2f50fd0971de5a8d8fcec3882b65 0.1s done
+#19 naming to docker.io/library/paysim-script-windows-20261024-datanode:latest 0.0s done
+#19 unpacking to docker.io/library/paysim-script-windows-20261024-datanode:latest
+#19 ...
+
+#18 [streamlit internal] load metadata for docker.io/library/python:3.11-slim
+#18 DONE 1.3s
+
+#23 [spark 1/6] FROM docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00
+#23 resolve docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00 0.2s done
+#23 DONE 0.2s
+
+#24 [streamlit internal] load .dockerignore
+#24 transferring context: 60B done
+#24 DONE 0.2s
+
+#19 [datanode] exporting to image
+#19 unpacking to docker.io/library/paysim-script-windows-20261024-datanode:latest 0.2s done
+#19 DONE 0.9s
+
+#25 [replayer internal] load .dockerignore
+#25 transferring context: 60B done
+#25 DONE 0.2s
+
+#26 [hdfs-init] exporting to image
+#26 exporting layers 0.2s done
+#26 exporting manifest sha256:09d30bb0969fe73c896a2c8d2183759468bf4e9012c71175cf6a85cb1785cd72 0.1s done
+#26 exporting config sha256:5ebf0b0376e0bd5b441c41f13db0d8a57b36c2f85ba9b0566ac9443f27ebe882 0.1s done
+#26 exporting attestation manifest sha256:e4aba36c45205a3d62a2543437a246b339337810be90aa5dc97530335c76493f 0.2s done
+#26 exporting manifest list sha256:fbf18240dde509a147a4a4835608421aeb23cdf415871eb29c7cc6839d281b12 0.1s done
+#26 naming to docker.io/library/paysim-script-windows-20261024-hdfs-init:latest 0.0s done
+#26 unpacking to docker.io/library/paysim-script-windows-20261024-hdfs-init:latest 0.2s done
+#26 DONE 0.9s
+
+#27 [streamlit internal] load build context
+#27 DONE 0.0s
+
+#28 [namenode] exporting to image
+#28 exporting layers 0.2s done
+#28 exporting manifest sha256:8573561d34ae0930db24582d5b8c85ea266aadcab5d783d455295190ba9e1d6e 0.1s done
+#28 exporting config sha256:c69906e49add6ece2515a5ffbb700f21abc271e9aec311a4ede66a96058d72b0 0.1s done
+#28 exporting attestation manifest sha256:bbe3ca367c0f739572bd4d46044c95c6a53311a4af3571ae1a7f540c650500bf 0.2s done
+#28 exporting manifest list sha256:a26ffb7d3b40bc85a737b737237057e794e1e090ffbb0cbb0ae8fb236346d5e9 0.1s done
+#28 naming to docker.io/library/paysim-script-windows-20261024-namenode:latest 0.0s done
+#28 unpacking to docker.io/library/paysim-script-windows-20261024-namenode:latest 0.2s done
+#28 DONE 1.0s
+
+#29 [replayer internal] load build context
+#29 ...
+
+#22 [spark internal] load build context
+#22 transferring context: 36.64kB 0.0s done
+#22 DONE 0.1s
+
+#30 [spark 2/6] RUN mkdir -p /opt/app /opt/spark/.ivy2 /opt/spark/home     && chown -R spark:spark /opt/app /opt/spark/.ivy2 /opt/spark/home     && pip3 install --no-cache-dir numpy==1.26.4 pymongo==4.10.1
+#30 CACHED
+
+#29 [replayer internal] load build context
+#29 transferring context: 12.60kB done
+#29 DONE 0.2s
+
+#31 [replayer 1/6] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#31 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.2s done
+#31 DONE 0.2s
+
+#32 [replayer 2/6] WORKDIR /opt/app
+#32 CACHED
+
+#27 [streamlit internal] load build context
+#27 transferring context: 48.42kB 0.0s done
+#27 DONE 0.1s
+
+#33 [spark 3/6] COPY --chown=spark:spark package_warmup.py pipeline.py /opt/app/
+#33 DONE 0.3s
+
+#34 [replayer 3/5] COPY requirements.txt .
+#34 DONE 0.2s
+
+#35 [replayer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#35 ...
+
+#36 [streamlit 3/6] COPY requirements.txt .
+#36 DONE 0.2s
+
+#37 [spark 4/6] COPY --chown=spark:spark --chmod=755 entrypoint.sh /opt/app/entrypoint.sh
+#37 DONE 0.3s
+
+#38 [datanode] resolving provenance for metadata file
+#38 DONE 0.2s
+
+#39 [hdfs-init] resolving provenance for metadata file
+#39 DONE 0.1s
+
+#40 [namenode] resolving provenance for metadata file
+#40 DONE 0.0s
+
+#41 [spark 5/6] RUN python3 -m compileall -q /opt/app
+#41 DONE 0.4s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 1.880 Collecting streamlit==1.50.0 (from -r requirements.txt (line 1))
+#42 2.257   Downloading streamlit-1.50.0-py3-none-any.whl.metadata (9.5 kB)
+#42 3.020 Collecting pymongo==4.10.1 (from -r requirements.txt (line 2))
+#42 3.139   Downloading pymongo-4.10.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (22 kB)
+#42 3.435 Collecting pandas==2.2.3 (from -r requirements.txt (line 3))
+#42 3.600   Downloading pandas-2.2.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (89 kB)
+#42 3.792      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 89.9/89.9 kB 420.8 kB/s eta 0:00:00
+#42 3.908 Collecting altair==5.5.0 (from -r requirements.txt (line 4))
+#42 4.028   Downloading altair-5.5.0-py3-none-any.whl.metadata (11 kB)
+#42 4.168 Collecting blinker<2,>=1.5.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 4.288   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+#42 4.402 Collecting cachetools<7,>=4.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 4.523   Downloading cachetools-6.2.6-py3-none-any.whl.metadata (5.6 kB)
+#42 4.636 Collecting click<9,>=7.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 4.757   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#42 ...
+
+#35 [replayer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#35 2.193 Collecting confluent-kafka==2.8.0 (from -r requirements.txt (line 1))
+#35 2.371   Downloading confluent_kafka-2.8.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (21 kB)
+#35 2.928 Collecting pymongo==4.10.1 (from -r requirements.txt (line 2))
+#35 2.984   Downloading pymongo-4.10.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (22 kB)
+#35 3.197 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.10.1->-r requirements.txt (line 2))
+#35 3.251   Downloading dnspython-2.9.0-py3-none-any.whl.metadata (5.7 kB)
+#35 3.322 Downloading confluent_kafka-2.8.0-cp311-cp311-manylinux_2_28_x86_64.whl (3.8 MB)
+#35 3.811    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.8/3.8 MB 7.9 MB/s eta 0:00:00
+#35 3.872 Downloading pymongo-4.10.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.7 MB)
+#35 4.001    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 12.9 MB/s eta 0:00:00
+#35 4.059 Downloading dnspython-2.9.0-py3-none-any.whl (354 kB)
+#35 4.085    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 354.8/354.8 kB 15.1 MB/s eta 0:00:00
+#35 4.219 Installing collected packages: dnspython, confluent-kafka, pymongo
+#35 4.778 Successfully installed confluent-kafka-2.8.0 dnspython-2.9.0 pymongo-4.10.1
+#35 4.778 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#35 5.143 
+#35 5.143 [notice] A new release of pip is available: 24.0 -> 26.2.2
+#35 5.143 [notice] To update, run: pip install --upgrade pip
+#35 DONE 5.5s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 5.186 Collecting numpy<3,>=1.23 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 ...
+
+#43 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#43 0.469 WARNING: Using incubator modules: jdk.incubator.vector
+#43 1.178 Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+#43 1.186 26/10/24 06:34:35 WARN Utils: Your hostname, buildkitsandbox, resolves to a loopback address: 127.0.0.1; using 172.17.0.5 instead (on interface eth0)
+#43 1.189 26/10/24 06:34:35 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+#43 1.372 :: loading settings :: url = jar:file:/opt/spark/jars/ivy-2.5.3.jar!/org/apache/ivy/core/settings/ivysettings.xml
+#43 1.434 Ivy Default Cache set to: /opt/spark/.ivy2/cache
+#43 1.434 The jars for the packages stored in: /opt/spark/.ivy2/jars
+#43 1.438 org.apache.spark#spark-sql-kafka-0-10_2.13 added as a dependency
+#43 1.439 :: resolving dependencies :: org.apache.spark#spark-submit-parent-292202dd-b36b-4fc4-98dd-ba13248e9a31;1.0
+#43 1.439 	confs: [default]
+#43 3.854 	found org.apache.spark#spark-sql-kafka-0-10_2.13;4.0.0 in central
+#43 4.076 	found org.apache.spark#spark-token-provider-kafka-0-10_2.13;4.0.0 in central
+#43 4.262 	found org.apache.kafka#kafka-clients;3.9.0 in central
+#43 4.435 	found org.lz4#lz4-java;1.8.0 in central
+#43 4.636 	found org.xerial.snappy#snappy-java;1.1.10.7 in central
+#43 ...
+
+#44 [replayer 5/5] COPY app.py .
+#44 DONE 0.1s
+
+#45 [replayer] exporting to image
+#45 exporting layers
+#45 exporting layers 0.8s done
+#45 exporting manifest sha256:4c5c7d75b8ae9f7b3458b77278b616dafc77da1b2120a6448297bf8bbda06520 0.0s done
+#45 exporting config sha256:4f8531a9de011c4410799ddef1f3dc140ae3ecb7c3ac131a70e50b330daff48e 0.0s done
+#45 exporting attestation manifest sha256:5a4b90b55b44aff1572dfb2cd8084d4f6c32c8401560b514f8ccd5c75d2744eb 0.0s done
+#45 exporting manifest list sha256:95273170535b861ab6fa7014b408b8fef2cf1ecf6548d56713af9717b206b6b9
+#45 exporting manifest list sha256:95273170535b861ab6fa7014b408b8fef2cf1ecf6548d56713af9717b206b6b9 0.0s done
+#45 naming to docker.io/library/paysim-script-windows-20261024-replayer:latest done
+#45 unpacking to docker.io/library/paysim-script-windows-20261024-replayer:latest
+#45 unpacking to docker.io/library/paysim-script-windows-20261024-replayer:latest 0.2s done
+#45 DONE 1.3s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 5.306   Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+#42 5.429 Collecting packaging<26,>=20 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 5.549   Downloading packaging-25.0-py3-none-any.whl.metadata (3.3 kB)
+#42 5.878 Collecting pillow<12,>=7.1.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 5.999   Downloading pillow-11.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.0 kB)
+#42 6.296 Collecting protobuf<7,>=3.20 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 6.415   Downloading protobuf-6.33.6-cp39-abi3-manylinux2014_x86_64.whl.metadata (593 bytes)
+#42 6.701 Collecting pyarrow>=7.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 ...
+
+#46 [replayer] resolving provenance for metadata file
+#46 DONE 0.0s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 6.823   Downloading pyarrow-26.0.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+#42 6.945 Collecting requests<3,>=2.27 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 7.065   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#42 7.192 Collecting tenacity<10,>=8.1.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 7.314   Downloading tenacity-9.2.1-py3-none-any.whl.metadata (1.4 kB)
+#42 7.411 Collecting toml<2,>=0.10.1 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 7.530   Downloading toml-0.10.2-py2.py3-none-any.whl.metadata (7.1 kB)
+#42 7.649 Collecting typing-extensions<5,>=4.4.0 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 7.768   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#42 7.917 Collecting watchdog<7,>=2.1.5 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 8.037   Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl.metadata (44 kB)
+#42 8.096      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.3/44.3 kB 869.3 kB/s eta 0:00:00
+#42 8.219 Collecting gitpython!=3.1.19,<4,>=3.0.7 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 8.339   Downloading gitpython-3.2.1-py3-none-any.whl.metadata (13 kB)
+#42 8.458 Collecting pydeck<1,>=0.8.0b4 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 8.578   Downloading pydeck-0.9.3-py2.py3-none-any.whl.metadata (4.2 kB)
+#42 8.720 Collecting tornado!=6.5.0,<7,>=6.0.3 (from streamlit==1.50.0->-r requirements.txt (line 1))
+#42 8.840   Downloading tornado-6.6-cp311-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (2.6 kB)
+#42 8.961 Collecting dnspython<3.0.0,>=1.16.0 (from pymongo==4.10.1->-r requirements.txt (line 2))
+#42 9.082   Downloading dnspython-2.9.0-py3-none-any.whl.metadata (5.7 kB)
+#42 9.228 Collecting python-dateutil>=2.8.2 (from pandas==2.2.3->-r requirements.txt (line 3))
+#42 9.352   Downloading python_dateutil-3.0.0-py2.py3-none-any.whl.metadata (8.2 kB)
+#42 9.513 Collecting pytz>=2020.1 (from pandas==2.2.3->-r requirements.txt (line 3))
+#42 9.634   Downloading pytz-2026.5-py2.py3-none-any.whl.metadata (22 kB)
+#42 9.770 Collecting tzdata>=2022.7 (from pandas==2.2.3->-r requirements.txt (line 3))
+#42 9.888   Downloading tzdata-2026.5-py2.py3-none-any.whl.metadata (1.4 kB)
+#42 10.02 Collecting jinja2 (from altair==5.5.0->-r requirements.txt (line 4))
+#42 10.13   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#42 10.25 Collecting jsonschema>=3.0 (from altair==5.5.0->-r requirements.txt (line 4))
+#42 10.37   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#42 10.54 Collecting narwhals>=1.14.2 (from altair==5.5.0->-r requirements.txt (line 4))
+#42 10.66   Downloading narwhals-2.27.1-py3-none-any.whl.metadata (15 kB)
+#42 10.89 Collecting gitdb<5,>=4.0.1 (from gitpython!=3.1.19,<4,>=3.0.7->streamlit==1.50.0->-r requirements.txt (line 1))
+#42 11.01   Downloading gitdb-4.0.12-py3-none-any.whl.metadata (1.2 kB)
+#42 11.14 Collecting attrs>=22.2.0 (from jsonschema>=3.0->altair==5.5.0->-r requirements.txt (line 4))
+#42 11.26   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#42 11.37 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=3.0->altair==5.5.0->-r requirements.txt (line 4))
+#42 11.49   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#42 11.64 Collecting referencing>=0.28.4 (from jsonschema>=3.0->altair==5.5.0->-r requirements.txt (line 4))
+#42 11.76   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#42 12.40 Collecting rpds-py>=0.25.0 (from jsonschema>=3.0->altair==5.5.0->-r requirements.txt (line 4))
+#42 12.52   Downloading rpds_py-2026.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#42 12.73 Collecting MarkupSafe>=2.0 (from jinja2->altair==5.5.0->-r requirements.txt (line 4))
+#42 12.85   Downloading markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#42 12.97 Collecting six>=1.6 (from python-dateutil>=2.8.2->pandas==2.2.3->-r requirements.txt (line 3))
+#42 13.09   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#42 13.53 Collecting charset_normalizer<4,>=2 (from requests<3,>=2.27->streamlit==1.50.0->-r requirements.txt (line 1))
+#42 13.68   Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#42 13.75      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.4/46.4 kB 866.3 kB/s eta 0:00:00
+#42 13.87 Collecting idna<4,>=2.5 (from requests<3,>=2.27->streamlit==1.50.0->-r requirements.txt (line 1))
+#42 14.02   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#42 14.19 Collecting urllib3<3,>=1.26 (from requests<3,>=2.27->streamlit==1.50.0->-r requirements.txt (line 1))
+#42 14.31   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#42 14.48 Collecting certifi>=2023.5.7 (from requests<3,>=2.27->streamlit==1.50.0->-r requirements.txt (line 1))
+#42 14.64   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#42 14.81 Collecting smmap<6,>=3.0.1 (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit==1.50.0->-r requirements.txt (line 1))
+#42 14.93   Downloading smmap-5.0.3-py3-none-any.whl.metadata (4.6 kB)
+#42 15.11 Downloading streamlit-1.50.0-py3-none-any.whl (10.1 MB)
+#42 ...
+
+#43 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#43 6.322 	found org.slf4j#slf4j-api;2.0.16 in central
+#43 8.130 	found org.apache.hadoop#hadoop-client-runtime;3.4.1 in central
+#43 8.270 	found org.apache.hadoop#hadoop-client-api;3.4.1 in central
+#43 8.492 	found com.google.code.findbugs#jsr305;3.0.0 in central
+#43 8.665 	found org.scala-lang.modules#scala-parallel-collections_2.13;1.2.0 in central
+#43 10.64 	found org.apache.commons#commons-pool2;2.12.0 in central
+#43 10.69 downloading https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.13/4.0.0/spark-sql-kafka-0-10_2.13-4.0.0.jar ...
+#43 10.83 	[SUCCESSFUL ] org.apache.spark#spark-sql-kafka-0-10_2.13;4.0.0!spark-sql-kafka-0-10_2.13.jar (183ms)
+#43 10.87 downloading https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.13/4.0.0/spark-token-provider-kafka-0-10_2.13-4.0.0.jar ...
+#43 10.92 	[SUCCESSFUL ] org.apache.spark#spark-token-provider-kafka-0-10_2.13;4.0.0!spark-token-provider-kafka-0-10_2.13.jar (94ms)
+#43 10.97 downloading https://repo1.maven.org/maven2/org/scala-lang/modules/scala-parallel-collections_2.13/1.2.0/scala-parallel-collections_2.13-1.2.0.jar ...
+#43 11.11 	[SUCCESSFUL ] org.scala-lang.modules#scala-parallel-collections_2.13;1.2.0!scala-parallel-collections_2.13.jar (192ms)
+#43 11.16 downloading https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.9.0/kafka-clients-3.9.0.jar ...
+#43 12.01 	[SUCCESSFUL ] org.apache.kafka#kafka-clients;3.9.0!kafka-clients.jar (894ms)
+#43 12.06 downloading https://repo1.maven.org/maven2/com/google/code/findbugs/jsr305/3.0.0/jsr305-3.0.0.jar ...
+#43 12.11 	[SUCCESSFUL ] com.google.code.findbugs#jsr305;3.0.0!jsr305.jar (98ms)
+#43 12.15 downloading https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.12.0/commons-pool2-2.12.0.jar ...
+#43 12.21 	[SUCCESSFUL ] org.apache.commons#commons-pool2;2.12.0!commons-pool2.jar (100ms)
+#43 12.25 downloading https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-runtime/3.4.1/hadoop-client-runtime-3.4.1.jar ...
+#43 14.73 	[SUCCESSFUL ] org.apache.hadoop#hadoop-client-runtime;3.4.1!hadoop-client-runtime.jar (2520ms)
+#43 14.78 downloading https://repo1.maven.org/maven2/org/lz4/lz4-java/1.8.0/lz4-java-1.8.0.jar ...
+#43 14.88 	[SUCCESSFUL ] org.lz4#lz4-java;1.8.0!lz4-java.jar (149ms)
+#43 14.92 downloading https://repo1.maven.org/maven2/org/xerial/snappy/snappy-java/1.1.10.7/snappy-java-1.1.10.7.jar ...
+#43 15.15 	[SUCCESSFUL ] org.xerial.snappy#snappy-java;1.1.10.7!snappy-java.jar(bundle) (275ms)
+#43 15.20 downloading https://repo1.maven.org/maven2/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar ...
+#43 15.25 	[SUCCESSFUL ] org.slf4j#slf4j-api;2.0.16!slf4j-api.jar (92ms)
+#43 15.29 downloading https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-client-api/3.4.1/hadoop-client-api-3.4.1.jar ...
+#43 19.69 	[SUCCESSFUL ] org.apache.hadoop#hadoop-client-api;3.4.1!hadoop-client-api.jar (4439ms)
+#43 19.69 :: resolution report :: resolve 9205ms :: artifacts dl 9042ms
+#43 19.69 	:: modules in use:
+#43 19.69 	com.google.code.findbugs#jsr305;3.0.0 from central in [default]
+#43 19.69 	org.apache.commons#commons-pool2;2.12.0 from central in [default]
+#43 19.69 	org.apache.hadoop#hadoop-client-api;3.4.1 from central in [default]
+#43 19.69 	org.apache.hadoop#hadoop-client-runtime;3.4.1 from central in [default]
+#43 19.69 	org.apache.kafka#kafka-clients;3.9.0 from central in [default]
+#43 19.69 	org.apache.spark#spark-sql-kafka-0-10_2.13;4.0.0 from central in [default]
+#43 19.69 	org.apache.spark#spark-token-provider-kafka-0-10_2.13;4.0.0 from central in [default]
+#43 19.69 	org.lz4#lz4-java;1.8.0 from central in [default]
+#43 19.69 	org.scala-lang.modules#scala-parallel-collections_2.13;1.2.0 from central in [default]
+#43 19.69 	org.slf4j#slf4j-api;2.0.16 from central in [default]
+#43 19.69 	org.xerial.snappy#snappy-java;1.1.10.7 from central in [default]
+#43 19.69 	---------------------------------------------------------------------
+#43 19.69 	|                  |            modules            ||   artifacts   |
+#43 19.69 	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+#43 19.69 	---------------------------------------------------------------------
+#43 19.69 	|      default     |   11  |   11  |   11  |   0   ||   11  |   11  |
+#43 19.69 	---------------------------------------------------------------------
+#43 19.69 :: retrieving :: org.apache.spark#spark-submit-parent-292202dd-b36b-4fc4-98dd-ba13248e9a31
+#43 19.69 	confs: [default]
+#43 19.74 	11 artifacts copied, 0 already retrieved (62673kB/54ms)
+#43 19.91 26/10/24 06:34:54 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+#43 20.78 Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+#43 20.79 26/10/24 06:34:55 INFO SparkContext: Running Spark version 4.0.0
+#43 20.79 26/10/24 06:34:55 INFO SparkContext: OS info Linux, 6.6.87.2-microsoft-standard-WSL2, amd64
+#43 20.79 26/10/24 06:34:55 INFO SparkContext: Java version 17.0.15
+#43 20.82 26/10/24 06:34:55 INFO ResourceUtils: ==============================================================
+#43 20.82 26/10/24 06:34:55 INFO ResourceUtils: No custom resources configured for spark.driver.
+#43 20.82 26/10/24 06:34:55 INFO ResourceUtils: ==============================================================
+#43 20.82 26/10/24 06:34:55 INFO SparkContext: Submitted application: package-warmup
+#43 20.84 26/10/24 06:34:55 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+#43 20.85 26/10/24 06:34:55 INFO ResourceProfile: Limiting resource is cpu
+#43 20.85 26/10/24 06:34:55 INFO ResourceProfileManager: Added ResourceProfile id: 0
+#43 20.90 26/10/24 06:34:55 INFO SecurityManager: Changing view acls to: spark
+#43 20.90 26/10/24 06:34:55 INFO SecurityManager: Changing modify acls to: spark
+#43 20.90 26/10/24 06:34:55 INFO SecurityManager: Changing view acls groups to: spark
+#43 20.90 26/10/24 06:34:55 INFO SecurityManager: Changing modify acls groups to: spark
+#43 20.90 26/10/24 06:34:55 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY; RPC SSL disabled
+#43 21.07 26/10/24 06:34:55 INFO Utils: Successfully started service 'sparkDriver' on port 43199.
+#43 21.09 26/10/24 06:34:55 INFO SparkEnv: Registering MapOutputTracker
+#43 21.11 26/10/24 06:34:55 INFO SparkEnv: Registering BlockManagerMaster
+#43 21.12 26/10/24 06:34:55 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+#43 21.12 26/10/24 06:34:55 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+#43 21.12 26/10/24 06:34:55 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+#43 21.14 26/10/24 06:34:55 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-24c1b6a2-6119-4592-a992-2bf02d1abbcf
+#43 21.17 26/10/24 06:34:55 INFO SparkEnv: Registering OutputCommitCoordinator
+#43 21.28 26/10/24 06:34:56 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+#43 21.34 26/10/24 06:34:56 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar at spark://172.17.0.5:43199/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar at spark://172.17.0.5:43199/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar at spark://172.17.0.5:43199/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar at spark://172.17.0.5:43199/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar at spark://172.17.0.5:43199/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar at spark://172.17.0.5:43199/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar at spark://172.17.0.5:43199/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar at spark://172.17.0.5:43199/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar at spark://172.17.0.5:43199/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar at spark://172.17.0.5:43199/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added JAR file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar at spark://172.17.0.5:43199/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar at file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.38 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar
+#43 21.39 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar at file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.39 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar
+#43 21.40 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar at file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792823695534
+#43 21.40 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+#43 21.40 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar at file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792823695534
+#43 21.40 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.kafka_kafka-clients-3.9.0.jar
+#43 21.41 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar at file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792823695534
+#43 21.41 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/com.google.code.findbugs_jsr305-3.0.0.jar
+#43 21.41 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar at file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792823695534
+#43 21.41 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.commons_commons-pool2-2.12.0.jar
+#43 21.41 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar at file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792823695534
+#43 21.41 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+#43 21.45 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar at file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792823695534
+#43 21.45 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.lz4_lz4-java-1.8.0.jar
+#43 21.45 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar at file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792823695534
+#43 21.45 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.xerial.snappy_snappy-java-1.1.10.7.jar
+#43 21.46 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar at file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792823695534
+#43 21.46 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.slf4j_slf4j-api-2.0.16.jar
+#43 21.46 26/10/24 06:34:56 INFO SparkContext: Added file file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar at file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792823695534
+#43 21.46 26/10/24 06:34:56 INFO Utils: Copying /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+#43 21.51 26/10/24 06:34:56 INFO SecurityManager: Changing view acls to: spark
+#43 21.51 26/10/24 06:34:56 INFO SecurityManager: Changing modify acls to: spark
+#43 21.51 26/10/24 06:34:56 INFO SecurityManager: Changing view acls groups to: spark
+#43 21.51 26/10/24 06:34:56 INFO SecurityManager: Changing modify acls groups to: spark
+#43 21.51 26/10/24 06:34:56 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY; RPC SSL disabled
+#43 21.62 26/10/24 06:34:56 INFO Executor: Starting executor ID driver on host 172.17.0.5
+#43 21.62 26/10/24 06:34:56 INFO Executor: OS info Linux, 6.6.87.2-microsoft-standard-WSL2, amd64
+#43 21.62 26/10/24 06:34:56 INFO Executor: Java version 17.0.15
+#43 21.63 26/10/24 06:34:56 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+#43 21.63 26/10/24 06:34:56 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@204a0c73 for default.
+#43 21.64 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792823695534
+#43 21.66 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.apache.kafka_kafka-clients-3.9.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.kafka_kafka-clients-3.9.0.jar
+#43 21.67 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792823695534
+#43 21.68 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+#43 21.68 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792823695534
+#43 21.68 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.lz4_lz4-java-1.8.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.lz4_lz4-java-1.8.0.jar
+#43 21.68 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792823695534
+#43 21.68 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/com.google.code.findbugs_jsr305-3.0.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/com.google.code.findbugs_jsr305-3.0.0.jar
+#43 21.69 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792823695534
+#43 21.69 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.apache.commons_commons-pool2-2.12.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.commons_commons-pool2-2.12.0.jar
+#43 21.69 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.69 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar
+#43 21.70 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792823695534
+#43 21.70 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.slf4j_slf4j-api-2.0.16.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.slf4j_slf4j-api-2.0.16.jar
+#43 21.70 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792823695534
+#43 21.70 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+#43 21.70 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792823695534
+#43 21.70 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.xerial.snappy_snappy-java-1.1.10.7.jar
+#43 21.71 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.71 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar
+#43 21.71 26/10/24 06:34:56 INFO Executor: Fetching file:///opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792823695534
+#43 21.73 26/10/24 06:34:56 INFO Utils: /opt/spark/.ivy2/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+#43 21.73 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.apache.kafka_kafka-clients-3.9.0.jar with timestamp 1792823695534
+#43 21.76 26/10/24 06:34:56 INFO TransportClientFactory: Successfully created connection to /172.17.0.5:43199 after 19 ms (0 ms spent in bootstraps)
+#43 21.77 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.apache.kafka_kafka-clients-3.9.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp11412559798282472977.tmp
+#43 21.82 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp11412559798282472977.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.kafka_kafka-clients-3.9.0.jar
+#43 21.82 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.kafka_kafka-clients-3.9.0.jar to class loader default
+#43 21.82 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar with timestamp 1792823695534
+#43 21.82 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp11050731311674712478.tmp
+#43 21.91 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp11050731311674712478.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar
+#43 21.92 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-runtime-3.4.1.jar to class loader default
+#43 21.92 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 21.92 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp7454306348813491068.tmp
+#43 21.92 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp7454306348813491068.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar
+#43 21.92 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-token-provider-kafka-0-10_2.13-4.0.0.jar to class loader default
+#43 21.92 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/com.google.code.findbugs_jsr305-3.0.0.jar with timestamp 1792823695534
+#43 21.92 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/com.google.code.findbugs_jsr305-3.0.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp8446353920092480027.tmp
+#43 21.93 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp8446353920092480027.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/com.google.code.findbugs_jsr305-3.0.0.jar
+#43 21.93 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/com.google.code.findbugs_jsr305-3.0.0.jar to class loader default
+#43 21.93 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.slf4j_slf4j-api-2.0.16.jar with timestamp 1792823695534
+#43 21.93 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.slf4j_slf4j-api-2.0.16.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp351461213325743975.tmp
+#43 21.93 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp351461213325743975.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.slf4j_slf4j-api-2.0.16.jar
+#43 21.93 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.slf4j_slf4j-api-2.0.16.jar to class loader default
+#43 21.93 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.apache.commons_commons-pool2-2.12.0.jar with timestamp 1792823695534
+#43 21.93 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.apache.commons_commons-pool2-2.12.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp1805189686059352316.tmp
+#43 21.94 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp1805189686059352316.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.commons_commons-pool2-2.12.0.jar
+#43 21.94 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.commons_commons-pool2-2.12.0.jar to class loader default
+#43 21.94 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar with timestamp 1792823695534
+#43 21.94 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.xerial.snappy_snappy-java-1.1.10.7.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp16541349510537980430.tmp
+#43 21.95 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp16541349510537980430.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.xerial.snappy_snappy-java-1.1.10.7.jar
+#43 21.95 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.xerial.snappy_snappy-java-1.1.10.7.jar to class loader default
+#43 21.95 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar with timestamp 1792823695534
+#43 21.95 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp811203555054312865.tmp
+#43 21.96 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp811203555054312865.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar
+#43 21.96 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.scala-lang.modules_scala-parallel-collections_2.13-1.2.0.jar to class loader default
+#43 21.96 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.lz4_lz4-java-1.8.0.jar with timestamp 1792823695534
+#43 21.96 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.lz4_lz4-java-1.8.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp2772634191780193449.tmp
+#43 21.97 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp2772634191780193449.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.lz4_lz4-java-1.8.0.jar
+#43 21.97 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.lz4_lz4-java-1.8.0.jar to class loader default
+#43 21.97 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar with timestamp 1792823695534
+#43 21.97 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.apache.hadoop_hadoop-client-api-3.4.1.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp1139980886981529369.tmp
+#43 22.01 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp1139980886981529369.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-api-3.4.1.jar
+#43 22.03 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.hadoop_hadoop-client-api-3.4.1.jar to class loader default
+#43 22.03 26/10/24 06:34:56 INFO Executor: Fetching spark://172.17.0.5:43199/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar with timestamp 1792823695534
+#43 22.03 26/10/24 06:34:56 INFO Utils: Fetching spark://172.17.0.5:43199/jars/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp3717635949059579570.tmp
+#43 22.03 26/10/24 06:34:56 INFO Utils: /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/fetchFileTemp3717635949059579570.tmp has been previously copied to /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar
+#43 22.03 26/10/24 06:34:56 INFO Executor: Adding file:/tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/userFiles-abebe83b-ea9b-4af1-82bf-e2e84aa1482d/org.apache.spark_spark-sql-kafka-0-10_2.13-4.0.0.jar to class loader default
+#43 22.04 26/10/24 06:34:56 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 37399.
+#43 22.04 26/10/24 06:34:56 INFO NettyBlockTransferService: Server created on 172.17.0.5:37399
+#43 22.05 26/10/24 06:34:56 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+#43 22.06 26/10/24 06:34:56 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 172.17.0.5, 37399, None)
+#43 22.06 26/10/24 06:34:56 INFO BlockManagerMasterEndpoint: Registering block manager 172.17.0.5:37399 with 434.4 MiB RAM, BlockManagerId(driver, 172.17.0.5, 37399, None)
+#43 22.07 26/10/24 06:34:56 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 172.17.0.5, 37399, None)
+#43 22.07 26/10/24 06:34:56 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 172.17.0.5, 37399, None)
+#43 23.92 26/10/24 06:34:58 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+#43 23.92 26/10/24 06:34:58 INFO SharedState: Warehouse path is 'file:/opt/spark/work-dir/spark-warehouse'.
+#43 25.61 26/10/24 06:35:00 INFO CodeGenerator: Code generated in 184.1074 ms
+#43 25.73 26/10/24 06:35:00 INFO SparkContext: Starting job: $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768
+#43 25.74 26/10/24 06:35:00 INFO DAGScheduler: Got job 0 ($anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768) with 1 output partitions
+#43 25.75 26/10/24 06:35:00 INFO DAGScheduler: Final stage: ResultStage 0 ($anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768)
+#43 25.75 26/10/24 06:35:00 INFO DAGScheduler: Parents of final stage: List()
+#43 25.75 26/10/24 06:35:00 INFO DAGScheduler: Missing parents: List()
+#43 25.75 26/10/24 06:35:00 INFO DAGScheduler: Submitting ResultStage 0 (MapPartitionsRDD[3] at $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768), which has no missing parents
+#43 25.78 26/10/24 06:35:00 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+#43 25.80 26/10/24 06:35:00 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 14.2 KiB, free 434.4 MiB)
+#43 25.83 26/10/24 06:35:00 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 6.2 KiB, free 434.4 MiB)
+#43 25.84 26/10/24 06:35:00 INFO SparkContext: Created broadcast 0 from broadcast at DAGScheduler.scala:1676
+#43 25.86 26/10/24 06:35:00 INFO DAGScheduler: Submitting 1 missing tasks from ResultStage 0 (MapPartitionsRDD[3] at $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768) (first 15 tasks are for partitions Vector(0))
+#43 25.86 26/10/24 06:35:00 INFO TaskSchedulerImpl: Adding task set 0.0 with 1 tasks resource profile 0
+#43 25.89 26/10/24 06:35:00 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0) (172.17.0.5,executor driver, partition 0, PROCESS_LOCAL, 12272 bytes) 
+#43 25.91 26/10/24 06:35:00 INFO Executor: Running task 0.0 in stage 0.0 (TID 0)
+#43 26.00 26/10/24 06:35:00 INFO CodeGenerator: Code generated in 28.982696 ms
+#43 26.02 26/10/24 06:35:00 INFO Executor: Finished task 0.0 in stage 0.0 (TID 0). 1845 bytes result sent to driver
+#43 26.04 26/10/24 06:35:00 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 159 ms on 172.17.0.5 (executor driver) (1/1)
+#43 26.04 26/10/24 06:35:00 INFO TaskSchedulerImpl: Removed TaskSet 0.0 whose tasks have all completed, from pool 
+#43 26.04 26/10/24 06:35:00 INFO DAGScheduler: ResultStage 0 ($anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768) finished in 282 ms
+#43 26.05 26/10/24 06:35:00 INFO DAGScheduler: Job 0 is finished. Cancelling potential speculative or zombie tasks for this job
+#43 26.05 26/10/24 06:35:00 INFO TaskSchedulerImpl: Canceling stage 0
+#43 26.05 26/10/24 06:35:00 INFO TaskSchedulerImpl: Killing all running tasks in stage 0: Stage finished
+#43 26.05 26/10/24 06:35:00 INFO DAGScheduler: Job 0 finished: $anonfun$withThreadLocalCaptured$2 at CompletableFuture.java:1768, took 324.764527 ms
+#43 26.07 26/10/24 06:35:00 INFO SparkContext: SparkContext is stopping with exitCode 0 from stop at NativeMethodAccessorImpl.java:0.
+#43 26.09 26/10/24 06:35:00 INFO SparkUI: Stopped Spark web UI at http://172.17.0.5:4040
+#43 26.10 26/10/24 06:35:00 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+#43 26.12 26/10/24 06:35:00 INFO MemoryStore: MemoryStore cleared
+#43 26.12 26/10/24 06:35:00 INFO BlockManager: BlockManager stopped
+#43 26.12 26/10/24 06:35:00 INFO BlockManagerMaster: BlockManagerMaster stopped
+#43 26.13 26/10/24 06:35:00 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+#43 26.13 26/10/24 06:35:00 INFO SparkContext: Successfully stopped SparkContext
+#43 26.24 26/10/24 06:35:00 INFO ShutdownHookManager: Shutdown hook called
+#43 26.24 26/10/24 06:35:00 INFO ShutdownHookManager: Deleting directory /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f/pyspark-ff048a9a-a1ae-4242-913d-a6438c41e2c8
+#43 26.25 26/10/24 06:35:01 INFO ShutdownHookManager: Deleting directory /tmp/spark-5a21a500-e7e1-4e47-8dfa-074b089ee74f
+#43 26.25 26/10/24 06:35:01 INFO ShutdownHookManager: Deleting directory /opt/spark/work-dir/artifacts/spark-5a89f6b4-dbe4-4cd0-97ec-edb0730e90ab
+#43 26.25 26/10/24 06:35:01 INFO ShutdownHookManager: Deleting directory /tmp/spark-df6b961b-7c84-47fb-bf1d-aec1493398c7
+#43 DONE 26.4s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 ...
+
+#47 [spark] exporting to image
+#47 exporting layers
+#47 exporting layers 3.2s done
+#47 exporting manifest sha256:baeee06c8f27660787d51b39e175630cb62a3b865b7d9d7a4a9c51c79d292d08 0.0s done
+#47 exporting config sha256:36dfc6d39b4e0de3687bce812d7d685498d94abf7680545a0b56cfffbd01b979 0.0s done
+#47 exporting attestation manifest sha256:9008db48df7170f2183fa74d74866b7446c18cd8fd6caf3b5c05916624c47acd
+#47 exporting attestation manifest sha256:9008db48df7170f2183fa74d74866b7446c18cd8fd6caf3b5c05916624c47acd 0.1s done
+#47 exporting manifest list sha256:378b565f8a30d4912235bb547fd0dea0f641e5ade6a3f3e4c3eeaf2ef478dfb9 0.0s done
+#47 naming to docker.io/library/paysim-script-windows-20261024-spark:latest done
+#47 unpacking to docker.io/library/paysim-script-windows-20261024-spark:latest
+#47 unpacking to docker.io/library/paysim-script-windows-20261024-spark:latest 0.7s done
+#47 DONE 4.2s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 ...
+
+#48 [spark] resolving provenance for metadata file
+#48 DONE 0.0s
+
+#42 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#42 37.07    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.1/10.1 MB 523.7 kB/s eta 0:00:00
+#42 37.20 Downloading pymongo-4.10.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (1.7 MB)
+#42 38.42    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 1.4 MB/s eta 0:00:00
+#42 38.54 Downloading pandas-2.2.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (13.1 MB)
+#42 64.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 13.1/13.1 MB 490.6 kB/s eta 0:00:00
+#42 64.21 Downloading altair-5.5.0-py3-none-any.whl (731 kB)
+#42 65.57    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 731.2/731.2 kB 540.0 kB/s eta 0:00:00
+#42 65.70 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+#42 65.83 Downloading cachetools-6.2.6-py3-none-any.whl (11 kB)
+#42 65.97 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#42 66.17    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 125.3/125.3 kB 639.2 kB/s eta 0:00:00
+#42 66.29 Downloading dnspython-2.9.0-py3-none-any.whl (354 kB)
+#42 66.82    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 354.8/354.8 kB 671.6 kB/s eta 0:00:00
+#42 66.95 Downloading gitpython-3.2.1-py3-none-any.whl (231 kB)
+#42 67.24    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 231.5/231.5 kB 808.4 kB/s eta 0:00:00
+#42 67.36 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#42 67.45    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 90.6/90.6 kB 1.1 MB/s eta 0:00:00
+#42 67.57 Downloading narwhals-2.27.1-py3-none-any.whl (483 kB)
+#42 68.09    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 483.2/483.2 kB 942.3 kB/s eta 0:00:00
+#42 68.21 Downloading numpy-2.4.6-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+#42 93.95    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.9/16.9 MB 564.8 kB/s eta 0:00:00
+#42 94.07 Downloading packaging-25.0-py3-none-any.whl (66 kB)
+#42 94.23    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 66.5/66.5 kB 455.1 kB/s eta 0:00:00
+#42 94.35 Downloading pillow-11.3.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.6 MB)
+#42 110.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.6/6.6 MB 421.8 kB/s eta 0:00:00
+#42 110.2 Downloading protobuf-6.33.6-cp39-abi3-manylinux2014_x86_64.whl (323 kB)
+#42 110.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 323.4/323.4 kB 612.3 kB/s eta 0:00:00
+#42 110.9 Downloading pyarrow-26.0.0-cp311-cp311-manylinux_2_28_x86_64.whl (53.9 MB)
+#42 245.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.9/53.9 MB 677.8 kB/s eta 0:00:00
+#42 245.5 Downloading pydeck-0.9.3-py2.py3-none-any.whl (11.4 MB)
+#42 265.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.4/11.4 MB 655.5 kB/s eta 0:00:00
+#42 265.6 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#42 265.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 756.3 kB/s eta 0:00:00
+#42 265.9 Downloading python_dateutil-3.0.0-py2.py3-none-any.whl (94 kB)
+#42 266.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 94.7/94.7 kB 739.6 kB/s eta 0:00:00
+#42 266.1 Downloading pytz-2026.5-py2.py3-none-any.whl (506 kB)
+#42 266.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 506.3/506.3 kB 760.7 kB/s eta 0:00:00
+#42 266.9 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#42 267.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 1.1 MB/s eta 0:00:00
+#42 267.1 Downloading tenacity-9.2.1-py3-none-any.whl (32 kB)
+#42 267.3 Downloading toml-0.10.2-py2.py3-none-any.whl (16 kB)
+#42 267.4 Downloading tornado-6.6-cp311-abi3-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (529 kB)
+#42 268.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 529.5/529.5 kB 902.9 kB/s eta 0:00:00
+#42 268.1 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#42 268.2    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 1.5 MB/s eta 0:00:00
+#42 268.3 Downloading tzdata-2026.5-py2.py3-none-any.whl (347 kB)
+#42 268.6    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 348.0/348.0 kB 1.1 MB/s eta 0:00:00
+#42 268.7 Downloading watchdog-6.0.0-py3-none-manylinux2014_x86_64.whl (79 kB)
+#42 268.8    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.1/79.1 kB 1.5 MB/s eta 0:00:00
+#42 268.9 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#42 268.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 67.5/67.5 kB 1.8 MB/s eta 0:00:00
+#42 269.1 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#42 269.3    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.1/135.1 kB 543.5 kB/s eta 0:00:00
+#42 269.4 Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (269 kB)
+#42 269.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 270.0/270.0 kB 908.9 kB/s eta 0:00:00
+#42 269.9 Downloading gitdb-4.0.12-py3-none-any.whl (62 kB)
+#42 269.9    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.8/62.8 kB 1.3 MB/s eta 0:00:00
+#42 270.0 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#42 270.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 69.6/69.6 kB 1.3 MB/s eta 0:00:00
+#42 270.2 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#42 270.3 Downloading markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#42 270.5 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#42 270.6 Downloading rpds_py-2026.9.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (375 kB)
+#42 271.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 375.4/375.4 kB 1.0 MB/s eta 0:00:00
+#42 271.1 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#42 271.2 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#42 271.4    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.7/135.7 kB 1.1 MB/s eta 0:00:00
+#42 271.5 Downloading smmap-5.0.3-py3-none-any.whl (24 kB)
+#42 271.9 Installing collected packages: pytz, watchdog, urllib3, tzdata, typing-extensions, tornado, toml, tenacity, smmap, six, rpds-py, pyarrow, protobuf, pillow, packaging, numpy, narwhals, MarkupSafe, idna, dnspython, click, charset_normalizer, certifi, cachetools, blinker, attrs, requests, referencing, python-dateutil, pymongo, jinja2, gitdb, pydeck, pandas, jsonschema-specifications, gitpython, jsonschema, altair, streamlit
+#42 274.0   Attempting uninstall: packaging
+#42 274.0     Found existing installation: packaging 26.3
+#42 274.0     Uninstalling packaging-26.3:
+#42 274.1       Successfully uninstalled packaging-26.3
+#42 283.8 Successfully installed MarkupSafe-3.0.4 altair-5.5.0 attrs-26.1.0 blinker-1.9.0 cachetools-6.2.6 certifi-2026.10.23 charset_normalizer-3.5.2 click-8.5.0 dnspython-2.9.0 gitdb-4.0.12 gitpython-3.2.1 idna-3.20 jinja2-3.1.6 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 narwhals-2.27.1 numpy-2.4.6 packaging-25.0 pandas-2.2.3 pillow-11.3.0 protobuf-6.33.6 pyarrow-26.0.0 pydeck-0.9.3 pymongo-4.10.1 python-dateutil-3.0.0 pytz-2026.5 referencing-0.37.0 requests-2.34.2 rpds-py-2026.9.1 six-1.17.0 smmap-5.0.3 streamlit-1.50.0 tenacity-9.2.1 toml-0.10.2 tornado-6.6 typing-extensions-4.16.0 tzdata-2026.5 urllib3-2.8.0 watchdog-6.0.0
+#42 283.8 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#42 284.2 
+#42 284.2 [notice] A new release of pip is available: 24.0 -> 26.2.2
+#42 284.2 [notice] To update, run: pip install --upgrade pip
+#42 DONE 285.7s
+
+#49 [streamlit 5/6] COPY *.py ./
+#49 DONE 0.1s
+
+#50 [streamlit 6/6] RUN python -m compileall -q /opt/app
+#50 DONE 0.4s
+
+#51 [streamlit] exporting to image
+#51 exporting layers
+#51 exporting layers 13.5s done
+#51 exporting manifest sha256:324b6912223f2784aed29e23810cd399a03d16dab2c9cbb05626094d1568c555 0.0s done
+#51 exporting config sha256:0545b14d8f33202a3f809609c85cb01ba8303fbbf0cc6e1188b727b3ac7c12c2 0.0s done
+#51 exporting attestation manifest sha256:e2df3cebaff2d74ef935f0b3a8204e46b0fd1a808f367133973ae0aca223dd1b 0.1s done
+#51 exporting manifest list sha256:1d50af11b69ad7daaef09f24a1f523e5e0ba30d6185951016d28a9b2b399eff6
+#51 exporting manifest list sha256:1d50af11b69ad7daaef09f24a1f523e5e0ba30d6185951016d28a9b2b399eff6 0.0s done
+#51 naming to docker.io/library/paysim-script-windows-20261024-streamlit:latest done
+#51 unpacking to docker.io/library/paysim-script-windows-20261024-streamlit:latest
+#51 unpacking to docker.io/library/paysim-script-windows-20261024-streamlit:latest 2.4s done
+#51 DONE 16.2s
+
+#52 [streamlit] resolving provenance for metadata file
+#52 DONE 0.0s
+docker :  paysim-script-windows-20261024-namenode  Built
+At C:\Users\Admin\AppData\Local\Temp\paysim script check 20261024\scripts\start.ps1:42 char:5
++     docker @ComposeArgs up -d --build --wait --wait-timeout 1200 2>&1 ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ( paysim-script-...namenode  Built:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ paysim-script-windows-20261024-datanode  Built
+ paysim-script-windows-20261024-spark  Built
+ paysim-script-windows-20261024-replayer  Built
+ paysim-script-windows-20261024-streamlit  Built
+ paysim-script-windows-20261024-hdfs-init  Built
+ Network paysim-script-windows-20261024_default  Creating
+ Network paysim-script-windows-20261024_default  Created
+ Volume paysim-script-windows-20261024_hdfs_datanode  Creating
+ Volume paysim-script-windows-20261024_hdfs_datanode  Created
+ Volume paysim-script-windows-20261024_hdfs_namenode  Creating
+ Volume paysim-script-windows-20261024_hdfs_namenode  Created
+ Volume paysim-script-windows-20261024_kafka_data  Creating
+ Volume paysim-script-windows-20261024_kafka_data  Created
+ Volume paysim-script-windows-20261024_mongo_data  Creating
+ Volume paysim-script-windows-20261024_mongo_data  Created
+ Container paysim-script-windows-20261024-mongodb-1  Creating
+ Container paysim-script-windows-20261024-kafka-1  Creating
+ Container paysim-script-windows-20261024-hdfs-init-1  Creating
+ Container paysim-script-windows-20261024-hdfs-init-1  Created
+ Container paysim-script-windows-20261024-namenode-1  Creating
+ Container paysim-script-windows-20261024-mongodb-1  Created
+ Container paysim-script-windows-20261024-kafka-1  Created
+ Container paysim-script-windows-20261024-kafka-init-1  Creating
+ Container paysim-script-windows-20261024-kafka-init-1  Created
+ Container paysim-script-windows-20261024-namenode-1  Created
+ Container paysim-script-windows-20261024-datanode-1  Creating
+ Container paysim-script-windows-20261024-datanode-1  Created
+ Container paysim-script-windows-20261024-spark-1  Creating
+ Container paysim-script-windows-20261024-spark-1  Created
+ Container paysim-script-windows-20261024-replayer-1  Creating
+ Container paysim-script-windows-20261024-streamlit-1  Creating
+ Container paysim-script-windows-20261024-replayer-1  Created
+ Container paysim-script-windows-20261024-streamlit-1  Created
+ Container paysim-script-windows-20261024-mongodb-1  Starting
+ Container paysim-script-windows-20261024-kafka-1  Starting
+ Container paysim-script-windows-20261024-hdfs-init-1  Starting
+ Container paysim-script-windows-20261024-kafka-1  Started
+ Container paysim-script-windows-20261024-kafka-1  Waiting
+ Container paysim-script-windows-20261024-hdfs-init-1  Started
+ Container paysim-script-windows-20261024-hdfs-init-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Started
+ Container paysim-script-windows-20261024-hdfs-init-1  Exited
+ Container paysim-script-windows-20261024-namenode-1  Starting
+ Container paysim-script-windows-20261024-namenode-1  Started
+ Container paysim-script-windows-20261024-datanode-1  Starting
+ Container paysim-script-windows-20261024-datanode-1  Started
+ Container paysim-script-windows-20261024-kafka-1  Healthy
+ Container paysim-script-windows-20261024-kafka-init-1  Starting
+ Container paysim-script-windows-20261024-kafka-init-1  Started
+ Container paysim-script-windows-20261024-kafka-init-1  Waiting
+ Container paysim-script-windows-20261024-namenode-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Healthy
+ Container paysim-script-windows-20261024-kafka-init-1  Exited
+ Container paysim-script-windows-20261024-namenode-1  Healthy
+ Container paysim-script-windows-20261024-spark-1  Starting
+ Container paysim-script-windows-20261024-spark-1  Started
+ Container paysim-script-windows-20261024-spark-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Waiting
+ Container paysim-script-windows-20261024-spark-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Healthy
+ Container paysim-script-windows-20261024-mongodb-1  Healthy
+ Container paysim-script-windows-20261024-spark-1  Healthy
+ Container paysim-script-windows-20261024-streamlit-1  Starting
+ Container paysim-script-windows-20261024-spark-1  Healthy
+ Container paysim-script-windows-20261024-replayer-1  Starting
+ Container paysim-script-windows-20261024-streamlit-1  Started
+ Container paysim-script-windows-20261024-replayer-1  Started
+ Container paysim-script-windows-20261024-streamlit-1  Waiting
+ Container paysim-script-windows-20261024-kafka-init-1  Waiting
+ Container paysim-script-windows-20261024-replayer-1  Waiting
+ Container paysim-script-windows-20261024-datanode-1  Waiting
+ Container paysim-script-windows-20261024-kafka-1  Waiting
+ Container paysim-script-windows-20261024-spark-1  Waiting
+ Container paysim-script-windows-20261024-mongodb-1  Waiting
+ Container paysim-script-windows-20261024-hdfs-init-1  Waiting
+ Container paysim-script-windows-20261024-namenode-1  Waiting
+ Container paysim-script-windows-20261024-kafka-1  Healthy
+ Container paysim-script-windows-20261024-spark-1  Healthy
+ Container paysim-script-windows-20261024-namenode-1  Healthy
+ Container paysim-script-windows-20261024-hdfs-init-1  Exited
+ Container paysim-script-windows-20261024-kafka-init-1  Exited
+ Container paysim-script-windows-20261024-replayer-1  Healthy
+ Container paysim-script-windows-20261024-mongodb-1  Healthy
+ Container paysim-script-windows-20261024-datanode-1  Healthy
+ Container paysim-script-windows-20261024-streamlit-1  Healthy
+Hệ thống đã sẵn sàng.
+Bảng điều khiển: http://127.0.0.1:8501
+Giao diện HDFS:  http://127.0.0.1:9870
+Giao diện Spark: http://127.0.0.1:4040
+Press any key to continue . . . 
+
+EXIT_CODE=0

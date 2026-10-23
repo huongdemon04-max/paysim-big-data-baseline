@@ -1,0 +1,332 @@
+Khởi động PaySim trên linux/amd64. Lần đầu có thể mất nhiều phút...
+#1 [internal] load local bake definitions
+#1 reading from stdin 3.91kB done
+#1 DONE 0.0s
+
+#2 [namenode internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.72kB done
+#2 DONE 0.0s
+
+#3 [replayer internal] load build definition from Dockerfile
+#3 transferring dockerfile: 253B done
+#3 DONE 0.1s
+
+#4 [streamlit internal] load build definition from Dockerfile
+#4 transferring dockerfile: 425B done
+#4 DONE 0.1s
+
+#5 [spark internal] load build definition from Dockerfile
+#5 transferring dockerfile: 813B done
+#5 DONE 0.1s
+
+#6 [namenode internal] load metadata for docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#6 DONE 1.6s
+
+#7 [namenode internal] load metadata for docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#7 DONE 1.6s
+
+#8 [spark internal] load metadata for docker.io/apache/spark:4.0.0
+#8 DONE 1.6s
+
+#9 [hdfs-init internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [spark internal] load .dockerignore
+#10 transferring context: 60B done
+#10 DONE 0.0s
+
+#11 [hdfs-init internal] load build context
+#11 DONE 0.0s
+
+#12 [spark internal] load build context
+#12 DONE 0.0s
+
+#13 [namenode distribution 1/1] FROM docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e
+#13 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e 0.0s done
+#13 resolve docker.io/apache/hadoop:3.4.1@sha256:69ffa97339aff768c4e6120c3fb27aa04c121402b1c8158408a5fb5be586a30e 0.0s done
+#13 DONE 0.1s
+
+#14 [datanode stage-1 1/7] FROM docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d
+#14 resolve docker.io/library/eclipse-temurin:11-jre-noble@sha256:f2d27d97c096185c484411da4c981892d88070d14a42b8cd25d33b92a8401a5d 0.1s done
+#14 DONE 0.1s
+
+#15 [spark 1/6] FROM docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00
+#15 resolve docker.io/apache/spark:4.0.0@sha256:a89782d90529a623fc4471cdddb0f9c32d6eed10a81b256a80207b23c3b1df00 0.1s done
+#15 DONE 0.1s
+
+#11 [datanode internal] load build context
+#11 transferring context: 69B done
+#11 DONE 0.0s
+
+#12 [spark internal] load build context
+#12 transferring context: 104B done
+#12 DONE 0.0s
+
+#16 [hdfs-init stage-1 5/7] COPY entrypoint.sh /usr/local/bin/hdfs-entrypoint
+#16 CACHED
+
+#17 [hdfs-init stage-1 3/7] COPY --from=distribution --chown=1000:100 /opt/hadoop/ /opt/hadoop/
+#17 CACHED
+
+#18 [hdfs-init stage-1 6/7] COPY healthcheck.py /usr/local/bin/hdfs-healthcheck
+#18 CACHED
+
+#19 [hdfs-init stage-1 4/7] RUN rm -rf /opt/hadoop/lib/native
+#19 CACHED
+
+#20 [hdfs-init stage-1 2/7] RUN apt-get update     && apt-get install -y --no-install-recommends python3 procps     && rm -rf /var/lib/apt/lists/*     && if getent passwd 1000 >/dev/null; then          usermod --login hadoop --home /opt/hadoop --gid 100 "$(getent passwd 1000 | cut -d: -f1)";        else          useradd --uid 1000 --gid 100 --home-dir /opt/hadoop --no-create-home hadoop;        fi     && mkdir -p /data/name /data/data /tmp/hadoop-logs     && chown -R 1000:100 /data /tmp/hadoop-logs
+#20 CACHED
+
+#21 [hdfs-init stage-1 7/7] RUN sed -i 's/\r$//' /usr/local/bin/hdfs-entrypoint     && chmod 755 /usr/local/bin/hdfs-entrypoint /usr/local/bin/hdfs-healthcheck
+#21 CACHED
+
+#22 [spark 3/6] COPY --chown=spark:spark package_warmup.py pipeline.py /opt/app/
+#22 CACHED
+
+#23 [spark 5/6] RUN python3 -m compileall -q /opt/app
+#23 CACHED
+
+#24 [spark 4/6] COPY --chown=spark:spark --chmod=755 entrypoint.sh /opt/app/entrypoint.sh
+#24 CACHED
+
+#25 [spark 2/6] RUN mkdir -p /opt/app /opt/spark/.ivy2 /opt/spark/home     && chown -R spark:spark /opt/app /opt/spark/.ivy2 /opt/spark/home     && pip3 install --no-cache-dir numpy==1.26.4 pymongo==4.10.1
+#25 CACHED
+
+#26 [spark 6/6] RUN /opt/spark/bin/spark-submit     --master 'local[1]'     --conf spark.jars.ivy=/opt/spark/.ivy2     --packages org.apache.spark:spark-sql-kafka-0-10_2.13:4.0.0     /opt/app/package_warmup.py
+#26 CACHED
+
+#27 [hdfs-init] exporting to image
+#27 exporting layers done
+#27 exporting manifest sha256:b85ada0a86b064806bcc7980a5c0b0d58ad68dbf37f01448266f7f0476f6cc99 0.1s done
+#27 exporting config sha256:d6c7c71f76425aed295d6b6f615f5236d02977699a4503905a670d703bc55f33
+#27 exporting config sha256:d6c7c71f76425aed295d6b6f615f5236d02977699a4503905a670d703bc55f33 0.1s done
+#27 exporting attestation manifest sha256:8c5bda1df4089a285538f2cec93204422134bd7f451dab495fc7538ba2b65d54
+#27 ...
+
+#28 [replayer internal] load metadata for docker.io/library/python:3.11-slim
+#28 DONE 2.0s
+
+#29 [streamlit internal] load .dockerignore
+#29 transferring context: 60B done
+#29 DONE 0.0s
+
+#30 [replayer internal] load .dockerignore
+#30 transferring context: 60B done
+#30 DONE 0.0s
+
+#31 [streamlit internal] load build context
+#31 DONE 0.0s
+
+#32 [replayer internal] load build context
+#32 transferring context: 63B done
+#32 DONE 0.0s
+
+#27 [hdfs-init] exporting to image
+#27 exporting attestation manifest sha256:8c5bda1df4089a285538f2cec93204422134bd7f451dab495fc7538ba2b65d54 0.2s done
+#27 exporting manifest list sha256:bd09e31b9c7d2d1859ddf4e51c3e5d5c9a130d1c84907eb8d76767a94284af96
+#27 exporting manifest list sha256:bd09e31b9c7d2d1859ddf4e51c3e5d5c9a130d1c84907eb8d76767a94284af96 0.1s done
+#27 naming to docker.io/library/paysim-script-check-20261024-hdfs-init:latest
+#27 naming to docker.io/library/paysim-script-check-20261024-hdfs-init:latest 0.0s done
+#27 unpacking to docker.io/library/paysim-script-check-20261024-hdfs-init:latest 0.0s done
+#27 DONE 0.7s
+
+#33 [replayer 1/6] FROM docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377
+#33 resolve docker.io/library/python:3.11-slim@sha256:b7a9e5f6a93d6d4a31f129bbd4bdee69efccb6ded0fb230d78aafaf37af98377 0.2s done
+#33 DONE 0.3s
+
+#34 [replayer 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#34 CACHED
+
+#35 [replayer 3/5] COPY requirements.txt .
+#35 CACHED
+
+#36 [replayer 5/5] COPY app.py .
+#36 CACHED
+
+#31 [streamlit internal] load build context
+#31 transferring context: 207B done
+#31 DONE 0.0s
+
+#37 [streamlit 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#37 CACHED
+
+#38 [streamlit 2/6] WORKDIR /opt/app
+#38 CACHED
+
+#39 [streamlit 5/6] COPY *.py ./
+#39 CACHED
+
+#40 [streamlit 3/6] COPY requirements.txt .
+#40 CACHED
+
+#41 [streamlit 6/6] RUN python -m compileall -q /opt/app
+#41 CACHED
+
+#42 [replayer] exporting to image
+#42 exporting layers done
+#42 exporting manifest sha256:2173902677fd66de989c1934425107428e0231574939d46ee8eed6fd9cb8d56f
+#42 ...
+
+#43 [namenode] exporting to image
+#43 exporting layers done
+#43 exporting manifest sha256:f3f00b534a079a95953e0dce333c9161a78222cdb55797d93cc4546fa9d2bcd9 0.1s done
+#43 exporting config sha256:685f81db3f2e215c3623babdbde52aa5c3ab665227930bb3da688fc246dd3c33 0.1s done
+#43 exporting attestation manifest sha256:3b690ab49684d2d67dfc334b792473194ed9c6bfbf02bd6ded1d49416658bd2b 0.2s done
+#43 exporting manifest list sha256:a7e750914568d4875719ba09d084a6999fd74c5cab966061a3029b0106f04a2c 0.1s done
+#43 naming to docker.io/library/paysim-script-check-20261024-namenode:latest 0.0s done
+#43 unpacking to docker.io/library/paysim-script-check-20261024-namenode:latest 0.0s done
+#43 DONE 0.7s
+
+#44 [spark] exporting to image
+#44 exporting layers done
+#44 exporting manifest sha256:6f109e858462284d7fb9b3e4cb79da26582b7af4b2d24aecb531a10892d8fb18 0.1s done
+#44 exporting config sha256:b3f92cdbdcf2a3ac7a6731d43fcbf9bfaedd45c02eaae53b9aeb6681b0c336a8 0.1s done
+#44 exporting attestation manifest sha256:902bc447f35de1019d3d09477e5ea28d1b76db77c1ce97c03f7539978612c393 0.2s done
+#44 exporting manifest list sha256:f85ff5d6e033449a9d6f339e305da2d4e3b12d66f6acd3b4a27e3c1a551f9f0d 0.1s done
+#44 naming to docker.io/library/paysim-script-check-20261024-spark:latest 0.0s done
+#44 unpacking to docker.io/library/paysim-script-check-20261024-spark:latest 0.0s done
+#44 DONE 0.7s
+
+#45 [datanode] exporting to image
+#45 exporting layers done
+#45 exporting manifest sha256:7450972ad1dd2a82375019c551937cf97e8f9176b96fdce68f11240cbd67bcbb 0.1s done
+#45 exporting config sha256:ff39e1cb7d61b63cf5e268d07b1fa07607af78ecc386ca7b524c31d9f8e351e1 0.1s done
+#45 exporting attestation manifest sha256:2c26c5bc76119101c8a781e5ee2210af42509316a9c712ec0641ae11c1b1d998 0.2s done
+#45 exporting manifest list sha256:c5207a5483fe9928cc8ca607954a59a7a5fa140f8961b20e3bb3319adb772065 0.1s done
+#45 naming to docker.io/library/paysim-script-check-20261024-datanode:latest 0.0s done
+#45 unpacking to docker.io/library/paysim-script-check-20261024-datanode:latest 0.0s done
+#45 DONE 0.7s
+
+#42 [replayer] exporting to image
+#42 exporting manifest sha256:2173902677fd66de989c1934425107428e0231574939d46ee8eed6fd9cb8d56f 0.0s done
+#42 exporting config sha256:3079c7d2627b01569d038c0fbe3b88d3d5816a081fff94de8f1fe940846993a8
+#42 exporting config sha256:3079c7d2627b01569d038c0fbe3b88d3d5816a081fff94de8f1fe940846993a8 0.1s done
+#42 exporting attestation manifest sha256:4fe91b12c6d6d52552149b5a3bfa7bef3a357c38a76f459825b18edcc0701b99 0.1s done
+#42 exporting manifest list sha256:deb5f602f8c9b5fab84bc9e404f9ee6ebe34898b6fdd7f5a6f2b9483b9abcf22
+#42 exporting manifest list sha256:deb5f602f8c9b5fab84bc9e404f9ee6ebe34898b6fdd7f5a6f2b9483b9abcf22 0.0s done
+#42 naming to docker.io/library/paysim-script-check-20261024-replayer:latest 0.0s done
+#42 unpacking to docker.io/library/paysim-script-check-20261024-replayer:latest 0.0s done
+#42 DONE 0.6s
+
+#46 [streamlit] exporting to image
+#46 exporting layers done
+#46 exporting manifest sha256:2ee6f26b8d183a60e6efeaadd6eed9682832b655cc090b6ea82f6850f3f02d11 0.1s done
+#46 exporting config sha256:223bc7fb27ac45cc862dc3857c7bbc15f3469e3ac3508d3cc52c6c9891d15848 0.1s done
+#46 exporting attestation manifest sha256:1dce3ad8fcfd7bfd30d948f158e2d34360fcf8d9d3ece4d333dc258d4e844c33 0.1s done
+#46 exporting manifest list sha256:b89b9d26c2ac94d597e2c52ec82e1b8d3de8e3e4252bb3cf9bcaa97826a2062f 0.0s done
+#46 naming to docker.io/library/paysim-script-check-20261024-streamlit:latest 0.0s done
+#46 unpacking to docker.io/library/paysim-script-check-20261024-streamlit:latest 0.0s done
+#46 DONE 0.5s
+
+#47 [hdfs-init] resolving provenance for metadata file
+#47 DONE 0.4s
+
+#48 [replayer] resolving provenance for metadata file
+#48 DONE 0.1s
+
+#49 [spark] resolving provenance for metadata file
+#49 DONE 0.3s
+
+#50 [datanode] resolving provenance for metadata file
+#50 DONE 0.2s
+
+#51 [namenode] resolving provenance for metadata file
+#51 DONE 0.4s
+
+#52 [streamlit] resolving provenance for metadata file
+#52 DONE 0.0s
+ paysim-script-check-20261024-replayer  Built
+ paysim-script-check-20261024-streamlit  Built
+ paysim-script-check-20261024-hdfs-init  Built
+ paysim-script-check-20261024-namenode  Built
+ paysim-script-check-20261024-datanode  Built
+ paysim-script-check-20261024-spark  Built
+ Network paysim-script-check-20261024_default  Creating
+ Network paysim-script-check-20261024_default  Created
+ Volume paysim-script-check-20261024_hdfs_datanode  Creating
+ Volume paysim-script-check-20261024_hdfs_datanode  Created
+ Volume paysim-script-check-20261024_hdfs_namenode  Creating
+ Volume paysim-script-check-20261024_hdfs_namenode  Created
+ Volume paysim-script-check-20261024_kafka_data  Creating
+ Volume paysim-script-check-20261024_kafka_data  Created
+ Volume paysim-script-check-20261024_mongo_data  Creating
+ Volume paysim-script-check-20261024_mongo_data  Created
+ Container paysim-script-check-20261024-kafka-1  Creating
+ Container paysim-script-check-20261024-mongodb-1  Creating
+ Container paysim-script-check-20261024-hdfs-init-1  Creating
+ Container paysim-script-check-20261024-hdfs-init-1  Created
+ Container paysim-script-check-20261024-namenode-1  Creating
+ Container paysim-script-check-20261024-mongodb-1  Created
+ Container paysim-script-check-20261024-kafka-1  Created
+ Container paysim-script-check-20261024-kafka-init-1  Creating
+ Container paysim-script-check-20261024-namenode-1  Created
+ Container paysim-script-check-20261024-datanode-1  Creating
+ Container paysim-script-check-20261024-kafka-init-1  Created
+ Container paysim-script-check-20261024-datanode-1  Created
+ Container paysim-script-check-20261024-spark-1  Creating
+ Container paysim-script-check-20261024-spark-1  Created
+ Container paysim-script-check-20261024-streamlit-1  Creating
+ Container paysim-script-check-20261024-replayer-1  Creating
+ Container paysim-script-check-20261024-streamlit-1  Created
+ Container paysim-script-check-20261024-replayer-1  Created
+ Container paysim-script-check-20261024-mongodb-1  Starting
+ Container paysim-script-check-20261024-kafka-1  Starting
+ Container paysim-script-check-20261024-hdfs-init-1  Starting
+ Container paysim-script-check-20261024-hdfs-init-1  Started
+ Container paysim-script-check-20261024-hdfs-init-1  Waiting
+ Container paysim-script-check-20261024-kafka-1  Started
+ Container paysim-script-check-20261024-kafka-1  Waiting
+ Container paysim-script-check-20261024-mongodb-1  Started
+ Container paysim-script-check-20261024-hdfs-init-1  Exited
+ Container paysim-script-check-20261024-namenode-1  Starting
+ Container paysim-script-check-20261024-namenode-1  Started
+ Container paysim-script-check-20261024-datanode-1  Starting
+ Container paysim-script-check-20261024-datanode-1  Started
+ Container paysim-script-check-20261024-kafka-1  Healthy
+ Container paysim-script-check-20261024-kafka-init-1  Starting
+ Container paysim-script-check-20261024-kafka-init-1  Started
+ Container paysim-script-check-20261024-kafka-init-1  Waiting
+ Container paysim-script-check-20261024-namenode-1  Waiting
+ Container paysim-script-check-20261024-mongodb-1  Waiting
+ Container paysim-script-check-20261024-mongodb-1  Healthy
+ Container paysim-script-check-20261024-kafka-init-1  Exited
+ Container paysim-script-check-20261024-namenode-1  Healthy
+ Container paysim-script-check-20261024-spark-1  Starting
+ Container paysim-script-check-20261024-spark-1  Started
+ Container paysim-script-check-20261024-mongodb-1  Waiting
+ Container paysim-script-check-20261024-spark-1  Waiting
+ Container paysim-script-check-20261024-spark-1  Waiting
+ Container paysim-script-check-20261024-mongodb-1  Waiting
+ Container paysim-script-check-20261024-mongodb-1  Healthy
+ Container paysim-script-check-20261024-mongodb-1  Healthy
+ Container paysim-script-check-20261024-spark-1  Healthy
+ Container paysim-script-check-20261024-replayer-1  Starting
+ Container paysim-script-check-20261024-spark-1  Healthy
+ Container paysim-script-check-20261024-streamlit-1  Starting
+ Container paysim-script-check-20261024-streamlit-1  Started
+ Container paysim-script-check-20261024-replayer-1  Started
+ Container paysim-script-check-20261024-namenode-1  Waiting
+ Container paysim-script-check-20261024-mongodb-1  Waiting
+ Container paysim-script-check-20261024-kafka-init-1  Waiting
+ Container paysim-script-check-20261024-replayer-1  Waiting
+ Container paysim-script-check-20261024-streamlit-1  Waiting
+ Container paysim-script-check-20261024-spark-1  Waiting
+ Container paysim-script-check-20261024-datanode-1  Waiting
+ Container paysim-script-check-20261024-hdfs-init-1  Waiting
+ Container paysim-script-check-20261024-kafka-1  Waiting
+ Container paysim-script-check-20261024-kafka-1  Healthy
+ Container paysim-script-check-20261024-namenode-1  Healthy
+ Container paysim-script-check-20261024-datanode-1  Healthy
+ Container paysim-script-check-20261024-hdfs-init-1  Exited
+ Container paysim-script-check-20261024-mongodb-1  Healthy
+ Container paysim-script-check-20261024-spark-1  Healthy
+ Container paysim-script-check-20261024-replayer-1  Healthy
+ Container paysim-script-check-20261024-kafka-init-1  Exited
+ Container paysim-script-check-20261024-streamlit-1  Healthy
+Hệ thống đã sẵn sàng.
+Bảng điều khiển: http://127.0.0.1:8501
+Giao diện HDFS:  http://127.0.0.1:9870
+Giao diện Spark: http://127.0.0.1:4040
+
+EXIT_CODE=0

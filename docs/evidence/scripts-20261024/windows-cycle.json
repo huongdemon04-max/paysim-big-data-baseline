@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "case": "start-windows",
+      "exit_code": 0
+    },
+    {
+      "case": "reset-windows-cancel",
+      "exit_code": 0
+    },
+    {
+      "case": "stop-windows",
+      "exit_code": 0
+    },
+    {
+      "case": "reset-windows-confirm",
+      "exit_code": 0
+    }
+  ],
+  "real_windows_cmd_powershell_docker": true,
+  "path_with_spaces": true,
+  "inherited_RESET_empty_input_cancelled": true,
+  "reset_removed_test_containers_and_volumes": true,
+  "source_csv_preserved": true
+}

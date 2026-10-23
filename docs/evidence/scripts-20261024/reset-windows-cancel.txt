@@ -1,0 +1,5 @@
+Lệnh này xóa dữ liệu Docker của riêng baseline PaySim: Kafka, HDFS và MongoDB.
+Nhập RESET để tiếp tục: Đã hủy.
+Press any key to continue . . . 
+
+EXIT_CODE=0

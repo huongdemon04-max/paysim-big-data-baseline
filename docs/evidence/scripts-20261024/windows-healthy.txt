@@ -1,0 +1,10 @@
+NAME                                          IMAGE                                      COMMAND                  SERVICE      CREATED          STATUS                      PORTS
+paysim-script-windows-20261024-datanode-1     paysim-script-windows-20261024-datanode    "/usr/local/bin/hdfs…"   datanode     55 seconds ago   Up 53 seconds               0.0.0.0:9864->9864/tcp, [::]:9864->9864/tcp
+paysim-script-windows-20261024-hdfs-init-1    paysim-script-windows-20261024-hdfs-init   "/bin/sh -c 'chown -…"   hdfs-init    56 seconds ago   Exited (0) 54 seconds ago   
+paysim-script-windows-20261024-kafka-1        apache/kafka:4.0.0                         "/__cacert_entrypoin…"   kafka        56 seconds ago   Up 54 seconds (healthy)     0.0.0.0:29092->29092/tcp, [::]:29092->29092/tcp
+paysim-script-windows-20261024-kafka-init-1   apache/kafka:4.0.0                         "/bin/bash -lc '/opt…"   kafka-init   55 seconds ago   Exited (0) 42 seconds ago   
+paysim-script-windows-20261024-mongodb-1      mongo:8.0                                  "docker-entrypoint.s…"   mongodb      56 seconds ago   Up 54 seconds (healthy)     0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+paysim-script-windows-20261024-namenode-1     paysim-script-windows-20261024-namenode    "/usr/local/bin/hdfs…"   namenode     55 seconds ago   Up 53 seconds (healthy)     0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp, 0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp
+paysim-script-windows-20261024-replayer-1     paysim-script-windows-20261024-replayer    "python app.py"          replayer     55 seconds ago   Up 6 seconds                
+paysim-script-windows-20261024-spark-1        paysim-script-windows-20261024-spark       "/opt/app/entrypoint…"   spark        55 seconds ago   Up 39 seconds (healthy)     0.0.0.0:4040->4040/tcp, [::]:4040->4040/tcp
+paysim-script-windows-20261024-streamlit-1    paysim-script-windows-20261024-streamlit   "streamlit run app.p…"   streamlit    55 seconds ago   Up 6 seconds (healthy)      0.0.0.0:8501->8501/tcp, [::]:8501->8501/tcp

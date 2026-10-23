@@ -8,7 +8,8 @@ if ! command -v docker >/dev/null 2>&1 || ! docker info >/dev/null 2>&1; then
   echo "Hãy mở Docker Desktop và đợi Docker sẵn sàng, rồi chạy lại start.sh."
   exit 1
 fi
-if ! docker compose up --help | grep -q -- --wait-timeout; then
+COMPOSE_HELP="$(docker compose up --help)" || { echo "Không thể chạy Docker Compose."; exit 1; }
+if [[ "$COMPOSE_HELP" != *--wait-timeout* ]]; then
   echo "Hãy cập nhật Docker Desktop: cần Docker Compose hỗ trợ --wait-timeout."
   exit 1
 fi
@@ -31,16 +32,21 @@ elif (( DOCKER_MEMORY < 5500000000 )); then
   echo "Docker có $(( DOCKER_MEMORY / 1024 / 1024 )) MiB RAM: dùng chế độ nhẹ cho máy 8 GB (10 events/s, Spark local[1])."
 fi
 
+"${COMPOSE[@]}" config --quiet
 bash ./scripts/prepare-data.sh
 
 collect_diagnostics() {
   {
     echo "PaySim startup diagnostics"
+    echo "Compose startup exit code: $STARTUP_EXIT_CODE"
+    echo "Build/start output:"
+    cat startup-output.log
     date -u
     docker version
     docker info --format 'architecture={{.Architecture}} cpus={{.NCPU}} memory={{.MemTotal}}'
     echo "Selected platform: $DOCKER_DEFAULT_PLATFORM"
     echo "Compose files: ${COMPOSE[*]}"
+    "${COMPOSE[@]}" images
     "${COMPOSE[@]}" ps -a
     local container_id
     while IFS= read -r container_id; do
@@ -49,12 +55,14 @@ collect_diagnostics() {
     done < <("${COMPOSE[@]}" ps -aq)
     "${COMPOSE[@]}" logs --no-color --tail=150
   } > startup-diagnostics.txt 2>&1
-  cat startup-diagnostics.txt
-  echo "Khởi động chưa thành công. Gửi tệp startup-diagnostics.txt cho giảng viên."
+  echo "Khởi động chưa thành công. Chi tiết được lưu tại startup-diagnostics.txt."
 }
 
 echo "Khởi động PaySim trên $DOCKER_DEFAULT_PLATFORM. Lần đầu có thể mất nhiều phút..."
-if ! "${COMPOSE[@]}" up -d --build --wait --wait-timeout 1200; then
+if "${COMPOSE[@]}" up -d --build --wait --wait-timeout 1200 2>&1 | tee startup-output.log; then
+  :
+else
+  STARTUP_EXIT_CODE=${PIPESTATUS[0]}
   collect_diagnostics || true
   exit 1
 fi

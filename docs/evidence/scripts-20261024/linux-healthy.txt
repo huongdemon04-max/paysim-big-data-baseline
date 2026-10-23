@@ -1,0 +1,12 @@
+NAME                                        IMAGE                                    COMMAND                  SERVICE      CREATED              STATUS                          PORTS
+paysim-script-check-20261024-datanode-1     paysim-script-check-20261024-datanode    "/usr/local/bin/hdfs…"   datanode     About a minute ago   Up About a minute               0.0.0.0:9864->9864/tcp, [::]:9864->9864/tcp
+paysim-script-check-20261024-hdfs-init-1    paysim-script-check-20261024-hdfs-init   "/bin/sh -c 'chown -…"   hdfs-init    About a minute ago   Exited (0) About a minute ago   
+paysim-script-check-20261024-kafka-1        apache/kafka:4.0.0                       "/__cacert_entrypoin…"   kafka        2 minutes ago        Up 2 minutes (healthy)          0.0.0.0:29092->29092/tcp, [::]:29092->29092/tcp
+paysim-script-check-20261024-kafka-init-1   apache/kafka:4.0.0                       "/bin/bash -lc '/opt…"   kafka-init   2 minutes ago        Exited (0) About a minute ago   
+paysim-script-check-20261024-mongodb-1      mongo:8.0                                "docker-entrypoint.s…"   mongodb      2 minutes ago        Up 2 minutes (healthy)          0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp
+paysim-script-check-20261024-namenode-1     paysim-script-check-20261024-namenode    "/usr/local/bin/hdfs…"   namenode     About a minute ago   Up About a minute (healthy)     0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp, 0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp
+paysim-script-check-20261024-replayer-1     paysim-script-check-20261024-replayer    "python app.py"          replayer     About a minute ago   Up 5 seconds                    
+paysim-script-check-20261024-spark-1        paysim-script-check-20261024-spark       "/opt/app/entrypoint…"   spark        About a minute ago   Up 24 seconds (healthy)         0.0.0.0:4040->4040/tcp, [::]:4040->4040/tcp
+paysim-script-check-20261024-streamlit-1    paysim-script-check-20261024-streamlit   "streamlit run app.p…"   streamlit    About a minute ago   Up 5 seconds (healthy)          0.0.0.0:8501->8501/tcp, [::]:8501->8501/tcp
+
+EXIT_CODE=0

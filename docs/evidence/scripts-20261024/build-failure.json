@@ -1,0 +1,12 @@
+[
+  {
+    "platform": "bash",
+    "exit_code": 1,
+    "original_build_error_in_diagnostics": true
+  },
+  {
+    "platform": "cmd/powershell",
+    "exit_code": 1,
+    "original_build_error_in_diagnostics": true
+  }
+]

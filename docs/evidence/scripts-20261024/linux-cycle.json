@@ -1,0 +1,28 @@
+{
+  "results": [
+    {
+      "case": "start-linux-final",
+      "exit_code": 0
+    },
+    {
+      "case": "linux-healthy",
+      "exit_code": 0
+    },
+    {
+      "case": "reset-linux-cancel",
+      "exit_code": 0
+    },
+    {
+      "case": "stop-linux",
+      "exit_code": 0
+    },
+    {
+      "case": "reset-linux-confirm",
+      "exit_code": 0
+    }
+  ],
+  "cancel_preserved_9_containers": true,
+  "stop_no_running_containers": true,
+  "reset_removed_test_containers_and_volumes": true,
+  "source_csv_preserved": true
+}

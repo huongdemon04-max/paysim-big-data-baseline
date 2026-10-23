@@ -1,0 +1,68 @@
+[
+  {
+    "path": "start.sh",
+    "mode": "0o755",
+    "sha256": "596fa4fc7766e58916f8149e3a029273532798902887a2343435a578f48ee872",
+    "executable_lf_bash_syntax": "PASS"
+  },
+  {
+    "path": "stop.sh",
+    "mode": "0o755",
+    "sha256": "88577c00465ec52ef0217fa2a2f4b68dcc77415f8678fbfc00b44d170b68fa29",
+    "executable_lf_bash_syntax": "PASS"
+  },
+  {
+    "path": "reset.sh",
+    "mode": "0o755",
+    "sha256": "cbdd1fbe6aec90994c285c7af51240e56081e118643b7f0143d4bbfdee69dc83",
+    "executable_lf_bash_syntax": "PASS"
+  },
+  {
+    "path": "start.bat",
+    "mode": "0o644",
+    "sha256": "0f5a0ab1bd6da7208c7b93b1adee991cdfa2884bf1fc9204576a9aa8809d8183",
+    "crlf": "PASS"
+  },
+  {
+    "path": "stop.bat",
+    "mode": "0o644",
+    "sha256": "31aa713a25117540d1b05cd7497e58e68463ae9c3e3826985a6ae6c180af5b2d",
+    "crlf": "PASS"
+  },
+  {
+    "path": "reset.bat",
+    "mode": "0o644",
+    "sha256": "ecb536b5bfe2521e5aebf21b877ac69f4795af31a865af5e66350e8c65a65c0a",
+    "crlf": "PASS"
+  },
+  {
+    "path": "scripts/start.ps1",
+    "mode": "0o644",
+    "sha256": "47b232e807eaf5104d37e86abbbb53775c889b29e9526ddaecb0b1e8cc5a2510",
+    "utf8_bom": "PASS"
+  },
+  {
+    "path": "scripts/prepare-data.sh",
+    "mode": "0o755",
+    "sha256": "7bff0628112c32f69a895834ed404a929d40a85b25f978725f9e01f30847fad3",
+    "executable_lf_bash_syntax": "PASS"
+  },
+  {
+    "path": "scripts/prepare-data.ps1",
+    "mode": "0o644",
+    "sha256": "9d10c5705b01306a3f72473e7895d3176d587d3d6f5bae704aa87c4d33514f7e",
+    "utf8_bom": "PASS"
+  },
+  {
+    "path": "hadoop/entrypoint.sh",
+    "mode": "0o755",
+    "sha256": "1d6b0258c0951682fe5125b2a1fba598811b7b9a83b5c4d7cda1b1c4185a71ac",
+    "executable_lf_bash_syntax": "PASS"
+  },
+  {
+    "path": "spark/entrypoint.sh",
+    "mode": "0o755",
+    "sha256": "e996b9fdfbf76a76f3634d7409529321d6c9571559e943b3fce76296ba47d2c7",
+    "executable_lf_bash_syntax": "PASS"
+  }
+]

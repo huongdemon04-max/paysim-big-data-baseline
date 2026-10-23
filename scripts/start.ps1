@@ -30,21 +30,32 @@ try {
         Write-Host "Docker có $DockerMemoryMiB MiB RAM: dùng chế độ nhẹ cho máy 8 GB (10 events/s, Spark local[1])."
     }
 
+    docker @ComposeArgs config --quiet
+    if ($LASTEXITCODE -ne 0) { throw "Cấu hình Compose không hợp lệ. Kiểm tra .env và đường dẫn dữ liệu." }
+
     powershell -NoProfile -ExecutionPolicy Bypass -File "$PSScriptRoot\prepare-data.ps1"
     if ($LASTEXITCODE -ne 0) { throw "Không thể chuẩn bị bộ dữ liệu PaySim." }
 
     Write-Host "Khởi động PaySim trên $env:DOCKER_DEFAULT_PLATFORM. Lần đầu có thể mất nhiều phút..."
-    docker @ComposeArgs up -d --build --wait --wait-timeout 1200
-    if ($LASTEXITCODE -ne 0) {
+    # PowerShell 5.1 turns native stderr into ErrorRecord objects; keep collecting.
+    $ErrorActionPreference = 'Continue'
+    docker @ComposeArgs up -d --build --wait --wait-timeout 1200 2>&1 | Tee-Object -FilePath startup-output.log
+    $StartupExitCode = $LASTEXITCODE
+    $ErrorActionPreference = 'Stop'
+    if ($StartupExitCode -ne 0) {
         # Native commands can write to stderr; retain that output in the report.
         $ErrorActionPreference = 'Continue'
         & {
             'PaySim startup diagnostics'
+            "Compose startup exit code: $StartupExitCode"
+            'Build/start output:'
+            Get-Content startup-output.log
             Get-Date -Format o
             docker version
             docker info --format 'architecture={{.Architecture}} cpus={{.NCPU}} memory={{.MemTotal}}'
             "Selected platform: $env:DOCKER_DEFAULT_PLATFORM"
             "Compose files: $ComposeArgs"
+            docker @ComposeArgs images
             docker @ComposeArgs ps -a
             $ContainerIds = docker @ComposeArgs ps -aq
             foreach ($ContainerId in $ContainerIds) {
@@ -52,8 +63,7 @@ try {
             }
             docker @ComposeArgs logs --no-color --tail=150
         } *> startup-diagnostics.txt
-        Get-Content startup-diagnostics.txt
-        Write-Host 'Khởi động chưa thành công. Gửi tệp startup-diagnostics.txt cho giảng viên.'
+        Write-Host 'Khởi động chưa thành công. Chi tiết được lưu tại startup-diagnostics.txt.'
         exit 1
     }
 
@@ -61,7 +71,10 @@ try {
     Write-Host 'Bảng điều khiển: http://127.0.0.1:8501'
     Write-Host 'Giao diện HDFS:  http://127.0.0.1:9870'
     Write-Host 'Giao diện Spark: http://127.0.0.1:4040'
-    Start-Process 'http://127.0.0.1:8501'
+    # Browser launch is optional; a browser association error must not report Docker failure.
+    try { Start-Process 'http://127.0.0.1:8501' } catch {
+        Write-Host 'Mở trình duyệt tại http://127.0.0.1:8501'
+    }
 } catch {
     Write-Host $_.Exception.Message
     exit 1

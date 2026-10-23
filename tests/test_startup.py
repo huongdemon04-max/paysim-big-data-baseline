@@ -30,6 +30,7 @@ class ReadinessTests(unittest.TestCase):
                 healthcheck.check_readiness(payload)
 
 
+@unittest.skipUnless(os.name != "nt" and shutil.which("bash"), "POSIX Bash harness; Windows uses launcher tests")
 class LauncherTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -56,8 +57,11 @@ elif args[:2] == ['info', '--format']:
     elif args[2] == '{{.MemTotal}}': print(os.environ.get('MEMORY', '8000000000'))
     else: print('architecture=aarch64 cpus=4 memory=8000000000')
 elif args == ['compose', 'up', '--help']:
-    print('--wait-timeout' if os.environ.get('OLD_COMPOSE') != '1' else '--detach')
+    print(('--wait-timeout\\n' + 'help\\n' * 100000) if os.environ.get('LARGE_HELP') == '1' else ('--wait-timeout' if os.environ.get('OLD_COMPOSE') != '1' else '--detach'))
+elif args == ['compose', 'config', '--quiet']:
+    sys.exit(int(os.environ.get('CONFIG_EXIT', '0')))
 elif args[:3] == ['compose', 'up', '-d']:
+    if os.environ.get('UP_EXIT') == '1': print('BUILD_FAILURE_SENTINEL', file=sys.stderr)
     sys.exit(int(os.environ.get('UP_EXIT', '0')))
 elif args[:3] == ['compose', 'ps', '-aq']: print('test-namenode')
 elif args[:2] == ['compose', 'logs']: print('NameNode failure details')
@@ -113,10 +117,16 @@ elif args[0] == 'inspect': print('restart=3 OOMKilled=false')
         report = (self.root / "startup-diagnostics.txt").read_text()
         self.assertIn("NameNode failure details", report)
         self.assertIn("restart=3", report)
+        self.assertIn("BUILD_FAILURE_SENTINEL", report)
+        self.assertIn("Compose startup exit code: 1", report)
         self.assertFalse(any("down" in c[0] for c in self.calls()))
 
+    def test_large_compose_help_does_not_trigger_sigpipe_failure(self):
+        result = self.run_launcher(LARGE_HELP="1")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_preflight_stops_before_downloading_or_starting(self):
-        for env in ({"MEMORY": "3499999999"}, {"DAEMON_EXIT": "1"}, {"OLD_COMPOSE": "1"}):
+        for env in ({"MEMORY": "3499999999"}, {"DAEMON_EXIT": "1"}, {"OLD_COMPOSE": "1"}, {"CONFIG_EXIT": "1"}):
             with self.subTest(env=env):
                 result = self.run_launcher(**env)
                 self.assertEqual(result.returncode, 1)

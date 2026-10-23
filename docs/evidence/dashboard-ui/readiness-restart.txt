@@ -1,0 +1,4 @@
+paysim-big-data-baseline-spark-1
+PASS: stale readiness marker removed before new pipeline readiness
+starting
+paysim-big-data-baseline-spark-1

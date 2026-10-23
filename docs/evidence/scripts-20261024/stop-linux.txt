@@ -1,0 +1,21 @@
+ Container paysim-script-check-20261024-replayer-1  Stopping
+ Container paysim-script-check-20261024-streamlit-1  Stopping
+ Container paysim-script-check-20261024-streamlit-1  Stopped
+ Container paysim-script-check-20261024-replayer-1  Stopped
+ Container paysim-script-check-20261024-spark-1  Stopping
+ Container paysim-script-check-20261024-spark-1  Stopped
+ Container paysim-script-check-20261024-kafka-init-1  Stopping
+ Container paysim-script-check-20261024-datanode-1  Stopping
+ Container paysim-script-check-20261024-mongodb-1  Stopping
+ Container paysim-script-check-20261024-kafka-init-1  Stopped
+ Container paysim-script-check-20261024-kafka-1  Stopping
+ Container paysim-script-check-20261024-mongodb-1  Stopped
+ Container paysim-script-check-20261024-datanode-1  Stopped
+ Container paysim-script-check-20261024-namenode-1  Stopping
+ Container paysim-script-check-20261024-kafka-1  Stopped
+ Container paysim-script-check-20261024-namenode-1  Stopped
+ Container paysim-script-check-20261024-hdfs-init-1  Stopping
+ Container paysim-script-check-20261024-hdfs-init-1  Stopped
+Đã dừng hệ thống.
+
+EXIT_CODE=0
