@@ -140,13 +140,13 @@ def render_confusion_matrix(model: dict):
         .encode(
             x=alt.X("Predicted:N", title="Model dự đoán"),
             y=alt.Y("Actual:N", title="Ground truth"),
-            color=alt.Color("Count:Q", scale=alt.Scale(scheme="blues")),
+            color=alt.Color("Count:Q", scale=alt.Scale(scheme="greens")),
             tooltip=["Actual", "Predicted", alt.Tooltip("Count", format=",")],
         )
         .properties(height=260)
     )
     text = chart.mark_text(baseline="middle", fontSize=16).encode(
-        text=alt.Text("Count:Q", format=","), color=alt.value("#111827")
+        text=alt.Text("Count:Q", format=","), color=alt.value("#2E2B24")
     )
     st.altair_chart(chart + text)
 
@@ -394,7 +394,10 @@ def render_page(snapshot, page):
                 alt.Chart(plot).mark_bar().encode(
                     x=alt.X("type:N", title="Loại giao dịch", sort="-y"),
                     y=alt.Y("Alerts:Q", title="Số alerts"),
-                    color=alt.Color("Detector:N", title="Detector"),
+                    color=alt.Color("Detector:N", title="Detector", scale=alt.Scale(
+        domain=["model_alerts", "rule_alerts"],
+        range=["#355C4D", "#B18A4B"],
+    ),),
                     xOffset="Detector:N",
                     tooltip=["type", "Detector", alt.Tooltip("Alerts", format=",")],
                 ).properties(height=310)
@@ -408,11 +411,61 @@ def render_page(snapshot, page):
                 alt.Chart(alert_frame).mark_circle(opacity=.65, size=65).encode(
                     x=alt.X("amount:Q", title="Số tiền", scale=alt.Scale(type="log")),
                     y=alt.Y("risk_score:Q", title="Risk score", scale=alt.Scale(domain=[0, 1])),
-                    color=alt.Color("type:N", title="Loại giao dịch"),
+                    color=alt.Color("type:N", title="Loại giao dịch", scale=alt.Scale(
+        domain=["CASH_OUT", "TRANSFER"],
+        range=["#355C4D", "#B18A4B"],
+    ),),
                     tooltip=["event_id", "type", alt.Tooltip("amount", format=",.2f"), alt.Tooltip("risk_score", format=".4f")],
                 ).properties(height=360).interactive()
             )
             st.altair_chart(scatter)
+                        # Danh sách cảnh báo cần ưu tiên kiểm tra
+            priority_frame = alert_frame.copy()
+
+            priority_frame["risk_score"] = pd.to_numeric(
+                priority_frame["risk_score"],
+                errors="coerce",
+            )
+
+            priority_columns = [
+                column for column in [
+                    "scored_at",
+                    "event_id",
+                    "type",
+                    "amount",
+                    "risk_score",
+                ]
+                if column in priority_frame.columns
+            ]
+
+            priority_frame = (
+                priority_frame
+                .sort_values("risk_score", ascending=False)
+                .head(20)
+            )
+
+            st.subheader("Top 50 cảnh báo có điểm rủi ro cao nhất")
+
+            st.dataframe(
+                priority_frame[priority_columns],
+                hide_index=True,
+                use_container_width=True,
+                column_config={
+                    "scored_at": "Thời gian",
+                    "event_id": "Mã giao dịch",
+                    "type": "Loại giao dịch",
+                    "amount": st.column_config.NumberColumn(
+                        "Số tiền",
+                        format="%.2f",
+                    ),
+                    "risk_score": st.column_config.ProgressColumn(
+                        "Điểm rủi ro",
+                        min_value=0.0,
+                        max_value=1.0,
+                        format="%.4f",
+                    ),
+                },
+            )
 
     elif page == pages[3]:
         st.subheader("Giao dịch vừa đi qua Spark")
@@ -533,7 +586,7 @@ def render(view=None):
         live_dashboard(view, selected_page)
         return
     st.set_page_config(
-        page_title="PaySim Big Data Baseline",
+        page_title="Paysim Big Data Baseline-NHOM 4",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -541,13 +594,14 @@ def render(view=None):
     st.markdown(
         """
         <style>
-        .block-container {padding-top: 1.6rem; padding-bottom: 3rem;}
+        .block-container {padding-top: 1.6rem; padding-bottom: 3rem; font-family: "Segoe UI", Arial, sans-serif;
+    font-variant-numeric: tabular-nums;}
         [data-testid="stMetric"] {
-            background: linear-gradient(145deg, #ffffff, #f5f7fb);
-            border: 1px solid #e3e8f0; border-radius: 12px; padding: 12px 14px;
+            background: linear-gradient(145deg, #FFFCF6, #F0E8D8);
+            border: 1px solid #D7C9AE; border-radius: 12px; padding: 12px 14px;
         }
         [data-testid="stMetricLabel"] {font-weight: 650;}
-        .live-line {display:flex; align-items:center; gap:9px; color:#4b5563; margin-bottom:8px;}
+        .live-line {display:flex; align-items:center; gap:9px; color:#34352F; margin-bottom:8px;}
         .live-dot {width:10px; height:10px; border-radius:50%; background:#16a34a;
             box-shadow:0 0 0 rgba(22,163,74,.6); animation:pulse 1.4s infinite;}
         .idle-dot {background:#94a3b8; animation:none;}
@@ -555,15 +609,15 @@ def render(view=None):
         .pipeline-flow {display:flex; align-items:center; width:100%; overflow-x:auto;
             padding:16px 2px 22px 2px; gap:3px;}
         .flow-node {min-width:78px; padding:11px 4px; border-radius:12px; font-size:.82rem;
-            border:1px solid #dbe4ef; background:#fff; text-align:center; font-weight:700;
+            border:1px solid #C9D8CF; background:#FFFCF6; text-align:center; font-weight:700;
             box-shadow:0 3px 10px rgba(15,23,42,.05);}
-        .flow-node small {display:block; color:#64748b; font-weight:500; font-size:.66rem; margin-top:3px;}
-        .flow-arrow {position:relative; min-width:12px; height:3px; background:#cbd5e1; overflow:visible;}
-        .flow-arrow:after {content:'›'; position:absolute; right:-2px; top:-15px; color:#64748b; font-size:26px;}
-        .packet {position:absolute; width:8px; height:8px; border-radius:50%; background:#2563eb;
+        .flow-node small {display:block; color:#77746D; font-weight:500; font-size:.66rem; margin-top:3px;}
+        .flow-arrow {position:relative; min-width:12px; height:3px; background:#B8C9BD; overflow:visible;}
+        .flow-arrow:after {content:'›'; position:absolute; right:-2px; top:-15px; color:#77746D; font-size:26px;}
+        .packet {position:absolute; width:8px; height:8px; border-radius:50%; background:#B18A4B;
             top:-3px; left:0; animation:flow 1.7s linear infinite;}
         @keyframes flow {from{transform:translateX(0)}to{transform:translateX(38px)}}
-        .metric-code {font-family:monospace; color:#64748b; font-size:.76rem; margin-top:-6px;}
+        .metric-code {font-family:monospace; color:#77746D; font-size:.76rem; margin-top:-6px;}
         .track-title {margin-bottom:0!important;}
         </style>
         """,
