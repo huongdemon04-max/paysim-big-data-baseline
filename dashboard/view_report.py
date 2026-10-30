@@ -19,7 +19,7 @@ def setup():
     [data-testid="stMetricValue"] {font-family:Georgia,serif;font-size:2.3rem;color:#624d28;}
     .report-masthead {font:12px monospace;letter-spacing:4px;border-bottom:3px solid #302c23;padding-bottom:12px;}
     </style>''',unsafe_allow_html=True)
-    st.markdown('<div class="report-masthead">NHOM 2 / BUSINESS INTELLIGENCE</div>',unsafe_allow_html=True)
+    st.markdown('<div class="report-masthead">NHÓM 2 / BUSINESS INTELLIGENCE</div>',unsafe_allow_html=True)
     st.title("Giao dịch & rủi ro")
     st.caption("Báo cáo kết quả xử lý và chất lượng phát hiện gian lận")
     return st.selectbox("Mục lục báo cáo",PAGES,key="dashboard_page")
