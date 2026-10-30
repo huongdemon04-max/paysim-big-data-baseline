@@ -302,6 +302,8 @@ def render_page(snapshot, page):
         late_rate = int(latest_metric.get("late_event_rows", 0)) / max(int(latest_metric.get("processed_rows", 0)), 1)
         event_loss = int(run.get("delivery_errors", 0)) + int(evaluation.get("ground_truth_missing", 0))
 
+        st.subheader("A. Dữ liệu đầu vào và xử lý")
+
         track_block(1, "Ingestion", "Replayer → Kafka → Spark consumer", [
             ("Ingest throughput", f"{fmt_float(latest_metric.get('ingest_throughput'))} ev/s", "ingest_throughput", "Tốc độ event được phát vào Kafka"),
             ("Consumer lag", fmt_int(lag), "consumer_lag", "Events đã phát nhưng Spark chưa xử lý"),
@@ -331,6 +333,9 @@ def render_page(snapshot, page):
             ("Late events handled", fmt_int(latest_metric.get("late_event_rows")), "late_event_handling", "Late events được nhận diện trong batch"),
         ], f"Lag={fmt_int(lag)}; duplicates removed={fmt_int(latest_metric.get('duplicate_removed'))}")
 
+        st.divider()
+        st.subheader("B. Phân tích và phát hiện gian lận")
+
         track_block(5, "SQL Analytics", "Spark SQL rule và aggregate nghiệp vụ", [
             ("Query duration", f"{fmt_float(latest_metric.get('sql_query_duration_ms'), 1)} ms", "query_duration", "Thời gian groupBy aggregate theo loại giao dịch"),
             ("Aggregate correctness", "PASS" if latest_metric.get("aggregate_correctness") else "CHECK", "aggregate_correctness", "Tổng aggregate khớp valid rows"),
@@ -353,6 +358,9 @@ def render_page(snapshot, page):
             ("Alert volume", fmt_int(alerts_count), "alert_volume", "Tổng alert tích lũy"),
             ("Alert rate", fmt_pct(model["Alert rate"]), "alert_rate", "Tỷ lệ giao dịch thành alert"),
         ], "Threshold=0.50; recall tổng và evaluation set không bị thay đổi")
+
+        st.divider()
+        st.subheader("C. Cung cấp dữ liệu và độ tin cậy")
 
         track_block(8, "Serving", "MongoDB document, index và query", [
             ("Mongo write latency", f"{fmt_float(latest_metric.get('mongo_write_latency_ms'), 1)} ms", "mongo_write_latency", "Thời gian ghi alerts, recent events, aggregates và evaluation"),
@@ -396,7 +404,7 @@ def render_page(snapshot, page):
                     y=alt.Y("Alerts:Q", title="Số alerts"),
                     color=alt.Color("Detector:N", title="Detector", scale=alt.Scale(
         domain=["model_alerts", "rule_alerts"],
-        range=["#355C4D", "#B18A4B"],
+        range=["#C53030", "#D97706"],
     ),),
                     xOffset="Detector:N",
                     tooltip=["type", "Detector", alt.Tooltip("Alerts", format=",")],
@@ -413,9 +421,9 @@ def render_page(snapshot, page):
                     y=alt.Y("risk_score:Q", title="Risk score", scale=alt.Scale(domain=[0, 1])),
                     color=alt.Color("type:N", title="Loại giao dịch", scale=alt.Scale(
         domain=["CASH_OUT", "TRANSFER"],
-        range=["#355C4D", "#B18A4B"],
+        range=["#C05621", "#9B2C2C"],
     ),),
-                    tooltip=["event_id", "type", alt.Tooltip("amount", format=",.2f"), alt.Tooltip("risk_score", format=".4f")],
+                    tooltip=["scored_at", "event_id", "type", alt.Tooltip("amount", format=",.2f"), alt.Tooltip("risk_score", format=".4f")],
                 ).properties(height=360).interactive()
             )
             st.altair_chart(scatter)
@@ -441,7 +449,7 @@ def render_page(snapshot, page):
             priority_frame = (
                 priority_frame
                 .sort_values("risk_score", ascending=False)
-                .head(20)
+                .head(50)
             )
 
             st.subheader("Top 50 cảnh báo có điểm rủi ro cao nhất")
@@ -476,30 +484,158 @@ def render_page(snapshot, page):
                 "scored_at", "event_id", "source_cycle", "source_row", "type",
                 "amount", "risk_score", "prediction", "end_to_end_latency_ms",
             ] if column in frame.columns]
+            
+            # Tạo bản hiển thị riêng, không sửa dữ liệu gốc
+            display_frame = frame[columns].copy()
+
+            if "risk_score" in display_frame.columns:
+                display_frame["risk_score"] = pd.to_numeric(
+                    display_frame["risk_score"], errors="coerce"
+                )
+
+            def color_transaction_row(row):
+                styles = [""] * len(row)
+
+                risk = pd.to_numeric(
+                    row.get("risk_score"), errors="coerce"
+                )
+
+                # Tô nền cả dòng theo điểm rủi ro
+                if pd.notna(risk):
+                    if risk > 0.8:
+                        row_style = (
+                            "background-color: #FFF1F2; color: #881337"
+                        )
+                        score_style = (
+                            "background-color: #DC2626; color: white; "
+                            "font-weight: bold"
+                        )
+                    elif risk >= 0.4:
+                        row_style = (
+                            "background-color: #FFFBEB; color: #92400E"
+                        )
+                        score_style = (
+                            "background-color: #F59E0B; color: #78350F; "
+                            "font-weight: bold"
+                        )
+                    else:
+                        row_style = ""
+                        score_style = (
+                            "background-color: #E2E8F0; color: #475569"
+                        )
+
+                    styles = [row_style] * len(row)
+
+                    # Tô riêng ô Risk score
+                    if "risk_score" in row.index:
+                        styles[row.index.get_loc("risk_score")] = score_style
+
+                # Tô đỏ đậm ô Alert khi prediction = 1
+                prediction = str(row.get("prediction", "")).strip().lower()
+                is_alert = prediction in {
+                    "1", "1.0", "true", "fraud", "alert", "yes"
+                }
+
+                if is_alert and "prediction" in row.index:
+                    styles[row.index.get_loc("prediction")] = (
+                        "background-color: #991B1B; "
+                        "color: #FFFFFF; font-weight: bold"
+                    )
+
+                return styles
+
+            styled_frame = (
+                display_frame.style
+                .apply(color_transaction_row, axis=1)
+                .format({"risk_score": "{:.4f}"}, na_rep="—")
+            )
+
             st.dataframe(
-                frame[columns], hide_index=True,
+                styled_frame,
+                hide_index=True,
+                use_container_width=True,
                 column_config={
-                    "scored_at": "Scored at", "event_id": "Event ID",
-                    "source_cycle": "Cycle", "source_row": "Source row",
-                    "type": "Transaction type", "amount": st.column_config.NumberColumn("Amount", format="%.2f"),
-                    "risk_score": st.column_config.ProgressColumn("Risk score", min_value=0.0, max_value=1.0, format="%.4f"),
-                    "prediction": "Alert", "end_to_end_latency_ms": "E2E latency (ms)",
+                    "scored_at": "Thời gian",
+                    "event_id": "Mã giao dịch",
+                    "source_cycle": "Chu kỳ",
+                    "source_row": "Dòng dữ liệu nguồn",
+                    "type": "Loại giao dịch",
+                    "amount": st.column_config.NumberColumn(
+                        "Số tiền", format="%.2f"
+                    ),
+                    "risk_score": st.column_config.NumberColumn(
+                        "Risk score", format="%.4f"
+                    ),
+                    "prediction": "Alert",
+                    "end_to_end_latency_ms": st.column_config.NumberColumn(
+                        "Độ trễ đầu cuối (ms)", format="%.0f"
+                    ),
                 },
             )
+
         else:
             st.info("Đang chờ batch giao dịch mới.")
 
+        
         if aggregates:
             st.subheader("Tổng hợp live theo transaction type")
-            aggregate_frame = pd.DataFrame(aggregates).sort_values("transactions", ascending=False)
-            donut = (
-                alt.Chart(aggregate_frame).mark_arc(innerRadius=70).encode(
-                    theta=alt.Theta("transactions:Q"),
-                    color=alt.Color("type:N", legend=alt.Legend(orient="right")),
-                    tooltip=["type", alt.Tooltip("transactions", format=","), alt.Tooltip("total_amount", format=",.2f")],
-                ).properties(height=350)
+
+            aggregate_frame = (
+                pd.DataFrame(aggregates)
+                .sort_values("transactions", ascending=False)
             )
-            st.altair_chart(donut)
+
+            # Quy định màu cố định theo loại giao dịch
+            transaction_colors = {
+                "TRANSFER": "#B91C1C",   # Đỏ sẫm: chuyển khoản
+                "CASH_OUT": "#F97316",   # Cam: rút tiền mặt
+                "CASH_IN": "#2563EB",    # Xanh lam: nạp tiền
+                "PAYMENT": "#1E40AF",    # Xanh navy: thanh toán
+                "DEBIT": "#9CA3AF",      # Xám: ghi nợ
+            }
+
+            # Giữ màu ổn định giữa các micro-batch
+            transaction_types = list(transaction_colors.keys())
+            transaction_palette = [
+                transaction_colors[t] for t in transaction_types
+            ]
+
+            donut = (
+                alt.Chart(aggregate_frame)
+                .mark_arc(innerRadius=70)
+                .encode(
+                    theta=alt.Theta(
+                        "transactions:Q",
+                        title="Số lượng giao dịch",
+                    ),
+                    color=alt.Color(
+                        "type:N",
+                        title="Loại giao dịch",
+                        scale=alt.Scale(
+                            domain=transaction_types,
+                            range=transaction_palette,
+                        ),
+                        legend=alt.Legend(orient="right"),
+                    ),
+                    tooltip=[
+                        alt.Tooltip("type:N", title="Loại giao dịch"),
+                        alt.Tooltip(
+                            "transactions:Q",
+                            title="Số giao dịch",
+                            format=",",
+                        ),
+                        alt.Tooltip(
+                            "total_amount:Q",
+                            title="Tổng số tiền",
+                            format=",.2f",
+                        ),
+                    ],
+                )
+                .properties(height=350)
+            )
+
+            st.altair_chart(donut, use_container_width=True)
+
 
 
 
@@ -545,7 +681,7 @@ def live_dashboard(view=None, selected_page=None):
         top = st.columns(3)
         top[0].metric("Nguồn đã phát", fmt_int(emitted), help="Tổng events Replayer đã đưa vào Kafka")
         top[1].metric("Spark đã xử lý", fmt_int(processed), delta=f"{fmt_int(lag)} đang chờ")
-        top[2].metric("Fraud alerts", fmt_int(alerts_count), delta=fmt_pct(model["Alert rate"]))
+        top[2].metric("Fraud alerts", fmt_int(alerts_count), delta=fmt_pct(model["Alert rate"]), delta_color="inverse")
         top = st.columns(3)
         top[0].metric("Ingest hiện tại", f"{fmt_float(run.get('instant_emission_rate'))} ev/s")
         top[1].metric("Processing throughput", f"{fmt_float(latest_metric.get('processing_throughput'))} ev/s")
@@ -559,7 +695,6 @@ def live_dashboard(view=None, selected_page=None):
         f"{fmt_int(run.get('source_row'))}/{fmt_int(run.get('dataset_rows'))}"
     )
     st.progress(source_progress, text=f"Tiến độ vòng dữ liệu hiện tại: {source_progress:.2%}")
-    st.markdown(pipeline_html(), unsafe_allow_html=True)
 
     pages = PAGES
     if view is None:
@@ -572,6 +707,9 @@ def live_dashboard(view=None, selected_page=None):
         )
     else:
         page = selected_page
+
+    if page == pages[0]:
+        st.markdown(pipeline_html(), unsafe_allow_html=True)
 
     render_page(snapshot, page)
 
@@ -586,7 +724,7 @@ def render(view=None):
         live_dashboard(view, selected_page)
         return
     st.set_page_config(
-        page_title="Paysim Big Data Baseline-NHOM 4",
+        page_title="Paysim Big Data Baseline",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -594,8 +732,7 @@ def render(view=None):
     st.markdown(
         """
         <style>
-        .block-container {padding-top: 1.6rem; padding-bottom: 3rem; font-family: "Segoe UI", Arial, sans-serif;
-    font-variant-numeric: tabular-nums;}
+        .block-container {padding-top: 1.6rem; padding-bottom: 3rem;}
         [data-testid="stMetric"] {
             background: linear-gradient(145deg, #FFFCF6, #F0E8D8);
             border: 1px solid #D7C9AE; border-radius: 12px; padding: 12px 14px;

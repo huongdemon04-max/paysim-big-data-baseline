@@ -19,7 +19,7 @@ def setup():
     [data-testid="stMetricValue"] {font-family:Georgia,serif;font-size:2.3rem;color:#624d28;}
     .report-masthead {font:12px monospace;letter-spacing:4px;border-bottom:3px solid #302c23;padding-bottom:12px;}
     </style>''',unsafe_allow_html=True)
-    st.markdown('<div class="report-masthead">PAYSIM / BUSINESS INTELLIGENCE</div>',unsafe_allow_html=True)
+    st.markdown('<div class="report-masthead">NHOM 2 / BUSINESS INTELLIGENCE</div>',unsafe_allow_html=True)
     st.title("Giao dịch & rủi ro")
     st.caption("Báo cáo kết quả xử lý và chất lượng phát hiện gian lận")
     return st.selectbox("Mục lục báo cáo",PAGES,key="dashboard_page")
@@ -38,8 +38,14 @@ def headline(s):
         st.caption(f"Nguồn đã phát {fmt_int(s.emitted)} giao dịch trong run này.")
     with right:
         st.markdown("### 02 / Cảnh báo gian lận")
-        st.metric("Fraud alerts",fmt_int(s.alerts_count),delta=fmt_pct(s.model['Alert rate']))
-        st.caption("Alert là kết quả dự đoán, không đồng nghĩa fraud thực tế.")
+        
+        st.metric(
+            "Fraud alerts",
+            fmt_int(s.alerts_count),
+            delta=fmt_pct(s.model['Alert rate']),
+            delta_color="inverse",
+        )
+        st.caption("Alert là kết quả dự đoán, không đồng nghĩa fraud c tế.")
 # AFTER END — 9B.2
 
 # BEFORE Start — 9B.3
@@ -54,7 +60,7 @@ def comparison(s):
         rows.extend({'Chỉ số':metric,'Detector':name,'Giá trị':values[metric]} for metric in ['Precision','Recall','F1'])
     chart=alt.Chart(pd.DataFrame(rows)).mark_bar(size=13).encode(
         y=alt.Y('Chỉ số:N',title=None),x=alt.X('Giá trị:Q',scale=alt.Scale(domain=[0,1]),axis=alt.Axis(format='%'),title=None),
-        yOffset='Detector:N',color=alt.Color('Detector:N',scale=alt.Scale(range=['#b99862','#38665b']),legend=alt.Legend(orient='bottom')),
+        yOffset='Detector:N',color=alt.Color('Detector:N',scale=alt.Scale(range=["#dac097",'#38665b']),legend=alt.Legend(orient='bottom')),
         tooltip=['Chỉ số','Detector',alt.Tooltip('Giá trị:Q',format='.2%')],
     ).properties(height=210)
     st.altair_chart(chart)
@@ -72,11 +78,57 @@ def business(s):
         render_confusion_matrix(s.model)
     st.markdown("### 04 / Cơ cấu giao dịch")
     if s.aggregates:
-        chart=alt.Chart(pd.DataFrame(s.aggregates)).mark_bar(color='#38665b',cornerRadiusEnd=4).encode(
-            y=alt.Y('type:N',sort='-x',title=None,axis=alt.Axis(labelOverlap=False)),x=alt.X('transactions:Q',title='Số giao dịch'),
-            tooltip=['type','transactions','total_amount','model_alerts','rule_alerts'],
-        ).properties(height=210)
-        st.altair_chart(chart)
+       
+        chart = (
+            alt.Chart(pd.DataFrame(s.aggregates))
+            .mark_bar(cornerRadiusEnd=4)
+            .encode(
+                y=alt.Y(
+                    "type:N",
+                    sort="-x",
+                    title=None,
+                    axis=alt.Axis(labelOverlap=False),
+                ),
+                x=alt.X(
+                    "transactions:Q",
+                    title="Số giao dịch",
+                ),
+                color=alt.Color(
+                    "type:N",
+                    title="Loại giao dịch",
+                    scale=alt.Scale(
+                        domain=[
+                            "TRANSFER",
+                            "CASH_OUT",
+                            "PAYMENT",
+                            "CASH_IN",
+                            "DEBIT",
+                        ],
+                        range=[
+                            "#EF4444",
+                            "#F59E0B",
+                            "#64748B",
+                            "#2B6CB0",
+                            "#A0AEC0",
+                        ],
+                    ),
+                    legend=None,
+                ),
+                tooltip=[
+                    "type",
+                    "transactions",
+                    "total_amount",
+                    "model_alerts",
+                    "rule_alerts",
+                ],
+            )
+            .properties(
+                height=210,
+                background="#faf7ef",
+            )
+        )
+        st.altair_chart(chart, use_container_width=True)
+
 # AFTER END — 9B.4
 
 # BEFORE Start — 9B.5

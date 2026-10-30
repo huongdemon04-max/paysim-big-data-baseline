@@ -515,9 +515,9 @@ def build_batch_processor(spark: SparkSession, model: PipelineModel, mongo_clien
         # Tham chiếu: dashboard → Storage → Small files / Write duration;
         # kiến thức → partition dữ liệu và shuffle.
         # AFTER Start — 3
-        # valid.repartition("run_id", "type").write.mode("append").partitionBy(
-        #     "run_id", "type"
-        # ).parquet(f"{HDFS_BASE}/silver")
+        valid.repartition("run_id", "type").write.mode("append").partitionBy(
+            "run_id", "type"
+        ).parquet(f"{HDFS_BASE}/silver")
         # AFTER END — 3
         silver_write_seconds = time.perf_counter() - silver_started
 
@@ -815,7 +815,7 @@ def main() -> None:
         # Muốn đổi phiên bản: chỉ để MỘT block cùng mã 2 được thực thi.
         # BEFORE dưới đây tương đương cấu hình 4 từ spark-submit trước tối ưu.
         # BEFORE Start — 2
-        .config("spark.sql.shuffle.partitions", "4")
+        # .config("spark.sql.shuffle.partitions", "4")
         # BEFORE END — 2
 
         # Tối ưu: giảm chi phí shuffle trong dropDuplicates, groupBy và write.
@@ -824,7 +824,7 @@ def main() -> None:
         # Lưu ý: 2 là kết quả benchmark cho cấu hình lớp học, không phải giá trị
         # mặc định cho mọi cluster Spark.
         # AFTER Start — 2
-        # .config("spark.sql.shuffle.partitions", "2")
+        .config("spark.sql.shuffle.partitions", "2")
         # AFTER END — 2
         .getOrCreate()
     )
